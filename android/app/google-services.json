@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "901096556010",
+    "project_id": "jastipin-yuk-bbbc3",
+    "storage_bucket": "jastipin-yuk-bbbc3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:901096556010:android:957dfd42565be5386c5e93",
+        "android_client_info": {
+          "package_name": "id.jastipinyuk.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbfiaALVl21lsgUcKrE2zo-iPvqVHW-v4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

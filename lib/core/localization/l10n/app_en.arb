@@ -1,0 +1,9 @@
+{
+  "@@locale": "en",
+  "getStarted": "Get Started!",
+  "alreadyHaveAccount": "Already have an account? ",
+  "signIn": "Sign In",
+  "termPrivacy1": "By starting up, you agree to our ",
+  "termPrivacy2": "and Privacy Policy.",
+  "termAndCondition": "Terms & Conditions"
+}
