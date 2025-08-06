@@ -86,7 +86,6 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       color: AppColors.secondaryTextColorLight,
     ),
 
-    // InputDecoration styles for light
     hintStyle: GoogleFonts.roboto(
       color: AppColors.placeholderTextLight,
       fontSize: 16,
@@ -162,7 +161,6 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
       color: AppColors.secondaryTextColorDark,
     ),
 
-    // InputDecoration styles for dark
     hintStyle: GoogleFonts.roboto(
       color: AppColors.placeholderTextDark,
       fontSize: 16,

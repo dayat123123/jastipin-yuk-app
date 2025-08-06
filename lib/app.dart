@@ -23,8 +23,7 @@ class App extends StatelessWidget {
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {
-          final brightness = context.platformBrightness;
-          final isSystemDark = brightness == Brightness.dark;
+          final isSystemDark = context.isDarkBrightness;
           final overlay = switch (themeMode) {
             ThemeMode.dark => SystemUiOverlayStyle.light,
             ThemeMode.light => SystemUiOverlayStyle.dark,

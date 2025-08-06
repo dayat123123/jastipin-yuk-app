@@ -10,16 +10,16 @@ abstract class AppColors {
   static const Color systemBackgroundDark = Color(0xFF000000);
 
   // Background color for cards or containers
-  static const Color systemGroupedBackgroundLight = Color(0xFFF2F2F7);
+  static const Color systemGroupedBackgroundLight = Color(0xFFF5F5F5);
   static const Color systemGroupedBackgroundDark = Color(0xFF1C1C1E);
 
   // Secondary background for containers, usually lighter or darker than main container background
   static const Color secondarySystemGroupedBackgroundLight = Color(0xFFFFFFFF);
-  static const Color secondarySystemGroupedBackgroundDark = Color(0xFF1C1C1E);
+  static const Color secondarySystemGroupedBackgroundDark = Color(0xFF1B1B1B);
 
   // Placeholder or hint text color with some transparency
-  static const Color placeholderTextLight = Color.fromARGB(76, 60, 60, 67);
-  static const Color placeholderTextDark = Color.fromARGB(76, 235, 235, 245);
+  static const Color placeholderTextLight = Color(0xFF3C3C43);
+  static const Color placeholderTextDark = Color(0xFFEBEBF5);
 
   // Color for inactive text or icons (e.g., disabled state)
   static const Color inactiveGrayLight = Color(0xFF8E8E93);
@@ -63,7 +63,7 @@ abstract class AppColors {
 
   // Separator or thin border color (e.g., between list items)
   static const Color separatorLight = Color(0x1C000000);
-  static const Color separatorDark = Color(0x29FFFFFF);
+  static const Color separatorDark = Color(0xFF383838);
 
   // Destructive button color (e.g., delete, remove)
   static const Color destructiveRedLight = Color(0xFFFF3B30);
@@ -73,10 +73,20 @@ abstract class AppColors {
   static Color cursorColorLight = Colors.grey.shade700;
   static Color cursorColorDark = Colors.grey.shade700;
 
-  // Soft shadow typically used for iOS style shadows
-  static const List<BoxShadow> softShadow = [
-    BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 2)),
+  static const Color shadowLight = Color(0x1F000000);
+  static const Color shadowDark = Color(0x1F9B9B9B);
+
+  // Soft shadow
+  static const List<BoxShadow> softShadowLight = [
+    BoxShadow(color: shadowLight, blurRadius: 3, offset: Offset(0, 2)),
+    BoxShadow(color: shadowLight, blurRadius: 6, offset: Offset(0, 4)),
   ];
 
-  static const snackbarBackground = Color(0xFF2C2C2E);
+  static const List<BoxShadow> softShadowDark = [
+    BoxShadow(color: shadowDark, blurRadius: 3, offset: Offset(0, 1)),
+    BoxShadow(color: shadowDark, blurRadius: 6, offset: Offset(0, 1)),
+  ];
+
+  static const Color dialogLight = Color(0xFFF5F5F5);
+  static const Color dialogDark = Color(0xFF2C2C2E);
 }

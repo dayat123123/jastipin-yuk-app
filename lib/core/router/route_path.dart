@@ -12,11 +12,11 @@ abstract class RoutePath {
 
   static const String jastiperHome = "/jastiper/home";
   static const String jastiperActivity = "/jastiper/activity";
-  static const String jastiperProfile = "/jastiper/profile";
+  static const String jastiperSettings = "/jastiper/settings";
   static const String jastiperChat = "/jastiper/chat";
 
   static const String customerHome = "/customer/home";
   static const String customerActivity = "/customer/activity";
-  static const String customerProfile = "/customer/profile";
+  static const String customerSettings = "/customer/settings";
   static const String customerChat = "/customer/chat";
 }

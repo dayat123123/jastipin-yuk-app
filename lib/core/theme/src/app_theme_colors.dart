@@ -5,7 +5,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color primary;
   final Color background;
   final Color cardBackground;
-  final Color secondaryBackground;
+  final Color secondaryCardBackground;
   final Color hintText;
   final Color disabled;
   final Color focusColor;
@@ -18,13 +18,14 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color textColor;
   final Color iconColor;
   final Color secondaryTextColor;
+  final Color dialogColor;
   final List<BoxShadow> softShadow;
 
   const AppThemeColors({
     required this.primary,
     required this.background,
     required this.cardBackground,
-    required this.secondaryBackground,
+    required this.secondaryCardBackground,
     required this.hintText,
     required this.disabled,
     required this.focusColor,
@@ -38,6 +39,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.iconColor,
     required this.secondaryTextColor,
     required this.softShadow,
+    required this.dialogColor,
   });
 
   @override
@@ -45,7 +47,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? primary,
     Color? background,
     Color? cardBackground,
-    Color? secondaryBackground,
+    Color? secondaryCardBackground,
     Color? hintText,
     Color? disabled,
     Color? focusColor,
@@ -60,12 +62,14 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? iconColor,
     Color? secondaryTextColor,
     List<BoxShadow>? softShadow,
+    Color? dialogColor,
   }) {
     return AppThemeColors(
       primary: primary ?? this.primary,
       background: background ?? this.background,
       cardBackground: cardBackground ?? this.cardBackground,
-      secondaryBackground: secondaryBackground ?? this.secondaryBackground,
+      secondaryCardBackground:
+          secondaryCardBackground ?? this.secondaryCardBackground,
       hintText: hintText ?? this.hintText,
       disabled: disabled ?? this.disabled,
       focusColor: focusColor ?? this.focusColor,
@@ -79,6 +83,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       iconColor: iconColor ?? this.iconColor,
       secondaryTextColor: secondaryTextColor ?? this.secondaryTextColor,
       softShadow: softShadow ?? this.softShadow,
+      dialogColor: dialogColor ?? this.dialogColor,
     );
   }
 
@@ -89,8 +94,12 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       primary: Color.lerp(primary, other.primary, t)!,
       background: Color.lerp(background, other.background, t)!,
       cardBackground: Color.lerp(cardBackground, other.cardBackground, t)!,
-      secondaryBackground:
-          Color.lerp(secondaryBackground, other.secondaryBackground, t)!,
+      secondaryCardBackground:
+          Color.lerp(
+            secondaryCardBackground,
+            other.secondaryCardBackground,
+            t,
+          )!,
       hintText: Color.lerp(hintText, other.hintText, t)!,
       disabled: Color.lerp(disabled, other.disabled, t)!,
       focusColor: Color.lerp(focusColor, other.focusColor, t)!,
@@ -105,6 +114,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       secondaryTextColor:
           Color.lerp(secondaryTextColor, other.secondaryTextColor, t)!,
       softShadow: t < 0.5 ? softShadow : other.softShadow,
+      dialogColor: Color.lerp(dialogColor, other.dialogColor, t)!,
     );
   }
 
@@ -112,7 +122,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     primary: AppColors.primaryLight,
     background: AppColors.systemBackgroundLight,
     cardBackground: AppColors.systemGroupedBackgroundLight,
-    secondaryBackground: AppColors.secondarySystemGroupedBackgroundLight,
+    secondaryCardBackground: AppColors.secondarySystemGroupedBackgroundLight,
     hintText: AppColors.placeholderTextLight,
     disabled: AppColors.inactiveGrayLight,
     focusColor: AppColors.focusColorLight,
@@ -125,14 +135,15 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     textColor: AppColors.textColorLight,
     iconColor: AppColors.iconColorLight,
     secondaryTextColor: AppColors.secondaryTextColorLight,
-    softShadow: AppColors.softShadow,
+    softShadow: AppColors.softShadowLight,
+    dialogColor: AppColors.dialogLight,
   );
 
   static const AppThemeColors dark = AppThemeColors(
     primary: AppColors.primaryDark,
     background: AppColors.systemBackgroundDark,
     cardBackground: AppColors.systemGroupedBackgroundDark,
-    secondaryBackground: AppColors.secondarySystemGroupedBackgroundDark,
+    secondaryCardBackground: AppColors.secondarySystemGroupedBackgroundDark,
     hintText: AppColors.placeholderTextDark,
     disabled: AppColors.inactiveGrayDark,
     focusColor: AppColors.focusColorDark,
@@ -145,6 +156,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     textColor: AppColors.textColorDark,
     iconColor: AppColors.iconColorDark,
     secondaryTextColor: AppColors.secondaryTextColorDark,
-    softShadow: AppColors.softShadow,
+    softShadow: AppColors.softShadowDark,
+    dialogColor: AppColors.dialogDark,
   );
 }

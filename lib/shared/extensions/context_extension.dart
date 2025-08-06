@@ -18,6 +18,8 @@ extension ContextExtension on BuildContext {
 
   Brightness get platformBrightness => mediaQuery.platformBrightness;
 
+  bool get isDarkBrightness => platformBrightness == Brightness.dark;
+
   AppLocalizations get language => AppLocalizations.of(this);
 
   AppThemeColors get themeColors => theme.extension<AppThemeColors>()!;
@@ -182,6 +184,7 @@ extension ContextExtension on BuildContext {
     Widget? contentWidget,
     String? aproveNameButton,
     bool alowDismiss = true,
+    bool withCancelButton = true,
     void Function()? onPressed,
     void Function()? customOnpressed,
   }) {
@@ -194,6 +197,7 @@ extension ContextExtension on BuildContext {
       title: title,
       customOnPressed: customOnpressed,
       aproveNameButton: aproveNameButton,
+      withCancelButton: withCancelButton,
     );
   }
 }

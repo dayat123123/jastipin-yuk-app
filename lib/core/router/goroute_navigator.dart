@@ -7,7 +7,7 @@ import 'package:jastipin_yuk/features/authentication/presentation/pages/login_pa
 import 'package:jastipin_yuk/features/authentication/presentation/pages/register_page.dart';
 import 'package:jastipin_yuk/features/chat/presentation/pages/customer_chat_page.dart';
 import 'package:jastipin_yuk/features/home/presentation/pages/customer_home_page.dart';
-import 'package:jastipin_yuk/features/profile/presentation/pages/customer_profile_page.dart';
+import 'package:jastipin_yuk/features/settings/presentation/pages/customer_settings_page.dart';
 import 'package:jastipin_yuk/features/splash/presentation/pages/landing_page.dart';
 import 'package:jastipin_yuk/features/splash/presentation/pages/splash_page.dart';
 import 'package:jastipin_yuk/features/activity/presentation/pages/customer_activity_page.dart';
@@ -23,7 +23,7 @@ class GoRouteNavigator {
     TabbarItem(
       label: "Home",
       activeIcon: FluentIcons.home_24_filled,
-      inactiveIcon: FluentIcons.home_24_regular,
+      inactiveIcon: FluentIcons.home_24_filled,
       page: CustomerHomePage(),
       navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'shellCustomerHome'),
       routes: [
@@ -37,7 +37,7 @@ class GoRouteNavigator {
     TabbarItem(
       label: "Activity",
       activeIcon: FluentIcons.history_24_filled,
-      inactiveIcon: FluentIcons.history_24_regular,
+      inactiveIcon: FluentIcons.history_24_filled,
       page: CustomerActivityPage(),
       navigatorKey: GlobalKey<NavigatorState>(
         debugLabel: 'shellCustomerActivity',
@@ -46,14 +46,23 @@ class GoRouteNavigator {
         GoRoute(
           path: RoutePath.customerActivity,
           builder: (context, state) => CustomerActivityPage(),
-          routes: [],
+          routes: [
+            GoRoute(
+              path: "test",
+              builder:
+                  (context, state) =>
+                      Scaffold(appBar: AppBar(title: Text("Test"))),
+              routes: [],
+            ),
+          ],
         ),
       ],
     ),
     TabbarItem(
       label: "Chat",
+      isChatTab: true,
       activeIcon: FluentIcons.chat_12_filled,
-      inactiveIcon: FluentIcons.chat_12_regular,
+      inactiveIcon: FluentIcons.chat_12_filled,
       page: CustomerChatPage(),
       navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'shellCustomerChat'),
       routes: [
@@ -65,17 +74,17 @@ class GoRouteNavigator {
       ],
     ),
     TabbarItem(
-      label: "Profile",
-      activeIcon: FluentIcons.person_circle_24_filled,
-      inactiveIcon: FluentIcons.person_circle_24_regular,
-      page: CustomerProfilePage(),
+      label: "Settings",
+      activeIcon: FluentIcons.settings_16_filled,
+      inactiveIcon: FluentIcons.settings_16_filled,
+      page: CustomerSettingsPage(),
       navigatorKey: GlobalKey<NavigatorState>(
-        debugLabel: 'shellCustomerProfile',
+        debugLabel: 'shellCustomerSettings',
       ),
       routes: [
         GoRoute(
-          path: RoutePath.customerProfile,
-          builder: (context, state) => CustomerProfilePage(),
+          path: RoutePath.customerSettings,
+          builder: (context, state) => CustomerSettingsPage(),
           routes: [],
         ),
       ],

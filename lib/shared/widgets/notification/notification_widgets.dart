@@ -51,14 +51,15 @@ class NotificationWidgets {
     Widget? contentWidget,
     String? content,
     String? aproveNameButton,
-    bool alowDismiss = true,
+    required bool alowDismiss,
+    required bool withCancelButton,
     void Function()? onPressed,
     void Function()? customOnPressed,
   }) {
     final effectiveContent =
-        contentWidget ?? (content != null ? Text(content) : null);
-    final brightness = context.platformBrightness;
-    final isSystemDark = brightness == Brightness.dark;
+        contentWidget ??
+        (content != null ? Text(content, style: context.textStyle.body) : null);
+    final isSystemDark = context.isDarkBrightness;
 
     if (Platform.isIOS) {
       showCupertinoDialog(
@@ -73,6 +74,11 @@ class NotificationWidgets {
                 title: Text(title ?? "Alert"),
                 content: effectiveContent,
                 actions: <Widget>[
+                  if (withCancelButton)
+                    CupertinoDialogAction(
+                      child: const Text('Cancel'),
+                      onPressed: () => context.pop(),
+                    ),
                   CupertinoDialogAction(
                     isDefaultAction: true,
                     onPressed:
@@ -83,10 +89,6 @@ class NotificationWidgets {
                         },
                     child: Text(aproveNameButton ?? 'OK'),
                   ),
-                  CupertinoDialogAction(
-                    child: const Text('Cancel'),
-                    onPressed: () => context.pop(),
-                  ),
                 ],
               ),
             ),
@@ -96,63 +98,52 @@ class NotificationWidgets {
         context: context,
         barrierDismissible: alowDismiss,
         builder: (BuildContext context) {
-          final width = MediaQuery.of(context).size.width;
-          final maxWidth = width > 600 ? 500.0 : width * 0.9;
-
-          return Dialog(
+          return AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: AppStyles.borderRadiusMediumG,
             ),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: maxWidth),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (title != null)
-                      Text(title, style: context.textStyle.title),
-                    if (effectiveContent != null) ...[
-                      const SizedBox(height: 12),
-                      effectiveContent,
-                    ],
-                    const SizedBox(height: 24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed:
-                              customOnPressed ??
-                              () {
-                                context.pop();
-                                if (onPressed != null) onPressed();
-                              },
-                          child: Text(
-                            aproveNameButton ?? "Submit",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: context.themeColors.primary,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        TextButton(
-                          onPressed: () => context.pop(),
-                          child: Text(
-                            "Cancel",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: context.themeColors.primary,
-                            ),
-                          ),
-                        ),
-                      ],
+            actionsPadding: EdgeInsets.only(bottom: 8.0),
+            title: Text(
+              title ?? "Attention!",
+              style: context.textStyle.headline.copyWith(fontSize: 20),
+            ),
+            content: effectiveContent,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 12.0,
+            ),
+            titlePadding: const EdgeInsets.only(
+              top: 24.0,
+              left: 24.0,
+              right: 24.0,
+            ),
+
+            actions: [
+              if (withCancelButton)
+                TextButton(
+                  onPressed: () => context.pop(),
+                  child: Text(
+                    "Cancel",
+                    style: context.textStyle.labelStyle.copyWith(
+                      color: context.themeColors.primary,
                     ),
-                  ],
+                  ),
+                ),
+              TextButton(
+                onPressed:
+                    customOnPressed ??
+                    () {
+                      context.pop();
+                      if (onPressed != null) onPressed();
+                    },
+                child: Text(
+                  aproveNameButton ?? "OK",
+                  style: context.textStyle.labelStyle.copyWith(
+                    color: context.themeColors.primary,
+                  ),
                 ),
               ),
-            ),
+            ],
           );
         },
       );
@@ -232,10 +223,9 @@ class NotificationWidgets {
     final borderRadius = AppStyles.borderRadiusMediumG;
     final selectedIcon = _dialogIcon(type);
     final selectedColor = color ?? _dialogAccentcolor(type, context);
-    final primaryColor = AppColors.textColorDark;
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.snackbarBackground,
+        color: context.themeColors.dialogColor,
         borderRadius: borderRadius,
       ),
 
@@ -249,8 +239,8 @@ class NotificationWidgets {
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [
-                    selectedColor.withValues(alpha: 0.3),
-                    Colors.transparent,
+                    selectedColor.withValues(alpha: 0.35),
+                    Colors.grey.withValues(alpha: 0.15),
                   ],
                 ),
               ),
@@ -261,19 +251,17 @@ class NotificationWidgets {
               dense: true,
               contentPadding: AppStyles.paddingHorizontalMedium,
               leading: CircleAvatar(
-                backgroundColor: AppColors.secondarySystemGroupedBackgroundDark
-                    .withValues(alpha: 0.1),
+                backgroundColor: context.themeColors.cardBackground.withValues(
+                  alpha: 0.1,
+                ),
                 radius: 24,
                 child: CircleAvatar(
                   radius: 16,
                   backgroundColor: selectedColor.withValues(alpha: 0.8),
-                  child: Icon(selectedIcon, color: primaryColor),
+                  child: Icon(selectedIcon),
                 ),
               ),
-              title: Text(
-                title,
-                style: context.textStyle.callout.copyWith(color: primaryColor),
-              ),
+              title: Text(title, style: context.textStyle.labelStyle),
               subtitle:
                   subtitle.isEmpty
                       ? null
@@ -281,9 +269,7 @@ class NotificationWidgets {
                         subtitle,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: context.textStyle.footnote.copyWith(
-                          color: primaryColor,
-                        ),
+                        style: context.textStyle.subhead,
                       ),
             ),
           ),

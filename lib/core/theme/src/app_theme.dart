@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jastipin_yuk/shared/extensions/context_extension.dart';
 
 part 'app_colors.dart';
 part 'app_styles.dart';
@@ -21,8 +20,7 @@ class AppTheme {
     canvasColor: AppColors.systemGroupedBackgroundLight,
     focusColor: AppColors.focusColorLight,
     hintColor: AppColors.placeholderTextLight,
-    shadowColor: AppColors.softShadow.first.color,
-
+    shadowColor: AppColors.shadowLight,
     colorScheme: const ColorScheme.light(
       primary: AppColors.primaryLight,
       onPrimary: Colors.white,
@@ -55,35 +53,44 @@ class AppTheme {
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.secondarySystemGroupedBackgroundLight,
+      fillColor: AppColors.systemGroupedBackgroundLight,
       contentPadding: AppStyles.paddingAllMedium,
       hintStyle: AppTextStyles.light.hintStyle,
       labelStyle: AppTextStyles.light.labelStyle,
       errorStyle: AppTextStyles.light.errorStyle,
       border: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(color: AppColors.separatorLight, width: 1),
+        borderSide: const BorderSide(
+          color: AppColors.separatorLight,
+          width: AppStyles.textinputBorderWidth,
+        ),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(color: AppColors.separatorLight, width: 1),
+        borderSide: const BorderSide(
+          color: AppColors.separatorLight,
+          width: AppStyles.textinputBorderWidth,
+        ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(color: AppColors.primaryLight, width: 1),
+        borderSide: const BorderSide(
+          color: AppColors.primaryLight,
+          width: AppStyles.textinputBorderWidth,
+        ),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
         borderSide: const BorderSide(
           color: AppColors.destructiveRedLight,
-          width: 1,
+          width: AppStyles.textinputBorderWidth,
         ),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
         borderSide: const BorderSide(
           color: AppColors.destructiveRedLight,
-          width: 1,
+          width: AppStyles.textinputBorderWidth,
         ),
       ),
       suffixIconColor: WidgetStateColor.resolveWith((states) {
@@ -117,7 +124,7 @@ class AppTheme {
         padding: WidgetStateProperty.all(AppStyles.paddingAllMedium),
         backgroundColor: WidgetStateProperty.all(AppColors.primaryLight),
         foregroundColor: WidgetStateProperty.all(AppColors.textColorDark),
-        shadowColor: WidgetStateProperty.all(AppColors.softShadow.first.color),
+        shadowColor: WidgetStateProperty.all(AppColors.shadowLight),
         textStyle: WidgetStateProperty.all(
           AppTextStyles.light.headline.copyWith(color: AppColors.textColorDark),
         ),
@@ -128,8 +135,8 @@ class AppTheme {
     ),
 
     dialogTheme: DialogTheme(
-      backgroundColor: AppColors.systemGroupedBackgroundLight,
-      surfaceTintColor: AppColors.systemGroupedBackgroundLight,
+      backgroundColor: AppColors.dialogLight,
+      surfaceTintColor: AppColors.dialogLight,
       titleTextStyle: AppTextStyles.light.title,
       contentTextStyle: AppTextStyles.light.body,
       shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadiusLargeG),
@@ -137,7 +144,7 @@ class AppTheme {
 
     tooltipTheme: TooltipThemeData(
       decoration: BoxDecoration(
-        color: AppColors.systemGroupedBackgroundLight,
+        color: AppColors.dialogLight,
         borderRadius: AppStyles.borderRadiusSmallG,
         border: Border.all(color: AppColors.separatorLight),
       ),
@@ -175,7 +182,7 @@ class AppTheme {
     canvasColor: AppColors.systemGroupedBackgroundDark,
     focusColor: AppColors.focusColorDark,
     hintColor: AppColors.placeholderTextDark,
-    shadowColor: AppColors.softShadow.first.color,
+    shadowColor: AppColors.shadowDark,
 
     colorScheme: const ColorScheme.dark(
       primary: AppColors.primaryDark,
@@ -211,35 +218,44 @@ class AppTheme {
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.secondarySystemGroupedBackgroundDark,
+      fillColor: AppColors.systemGroupedBackgroundDark,
       contentPadding: AppStyles.paddingAllMedium,
       hintStyle: AppTextStyles.dark.hintStyle,
       labelStyle: AppTextStyles.dark.labelStyle,
       errorStyle: AppTextStyles.dark.errorStyle,
       border: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(color: AppColors.separatorDark, width: 1),
+        borderSide: const BorderSide(
+          color: AppColors.separatorDark,
+          width: AppStyles.textinputBorderWidth,
+        ),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(color: AppColors.separatorDark, width: 1),
+        borderSide: const BorderSide(
+          color: AppColors.separatorDark,
+          width: AppStyles.textinputBorderWidth,
+        ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(color: AppColors.primaryDark, width: 1),
+        borderSide: const BorderSide(
+          color: AppColors.primaryDark,
+          width: AppStyles.textinputBorderWidth,
+        ),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
         borderSide: const BorderSide(
           color: AppColors.destructiveRedDark,
-          width: 1,
+          width: AppStyles.textinputBorderWidth,
         ),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
         borderSide: const BorderSide(
           color: AppColors.destructiveRedDark,
-          width: 1,
+          width: AppStyles.textinputBorderWidth,
         ),
       ),
       suffixIconColor: WidgetStateColor.resolveWith((states) {
@@ -273,7 +289,7 @@ class AppTheme {
         padding: WidgetStateProperty.all(AppStyles.paddingAllMedium),
         backgroundColor: WidgetStateProperty.all(AppColors.primaryDark),
         foregroundColor: WidgetStateProperty.all(Colors.white),
-        shadowColor: WidgetStateProperty.all(AppColors.softShadow.first.color),
+        shadowColor: WidgetStateProperty.all(AppColors.shadowDark),
         textStyle: WidgetStateProperty.all(AppTextStyles.dark.headline),
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(borderRadius: AppStyles.borderRadiusSmallG),
@@ -282,8 +298,8 @@ class AppTheme {
     ),
 
     dialogTheme: DialogTheme(
-      backgroundColor: AppColors.systemGroupedBackgroundDark,
-      surfaceTintColor: AppColors.systemGroupedBackgroundDark,
+      backgroundColor: AppColors.dialogDark,
+      surfaceTintColor: AppColors.dialogDark,
       titleTextStyle: AppTextStyles.dark.title,
       contentTextStyle: AppTextStyles.dark.body,
       shape: RoundedRectangleBorder(borderRadius: AppStyles.borderRadiusLargeG),
@@ -291,7 +307,7 @@ class AppTheme {
 
     tooltipTheme: TooltipThemeData(
       decoration: BoxDecoration(
-        color: AppColors.systemGroupedBackgroundDark,
+        color: AppColors.dialogDark,
         borderRadius: AppStyles.borderRadiusSmallG,
         border: Border.all(color: AppColors.separatorDark),
       ),

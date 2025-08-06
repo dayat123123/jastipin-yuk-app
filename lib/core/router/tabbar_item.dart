@@ -7,6 +7,7 @@ class TabbarItem {
   final Widget page;
   final List<RouteBase> routes;
   final GlobalKey<NavigatorState> navigatorKey;
+  final bool isChatTab;
   const TabbarItem({
     required this.label,
     required this.activeIcon,
@@ -14,5 +15,6 @@ class TabbarItem {
     required this.page,
     required this.routes,
     required this.navigatorKey,
+    this.isChatTab = false,
   });
 }

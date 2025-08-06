@@ -80,6 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (!_isAcceptTNC) {
         context.showDialog(
           title: "Attention!",
+
           subtitle: "Please accept the Terms and Conditions to continue.",
         );
         return;
@@ -185,7 +186,6 @@ class _RegisterPageState extends State<RegisterPage> {
                               controller: _passwordController,
                             ),
                             const SizedBox(height: 16.0),
-
                             Text("Gender", style: labelTextStyle),
                             const SizedBox(height: 8.0),
                             for (int i = 0; i < Gender.values.length; i++)
@@ -197,30 +197,50 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             const SizedBox(height: 16.0),
                             Text("Birthdate", style: labelTextStyle),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 8.0),
                             GestureDetector(
                               onTap: _onTapBirthdate,
                               child: Container(
-                                decoration: AppStyles.boxDecoration(
-                                  context,
-                                  borderColor:
-                                      _selectedDate == null
-                                          ? null
-                                          : context.themeColors.primary,
-                                ),
-                                padding: AppStyles.paddingAllSmall,
-                                child: Text(
-                                  _selectedDate == null
-                                      ? "Tap to select your birthdate"
-                                      : Formatters.formatDateTime(
-                                        _selectedDate,
-                                      ),
-                                  style: context.textStyle.body.copyWith(
+                                decoration: BoxDecoration(
+                                  borderRadius: AppStyles.borderRadiusMediumG,
+                                  border: Border.all(
+                                    width: AppStyles.borderWidth,
                                     color:
                                         _selectedDate == null
-                                            ? context.themeColors.hintText
-                                            : null,
+                                            ? context.themeColors.separator
+                                            : context.themeColors.primary,
                                   ),
+                                ),
+                                padding: AppStyles.paddingAllSmall,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.calendar_today,
+                                      size: 20,
+                                      color:
+                                          _selectedDate == null
+                                              ? context.themeColors.disabled
+                                              : context.themeColors.primary,
+                                    ),
+                                    SizedBox(
+                                      height: 24,
+                                      child: VerticalDivider(),
+                                    ),
+                                    Text(
+                                      _selectedDate == null
+                                          ? "Tap to select your birthdate"
+                                          : Formatters.formatDateTime(
+                                            _selectedDate,
+                                          ),
+                                      style: context.textStyle.body.copyWith(
+                                        color:
+                                            _selectedDate == null
+                                                ? context.themeColors.hintText
+                                                : null,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -236,7 +256,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   onChanged: _onTapRole,
                                 ),
                             ],
-                            const SizedBox(height: 16.0),
+                            const SizedBox(height: 8.0),
                             CheckboxListTile(
                               contentPadding: EdgeInsets.zero,
                               value: _isAcceptTNC,
@@ -263,7 +283,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               controlAffinity: ListTileControlAffinity.leading,
                               onChanged: _onTapCheckboxTNC,
                             ),
-                            SizedBox(height: 16.0),
+                            SizedBox(height: 8.0),
                             SubmitButton(
                               label: 'Sign Up',
                               onPressed: _onTapSignUp,

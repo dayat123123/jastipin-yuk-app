@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jastipin_yuk/core/router/goroute_navigator.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/bloc/auth/auth_bloc.dart';
+import 'package:jastipin_yuk/features/authentication/presentation/widgets/tabbar_icon_with_badge_widget.dart';
 import 'package:jastipin_yuk/main.dart';
 import 'package:jastipin_yuk/shared/extensions/context_extension.dart';
 
@@ -67,7 +68,6 @@ class HomeWrapperPage extends StatelessWidget {
               final int index = entry.key;
               final TabbarItem item = entry.value;
               final bool isSelected = navigationShell.currentIndex == index;
-
               return Expanded(
                 child: InkWell(
                   onTap: () => _onTap(index),
@@ -131,34 +131,52 @@ class HomeWrapperPage extends StatelessWidget {
                                   Widget child,
                                   Animation<double> animation,
                                 ) {
-                                  return FadeTransition(
-                                    opacity: animation,
-                                    child: child,
+                                  return ScaleTransition(
+                                    scale: Tween<double>(
+                                      begin: 0.8,
+                                      end: 1,
+                                    ).animate(animation),
+                                    child: FadeTransition(
+                                      opacity: animation,
+                                      child: child,
+                                    ),
                                   );
                                 },
-                                child: ColorFiltered(
-                                  key: ValueKey<bool>(isSelected),
-                                  colorFilter: ColorFilter.mode(
-                                    isSelected
-                                        ? context.themeColors.primary
-                                        : context.themeColors.disabled,
-                                    BlendMode.srcIn,
-                                  ),
-                                  child: Icon(
-                                    isSelected
-                                        ? item.activeIcon
-                                        : item.inactiveIcon,
-                                  ),
-                                ),
+                                child:
+                                    item.isChatTab
+                                        ? TabbarIconWithBadgeWidget(
+                                          key: ValueKey<bool>(isSelected),
+                                          item: item,
+                                          isShowAlert: true,
+                                          isSelected: isSelected,
+                                          iconColor:
+                                              isSelected
+                                                  ? context.themeColors.primary
+                                                  : context
+                                                      .themeColors
+                                                      .disabled,
+                                        )
+                                        : Icon(
+                                          key: ValueKey<bool>(isSelected),
+                                          isSelected
+                                              ? item.activeIcon
+                                              : item.inactiveIcon,
+                                          color:
+                                              isSelected
+                                                  ? context.themeColors.primary
+                                                  : context
+                                                      .themeColors
+                                                      .disabled,
+                                        ),
                               ),
-                              const SizedBox(height: 4.0),
+                              const SizedBox(height: 6.0),
                               AnimatedDefaultTextStyle(
                                 duration: const Duration(milliseconds: 200),
                                 style: context.textStyle.footnote.copyWith(
                                   fontWeight:
                                       isSelected
                                           ? FontWeight.bold
-                                          : FontWeight.w500,
+                                          : FontWeight.normal,
                                   color:
                                       isSelected
                                           ? context.themeColors.primary

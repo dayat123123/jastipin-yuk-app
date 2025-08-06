@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class JastiperProfilePage extends StatelessWidget {
-  const JastiperProfilePage({super.key});
+class JastiperSettingsPage extends StatelessWidget {
+  const JastiperSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

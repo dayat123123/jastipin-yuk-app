@@ -63,15 +63,6 @@ abstract class AppStyles {
     Radius.circular(10),
   );
 
-  static BoxDecoration boxDecoration(
-    BuildContext context, {
-    Color? borderColor,
-  }) => BoxDecoration(
-    border: Border.all(
-      width: 1,
-
-      color: borderColor ?? context.themeColors.separator,
-    ),
-    borderRadius: AppStyles.borderRadiusMediumG,
-  );
+  static const double textinputBorderWidth = 1;
+  static const double borderWidth = 0.5;
 }
