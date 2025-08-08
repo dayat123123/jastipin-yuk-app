@@ -2,7 +2,9 @@ import 'package:intl/intl.dart';
 import 'package:jastipin_yuk/core/network/firebase/firebase_service.dart';
 import 'package:jastipin_yuk/core/network/restful/dio_client.dart';
 import 'package:jastipin_yuk/core/utils/result/result.dart';
+import 'package:jastipin_yuk/features/authentication/data/models/access_token_model.dart';
 import 'package:jastipin_yuk/features/authentication/data/models/login_response_model.dart';
+import 'package:jastipin_yuk/features/authentication/data/models/update_user_response_model.dart';
 import 'package:jastipin_yuk/features/authentication/data/models/user_data_model.dart';
 import 'package:jastipin_yuk/features/authentication/domain/entities/google_account_data.dart';
 import 'package:jastipin_yuk/features/authentication/domain/entities/user_data.dart';
@@ -11,16 +13,16 @@ import 'package:jastipin_yuk/features/authentication/domain/enums/role.dart';
 import 'package:jastipin_yuk/shared/misc/api_paths.dart';
 
 abstract class AuthenticationNetworkDataSource {
-  Future<Result<UserData>> basicLogin({
+  Future<Result<LoginResponseModel>> basicLogin({
     required String userName,
     required String password,
   });
 
-  Future<Result<UserDataModel>> cacheLogin(String cacheToken);
-  Future<Result<UserData>> firebaseLogin(String idToken);
+  Future<Result<LoginResponseModel>> localLogin(AccessTokenModel token);
+  Future<Result<LoginResponseModel>> firebaseLogin(String idToken);
   Future<Result<void>> logout(String userId);
 
-  Future<Result<UserData>> register({
+  Future<Result<void>> register({
     required String username,
     required String password,
     required Gender gender,
@@ -29,6 +31,10 @@ abstract class AuthenticationNetworkDataSource {
   });
 
   Future<Result<GoogleAccountData>> getFirebaseUserData();
+  Future<Result<UserData>> verifyEmailUser({
+    required String userId,
+    required String idToken,
+  });
 }
 
 class AuthenticationNetworkDataSourceImpl
@@ -42,7 +48,7 @@ class AuthenticationNetworkDataSourceImpl
   );
 
   @override
-  Future<Result<UserData>> basicLogin({
+  Future<Result<LoginResponseModel>> basicLogin({
     required String userName,
     required String password,
   }) async {
@@ -55,10 +61,10 @@ class AuthenticationNetworkDataSourceImpl
         success: (value) async {
           final data = LoginResponseModel.fromJson(value);
           _dioClient.setToken(
-            accessToken: data.accessToken,
-            refreshToken: data.refreshToken,
+            accessToken: data.token.accessToken,
+            refreshToken: data.token.refreshToken,
           );
-          return Result.success(data.user.toEntity());
+          return Result.success(data);
         },
         failed: (message) {
           return Result.failed(message);
@@ -70,23 +76,56 @@ class AuthenticationNetworkDataSourceImpl
   }
 
   @override
-  Future<Result<void>> logout(String userName) async {
+  Future<Result<void>> logout(String userId) async {
     try {
       await _firebaseService.signOut();
-      return Result.success(null);
+      final result = await _dioClient.post(
+        ApiPaths.logout,
+        data: {"userId": userId},
+      );
+      return result.when(
+        success: (value) async {
+          return Result.success(null);
+        },
+        failed: (message) {
+          return Result.failed(message);
+        },
+      );
     } catch (e) {
       return Result.failed('Unexpected error while logout: $e');
     }
   }
 
   @override
-  Future<Result<UserDataModel>> cacheLogin(String cacheToken) async {
-    // TODO: implement cacheLogin
-    throw UnimplementedError();
+  Future<Result<LoginResponseModel>> localLogin(
+    AccessTokenModel cacheToken,
+  ) async {
+    try {
+      _dioClient.setToken(
+        accessToken: cacheToken.accessToken,
+        refreshToken: cacheToken.refreshToken,
+      );
+      final result = await _dioClient.post(ApiPaths.loginWithToken);
+      return result.when(
+        success: (value) async {
+          final data = LoginResponseModel.fromJson(value);
+          _dioClient.setToken(
+            accessToken: data.token.accessToken,
+            refreshToken: data.token.refreshToken,
+          );
+          return Result.success(data);
+        },
+        failed: (message) {
+          return Result.failed(message);
+        },
+      );
+    } catch (e) {
+      return Result.failed('Unexpected error while cacheLogin: $e');
+    }
   }
 
   @override
-  Future<Result<UserData>> register({
+  Future<Result<void>> register({
     required String username,
     required String password,
     required Gender gender,
@@ -109,10 +148,10 @@ class AuthenticationNetworkDataSourceImpl
         success: (value) async {
           final data = LoginResponseModel.fromJson(value);
           _dioClient.setToken(
-            accessToken: data.accessToken,
-            refreshToken: data.refreshToken,
+            accessToken: data.token.accessToken,
+            refreshToken: data.token.refreshToken,
           );
-          return Result.success(data.user.toEntity());
+          return Result.success(null);
         },
         failed: (message) {
           return Result.failed(message);
@@ -126,7 +165,7 @@ class AuthenticationNetworkDataSourceImpl
   @override
   Future<Result<GoogleAccountData>> getFirebaseUserData() async {
     try {
-      final result = await _firebaseService.signInWithGoogle();
+      final result = await _firebaseService.signIn();
       return result.when(
         success: (value) async {
           final user = value.user;
@@ -137,11 +176,14 @@ class AuthenticationNetworkDataSourceImpl
           if (credentials == null) {
             return Result.failed('Failed to get credentials from Firebase.');
           }
-          final idToken = await user.getIdToken();
-
+          final idToken = await user.getIdToken() ?? "";
+          final email = user.email ?? "";
+          if (idToken.isEmpty || email.isEmpty) {
+            return Result.failed("Invalid crendetials from google account");
+          }
           return Result.success(
             GoogleAccountData(
-              email: user.email,
+              email: email,
               emailVerified: user.emailVerified,
               photoURL: user.photoURL,
               uid: user.uid,
@@ -158,7 +200,7 @@ class AuthenticationNetworkDataSourceImpl
   }
 
   @override
-  Future<Result<UserData>> firebaseLogin(String idToken) async {
+  Future<Result<LoginResponseModel>> firebaseLogin(String idToken) async {
     try {
       final result = await _dioClient.post(
         ApiPaths.loginWithGoogleAccount,
@@ -168,10 +210,10 @@ class AuthenticationNetworkDataSourceImpl
         success: (value) async {
           final data = LoginResponseModel.fromJson(value);
           _dioClient.setToken(
-            accessToken: data.accessToken,
-            refreshToken: data.refreshToken,
+            accessToken: data.token.accessToken,
+            refreshToken: data.token.refreshToken,
           );
-          return Result.success(data.user.toEntity());
+          return Result.success(data);
         },
         failed: (message) {
           return Result.failed(message);
@@ -179,6 +221,30 @@ class AuthenticationNetworkDataSourceImpl
       );
     } catch (e) {
       return Result.failed('Unexpected error while fetchGoogleSignIn: $e');
+    }
+  }
+
+  @override
+  Future<Result<UserData>> verifyEmailUser({
+    required String userId,
+    required String idToken,
+  }) async {
+    try {
+      final result = await _dioClient.post(
+        ApiPaths.verifyEmail,
+        data: {"userId": userId, "idToken": idToken},
+      );
+      return result.when(
+        success: (value) async {
+          final data = UpdateUserResponseModel.fromJson(value);
+          return Result.success(data.user.toEntity());
+        },
+        failed: (message) {
+          return Result.failed(message);
+        },
+      );
+    } catch (e) {
+      return Result.failed('Unexpected error while verifyEmailUser: $e');
     }
   }
 }

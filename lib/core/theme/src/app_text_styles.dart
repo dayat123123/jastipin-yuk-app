@@ -98,7 +98,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
     ),
     errorStyle: GoogleFonts.roboto(
       color: AppColors.destructiveRedLight,
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: FontWeight.w400,
     ),
   );
@@ -173,7 +173,7 @@ class AppTextStyles extends ThemeExtension<AppTextStyles> {
     ),
     errorStyle: GoogleFonts.roboto(
       color: AppColors.destructiveRedDark,
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: FontWeight.w400,
     ),
   );

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:jastipin_yuk/core/utils/result/result.dart';
 
 class DioClient {
@@ -7,7 +10,6 @@ class DioClient {
   String? _refreshToken;
 
   bool _isRefreshing = false;
-
   final List<Future<void> Function()> _retryQueue = [];
 
   final String _refreshTokenUrl;
@@ -33,66 +35,78 @@ class DioClient {
         onError: (error, handler) async {
           final statusCode = error.response?.statusCode;
           final errorData = error.response?.data;
+          final isTokenExpiredError =
+              errorData != null && errorData['error'] == 'token_expired';
 
-          if (statusCode == 401 &&
-              !_isRefreshing &&
-              errorData != null &&
-              errorData['error'] == 'token_expired') {
-            _isRefreshing = true;
+          if (statusCode == 401 && isTokenExpiredError) {
+            if (!_isRefreshing) {
+              _isRefreshing = true;
 
-            try {
-              final newToken = await _refreshAccessToken();
+              try {
+                final success = await _refreshAccessToken();
 
-              if (newToken != null) {
-                _accessToken = newToken;
+                if (success) {
+                  final retries = List<Future<void> Function()>.from(
+                    _retryQueue,
+                  );
+                  _retryQueue.clear();
 
-                for (var retry in _retryQueue) {
-                  await retry();
+                  for (final retry in retries) {
+                    await retry();
+                  }
+
+                  final opts = error.requestOptions;
+
+                  final tempDio = Dio();
+                  tempDio.options = dio.options;
+
+                  final headers = Map<String, dynamic>.from(opts.headers)
+                    ..['Authorization'] = 'Bearer $_accessToken';
+
+                  final cloneReq = await tempDio.request(
+                    opts.path,
+                    data: opts.data,
+
+                    queryParameters: opts.queryParameters,
+                    options: Options(method: opts.method, headers: headers),
+                  );
+
+                  return handler.resolve(cloneReq);
+                } else {
+                  clearTokens();
+                  return handler.next(error);
                 }
-                _retryQueue.clear();
-
+              } catch (e) {
+                debugPrint("Error on refresh token: ${e.toString()}");
+                return handler.next(error);
+              } finally {
+                _isRefreshing = false;
+              }
+            } else {
+              final completer = Completer<void>();
+              _retryQueue.add(() async {
                 final opts = error.requestOptions;
-                final cloneReq = await dio.request(
+                final tempDio = Dio();
+                tempDio.options = dio.options;
+
+                final headers = Map<String, dynamic>.from(opts.headers)
+                  ..['Authorization'] = 'Bearer $_accessToken';
+
+                final cloneReq = await tempDio.request(
                   opts.path,
                   data: opts.data,
                   queryParameters: opts.queryParameters,
-                  options: Options(
-                    method: opts.method,
-                    headers: {
-                      ...opts.headers,
-                      'Authorization': 'Bearer $_accessToken',
-                    },
-                  ),
+                  options: Options(method: opts.method, headers: headers),
                 );
+
                 handler.resolve(cloneReq);
-              } else {
-                clearTokens();
-                handler.next(error);
-              }
-            } catch (e) {
-              handler.next(error);
-            } finally {
-              _isRefreshing = false;
+                completer.complete();
+              });
+
+              return await completer.future;
             }
-          } else if (_isRefreshing) {
-            _retryQueue.add(() async {
-              final opts = error.requestOptions;
-              final cloneReq = await dio.request(
-                opts.path,
-                data: opts.data,
-                queryParameters: opts.queryParameters,
-                options: Options(
-                  method: opts.method,
-                  headers: {
-                    ...opts.headers,
-                    'Authorization': 'Bearer $_accessToken',
-                  },
-                ),
-              );
-              handler.resolve(cloneReq);
-            });
           } else {
-            handler.next(error);
+            return handler.next(error);
           }
         },
       ),
@@ -113,25 +127,51 @@ class DioClient {
     _refreshToken = null;
   }
 
-  Future<String?> _refreshAccessToken() async {
+  Future<bool> _refreshAccessToken() async {
+    final dioForRefresh = Dio(
+      BaseOptions(
+        baseUrl: dio.options.baseUrl,
+        connectTimeout: dio.options.connectTimeout,
+        receiveTimeout: dio.options.receiveTimeout,
+        responseType: dio.options.responseType,
+      ),
+    );
+
     try {
-      final response = await dio.post(
+      final response = await dioForRefresh.post(
         _refreshTokenUrl,
         data: {'refresh_token': _refreshToken},
       );
 
-      final newAccessToken = response.data['accessToken'];
-      final newRefreshToken = response.data['refreshToken'];
+      final result = _handleResponse(response, includeDataKey: false);
+      if (result.isFailed) return false;
 
-      if (newAccessToken != null && newRefreshToken != null) {
+      final Map<String, dynamic> responseData = result.resultValue ?? {};
+
+      final Map<String, dynamic>? tokenData = responseData["data"]['token'];
+
+      if (tokenData == null) {
+        debugPrint('tokenData is null');
+        return false;
+      }
+
+      final newAccessToken = tokenData['accessToken'];
+      final newRefreshToken = tokenData['refreshToken'];
+
+      if (newAccessToken is String && newRefreshToken is String) {
         _accessToken = newAccessToken;
         _refreshToken = newRefreshToken;
-        return newAccessToken;
+
+        debugPrint('Token successfully refreshed: $_accessToken');
+        return true;
+      } else {
+        debugPrint('Token parsing failed');
       }
     } catch (e) {
-      // Bisa tambahkan logging atau logout user di sini
+      debugPrint('Error refreshing token: $e');
     }
-    return null;
+
+    return false;
   }
 
   Future<Result<Map<String, dynamic>>> post(

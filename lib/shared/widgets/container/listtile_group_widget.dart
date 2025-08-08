@@ -42,9 +42,10 @@ class ListTileGroupWidget extends StatelessWidget {
       visualDensity: VisualDensity.adaptivePlatformDensity,
       contentPadding: AppStyles.paddingHorizontalMedium,
       trailing:
-          data.withDefaultTrailingIcon
+          data.trailing ??
+          (data.withDefaultTrailingIcon
               ? const Icon(Icons.keyboard_arrow_right)
-              : data.trailing,
+              : null),
       leading: data.icon,
       title: Text(
         data.title,

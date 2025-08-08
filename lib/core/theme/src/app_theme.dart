@@ -38,8 +38,8 @@ class AppTheme {
       systemOverlayStyle: SystemUiOverlayStyle.dark,
     ),
     textSelectionTheme: TextSelectionThemeData(
-      cursorColor: AppColors.cursorColorLight,
-      selectionColor: AppColors.cursorColorLight.withValues(alpha: 0.3),
+      cursorColor: AppColors.primaryLight,
+      selectionColor: AppColors.primaryLight.withValues(alpha: 0.2),
     ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
@@ -58,40 +58,50 @@ class AppTheme {
       hintStyle: AppTextStyles.light.hintStyle,
       labelStyle: AppTextStyles.light.labelStyle,
       errorStyle: AppTextStyles.light.errorStyle,
+      // border: InputBorder.none,
+      // enabledBorder: InputBorder.none,
+      // focusedBorder: InputBorder.none,
+      // errorBorder: InputBorder.none,
+      // focusedErrorBorder: InputBorder.none,
       border: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(
-          color: AppColors.separatorLight,
-          width: AppStyles.textinputBorderWidth,
-        ),
+        borderSide: BorderSide.none,
+        // borderSide: const BorderSide(
+        //   color: AppColors.separatorLight,
+        //   width: AppStyles.textinputBorderWidth,
+        // ),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(
-          color: AppColors.separatorLight,
-          width: AppStyles.textinputBorderWidth,
-        ),
+        borderSide: BorderSide.none,
+        // borderSide: const BorderSide(
+        //   color: AppColors.separatorLight,
+        //   width: AppStyles.textinputBorderWidth,
+        // ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(
-          color: AppColors.primaryLight,
-          width: AppStyles.textinputBorderWidth,
-        ),
+        borderSide: BorderSide.none,
+        // borderSide: const BorderSide(
+        //   color: AppColors.primaryLight,
+        //   width: AppStyles.textinputBorderWidth,
+        // ),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(
-          color: AppColors.destructiveRedLight,
-          width: AppStyles.textinputBorderWidth,
-        ),
+        borderSide: BorderSide.none,
+        // borderSide: const BorderSide(
+        //   color: AppColors.destructiveRedLight,
+        //   width: AppStyles.textinputBorderWidth,
+        // ),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(
-          color: AppColors.destructiveRedLight,
-          width: AppStyles.textinputBorderWidth,
-        ),
+        borderSide: BorderSide.none,
+        // borderSide: const BorderSide(
+        //   color: AppColors.destructiveRedLight,
+        //   width: AppStyles.textinputBorderWidth,
+        // ),
       ),
       suffixIconColor: WidgetStateColor.resolveWith((states) {
         if (states.contains(WidgetState.focused)) {
@@ -203,8 +213,8 @@ class AppTheme {
     ),
 
     textSelectionTheme: TextSelectionThemeData(
-      cursorColor: AppColors.cursorColorDark,
-      selectionColor: AppColors.cursorColorDark.withValues(alpha: 0.3),
+      cursorColor: AppColors.primaryDark,
+      selectionColor: AppColors.primaryDark.withValues(alpha: 0.3),
     ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
@@ -225,38 +235,43 @@ class AppTheme {
       errorStyle: AppTextStyles.dark.errorStyle,
       border: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(
-          color: AppColors.separatorDark,
-          width: AppStyles.textinputBorderWidth,
-        ),
+        borderSide: BorderSide.none,
+        // borderSide: const BorderSide(
+        //   color: AppColors.separatorDark,
+        //   width: AppStyles.textinputBorderWidth,
+        // ),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(
-          color: AppColors.separatorDark,
-          width: AppStyles.textinputBorderWidth,
-        ),
+        borderSide: BorderSide.none,
+        // borderSide: const BorderSide(
+        //   color: AppColors.separatorDark,
+        //   width: AppStyles.textinputBorderWidth,
+        // ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(
-          color: AppColors.primaryDark,
-          width: AppStyles.textinputBorderWidth,
-        ),
+        borderSide: BorderSide.none,
+        // borderSide: const BorderSide(
+        //   color: AppColors.primaryDark,
+        //   width: AppStyles.textinputBorderWidth,
+        // ),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(
-          color: AppColors.destructiveRedDark,
-          width: AppStyles.textinputBorderWidth,
-        ),
+        borderSide: BorderSide.none,
+        // borderSide: const BorderSide(
+        //   color: AppColors.destructiveRedDark,
+        //   width: AppStyles.textinputBorderWidth,
+        // ),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: AppStyles.inputFieldRadius,
-        borderSide: const BorderSide(
-          color: AppColors.destructiveRedDark,
-          width: AppStyles.textinputBorderWidth,
-        ),
+        borderSide: BorderSide.none,
+        // borderSide: const BorderSide(
+        //   color: AppColors.destructiveRedDark,
+        //   width: AppStyles.textinputBorderWidth,
+        // ),
       ),
       suffixIconColor: WidgetStateColor.resolveWith((states) {
         if (states.contains(WidgetState.focused)) {

@@ -9,15 +9,10 @@ part of 'login_response_model.dart';
 _$LoginResponseModelImpl _$$LoginResponseModelImplFromJson(
   Map<String, dynamic> json,
 ) => _$LoginResponseModelImpl(
-  accessToken: json['accessToken'] as String,
-  refreshToken: json['refreshToken'] as String,
+  token: AccessTokenModel.fromJson(json['token'] as Map<String, dynamic>),
   user: UserDataModel.fromJson(json['user'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$$LoginResponseModelImplToJson(
   _$LoginResponseModelImpl instance,
-) => <String, dynamic>{
-  'accessToken': instance.accessToken,
-  'refreshToken': instance.refreshToken,
-  'user': instance.user,
-};
+) => <String, dynamic>{'token': instance.token, 'user': instance.user};

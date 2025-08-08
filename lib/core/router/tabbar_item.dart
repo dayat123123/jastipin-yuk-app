@@ -13,7 +13,7 @@ class TabbarItem {
     required this.activeIcon,
     required this.inactiveIcon,
     required this.page,
-    required this.routes,
+    this.routes = const [],
     required this.navigatorKey,
     this.isChatTab = false,
   });

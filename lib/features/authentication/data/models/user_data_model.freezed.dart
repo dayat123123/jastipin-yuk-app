@@ -23,6 +23,8 @@ UserDataModel _$UserDataModelFromJson(Map<String, dynamic> json) {
 mixin _$UserDataModel {
   @JsonKey(name: "userID")
   String get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: "firebaseUID")
+  String? get firebaseUID => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get phoneNumber => throw _privateConstructorUsedError;
@@ -53,6 +55,7 @@ abstract class $UserDataModelCopyWith<$Res> {
   @useResult
   $Res call({
     @JsonKey(name: "userID") String userId,
+    @JsonKey(name: "firebaseUID") String? firebaseUID,
     String username,
     String? email,
     String? phoneNumber,
@@ -81,6 +84,7 @@ class _$UserDataModelCopyWithImpl<$Res, $Val extends UserDataModel>
   @override
   $Res call({
     Object? userId = null,
+    Object? firebaseUID = freezed,
     Object? username = null,
     Object? email = freezed,
     Object? phoneNumber = freezed,
@@ -98,6 +102,11 @@ class _$UserDataModelCopyWithImpl<$Res, $Val extends UserDataModel>
                     ? _value.userId
                     : userId // ignore: cast_nullable_to_non_nullable
                         as String,
+            firebaseUID:
+                freezed == firebaseUID
+                    ? _value.firebaseUID
+                    : firebaseUID // ignore: cast_nullable_to_non_nullable
+                        as String?,
             username:
                 null == username
                     ? _value.username
@@ -160,6 +169,7 @@ abstract class _$$UserDataModelImplCopyWith<$Res>
   @useResult
   $Res call({
     @JsonKey(name: "userID") String userId,
+    @JsonKey(name: "firebaseUID") String? firebaseUID,
     String username,
     String? email,
     String? phoneNumber,
@@ -187,6 +197,7 @@ class __$$UserDataModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? userId = null,
+    Object? firebaseUID = freezed,
     Object? username = null,
     Object? email = freezed,
     Object? phoneNumber = freezed,
@@ -204,6 +215,11 @@ class __$$UserDataModelImplCopyWithImpl<$Res>
                 ? _value.userId
                 : userId // ignore: cast_nullable_to_non_nullable
                     as String,
+        firebaseUID:
+            freezed == firebaseUID
+                ? _value.firebaseUID
+                : firebaseUID // ignore: cast_nullable_to_non_nullable
+                    as String?,
         username:
             null == username
                 ? _value.username
@@ -259,6 +275,7 @@ class __$$UserDataModelImplCopyWithImpl<$Res>
 class _$UserDataModelImpl implements _UserDataModel {
   const _$UserDataModelImpl({
     @JsonKey(name: "userID") required this.userId,
+    @JsonKey(name: "firebaseUID") this.firebaseUID,
     required this.username,
     this.email,
     this.phoneNumber,
@@ -276,6 +293,9 @@ class _$UserDataModelImpl implements _UserDataModel {
   @override
   @JsonKey(name: "userID")
   final String userId;
+  @override
+  @JsonKey(name: "firebaseUID")
+  final String? firebaseUID;
   @override
   final String username;
   @override
@@ -298,7 +318,7 @@ class _$UserDataModelImpl implements _UserDataModel {
 
   @override
   String toString() {
-    return 'UserDataModel(userId: $userId, username: $username, email: $email, phoneNumber: $phoneNumber, role: $role, birthdate: $birthdate, gender: $gender, profilePictureUrl: $profilePictureUrl, emailVerified: $emailVerified, phoneVerified: $phoneVerified)';
+    return 'UserDataModel(userId: $userId, firebaseUID: $firebaseUID, username: $username, email: $email, phoneNumber: $phoneNumber, role: $role, birthdate: $birthdate, gender: $gender, profilePictureUrl: $profilePictureUrl, emailVerified: $emailVerified, phoneVerified: $phoneVerified)';
   }
 
   @override
@@ -307,6 +327,8 @@ class _$UserDataModelImpl implements _UserDataModel {
         (other.runtimeType == runtimeType &&
             other is _$UserDataModelImpl &&
             (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.firebaseUID, firebaseUID) ||
+                other.firebaseUID == firebaseUID) &&
             (identical(other.username, username) ||
                 other.username == username) &&
             (identical(other.email, email) || other.email == email) &&
@@ -329,6 +351,7 @@ class _$UserDataModelImpl implements _UserDataModel {
   int get hashCode => Object.hash(
     runtimeType,
     userId,
+    firebaseUID,
     username,
     email,
     phoneNumber,
@@ -357,6 +380,7 @@ class _$UserDataModelImpl implements _UserDataModel {
 abstract class _UserDataModel implements UserDataModel {
   const factory _UserDataModel({
     @JsonKey(name: "userID") required final String userId,
+    @JsonKey(name: "firebaseUID") final String? firebaseUID,
     required final String username,
     final String? email,
     final String? phoneNumber,
@@ -374,6 +398,9 @@ abstract class _UserDataModel implements UserDataModel {
   @override
   @JsonKey(name: "userID")
   String get userId;
+  @override
+  @JsonKey(name: "firebaseUID")
+  String? get firebaseUID;
   @override
   String get username;
   @override

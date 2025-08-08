@@ -19,8 +19,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$GoogleAccountData {
   String get uid => throw _privateConstructorUsedError;
   bool get emailVerified => throw _privateConstructorUsedError;
-  String? get email => throw _privateConstructorUsedError;
-  String? get idToken => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
+  String get idToken => throw _privateConstructorUsedError;
   String? get photoURL => throw _privateConstructorUsedError;
   String? get displayName => throw _privateConstructorUsedError;
 
@@ -41,8 +41,8 @@ abstract class $GoogleAccountDataCopyWith<$Res> {
   $Res call({
     String uid,
     bool emailVerified,
-    String? email,
-    String? idToken,
+    String email,
+    String idToken,
     String? photoURL,
     String? displayName,
   });
@@ -65,8 +65,8 @@ class _$GoogleAccountDataCopyWithImpl<$Res, $Val extends GoogleAccountData>
   $Res call({
     Object? uid = null,
     Object? emailVerified = null,
-    Object? email = freezed,
-    Object? idToken = freezed,
+    Object? email = null,
+    Object? idToken = null,
     Object? photoURL = freezed,
     Object? displayName = freezed,
   }) {
@@ -83,15 +83,15 @@ class _$GoogleAccountDataCopyWithImpl<$Res, $Val extends GoogleAccountData>
                     : emailVerified // ignore: cast_nullable_to_non_nullable
                         as bool,
             email:
-                freezed == email
+                null == email
                     ? _value.email
                     : email // ignore: cast_nullable_to_non_nullable
-                        as String?,
+                        as String,
             idToken:
-                freezed == idToken
+                null == idToken
                     ? _value.idToken
                     : idToken // ignore: cast_nullable_to_non_nullable
-                        as String?,
+                        as String,
             photoURL:
                 freezed == photoURL
                     ? _value.photoURL
@@ -120,8 +120,8 @@ abstract class _$$GoogleAccountDataImplCopyWith<$Res>
   $Res call({
     String uid,
     bool emailVerified,
-    String? email,
-    String? idToken,
+    String email,
+    String idToken,
     String? photoURL,
     String? displayName,
   });
@@ -143,8 +143,8 @@ class __$$GoogleAccountDataImplCopyWithImpl<$Res>
   $Res call({
     Object? uid = null,
     Object? emailVerified = null,
-    Object? email = freezed,
-    Object? idToken = freezed,
+    Object? email = null,
+    Object? idToken = null,
     Object? photoURL = freezed,
     Object? displayName = freezed,
   }) {
@@ -161,15 +161,15 @@ class __$$GoogleAccountDataImplCopyWithImpl<$Res>
                 : emailVerified // ignore: cast_nullable_to_non_nullable
                     as bool,
         email:
-            freezed == email
+            null == email
                 ? _value.email
                 : email // ignore: cast_nullable_to_non_nullable
-                    as String?,
+                    as String,
         idToken:
-            freezed == idToken
+            null == idToken
                 ? _value.idToken
                 : idToken // ignore: cast_nullable_to_non_nullable
-                    as String?,
+                    as String,
         photoURL:
             freezed == photoURL
                 ? _value.photoURL
@@ -202,9 +202,9 @@ class _$GoogleAccountDataImpl implements _GoogleAccountData {
   @override
   final bool emailVerified;
   @override
-  final String? email;
+  final String email;
   @override
-  final String? idToken;
+  final String idToken;
   @override
   final String? photoURL;
   @override
@@ -258,8 +258,8 @@ abstract class _GoogleAccountData implements GoogleAccountData {
   const factory _GoogleAccountData({
     required final String uid,
     required final bool emailVerified,
-    required final String? email,
-    required final String? idToken,
+    required final String email,
+    required final String idToken,
     final String? photoURL,
     final String? displayName,
   }) = _$GoogleAccountDataImpl;
@@ -269,9 +269,9 @@ abstract class _GoogleAccountData implements GoogleAccountData {
   @override
   bool get emailVerified;
   @override
-  String? get email;
+  String get email;
   @override
-  String? get idToken;
+  String get idToken;
   @override
   String? get photoURL;
   @override

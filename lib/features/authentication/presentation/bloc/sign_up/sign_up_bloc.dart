@@ -22,7 +22,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     await Future.delayed(Duration(milliseconds: 250));
     result.when(
       success: (value) {
-        emit(SignUpState.success(userData: value));
+        emit(SignUpState.success());
       },
       failed: (message) {
         emit(SignUpState.failed(message: message));

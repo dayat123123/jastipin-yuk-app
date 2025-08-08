@@ -9,7 +9,7 @@ enum ToastStatus { success, failed, warning, info }
 
 enum ToastPosition { top, bottom }
 
-class NotificationWidgets {
+class DialogWidgets {
   static OverlayEntry? _currentSnackbar;
 
   static void showToast({
@@ -397,7 +397,7 @@ class _TopSnackbarWidgetState extends State<_TopSnackbarWidget>
           onDismissed: (_) => widget.onDismissed(),
           child: Material(
             color: Colors.transparent,
-            child: NotificationWidgets._snackbarWidget(
+            child: DialogWidgets._snackbarWidget(
               widget.title,
               widget.subtitle,
               color: widget.color,

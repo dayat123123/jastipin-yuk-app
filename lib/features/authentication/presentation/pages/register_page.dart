@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jastipin_yuk/features/authentication/domain/enums/gender.dart';
 import 'package:jastipin_yuk/features/authentication/domain/enums/role.dart';
 import 'package:jastipin_yuk/features/authentication/domain/repositories/authentication_repository.dart';
@@ -30,6 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -57,7 +59,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _onTapBirthdate() async {
     final time = await context.showDatetimePicker(
-      context,
       initialDateTime: _selectedDate,
       mode: PickerMode.date,
     );
@@ -97,6 +98,13 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       );
+    } else {
+      context.showToast(
+        title: "Attention",
+        subtitle: "Please check the fields you have filled in",
+        status: ToastStatus.warning,
+        position: ToastPosition.bottom,
+      );
     }
   }
 
@@ -114,17 +122,16 @@ class _RegisterPageState extends State<RegisterPage> {
     if (state is Failed) {
       context.showToast(
         status: ToastStatus.failed,
-        context: context,
         title: "Register Failed",
         subtitle: state.message,
       );
     } else if (state is Success) {
       context.showToast(
         status: ToastStatus.success,
-        context: context,
         title: "Register Successful",
-        subtitle: "Account created successfully",
+        subtitle: "Account registered successfully",
       );
+      context.pop();
     }
   }
 
@@ -133,6 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _signupBloc.close();
     _userNameController.dispose();
     _passwordController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -157,17 +165,19 @@ class _RegisterPageState extends State<RegisterPage> {
           return Scaffold(
             appBar: AppBar(),
             resizeToAvoidBottomInset: true,
-            body: Padding(
-              padding: AppStyles.paddingAllMedium,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Create Account", style: context.textStyle.title),
-                  const Divider(),
-                  const SizedBox(height: 8),
-                  Expanded(
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("Create Your Account", style: context.textStyle.title),
+                const Divider(),
+                const SizedBox(height: 8.0),
+                Expanded(
+                  child: Scrollbar(
+                    controller: _scrollController,
                     child: SingleChildScrollView(
+                      padding: AppStyles.paddingHorizontalMediumWithBottom,
+                      controller: _scrollController,
                       child: Form(
                         key: _formKey,
                         autovalidateMode: AutovalidateMode.disabled,
@@ -175,13 +185,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("Username", style: labelTextStyle),
-                            const SizedBox(height: 8.0),
+                            const SizedBox(height: 16.0),
                             UsernameTextFormField(
                               controller: _userNameController,
                             ),
                             const SizedBox(height: 16.0),
                             Text("Password", style: labelTextStyle),
-                            const SizedBox(height: 8.0),
+                            const SizedBox(height: 16.0),
                             PasswordTextFormField(
                               controller: _passwordController,
                             ),
@@ -197,7 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             const SizedBox(height: 16.0),
                             Text("Birthdate", style: labelTextStyle),
-                            const SizedBox(height: 8.0),
+                            const SizedBox(height: 16.0),
                             GestureDetector(
                               onTap: _onTapBirthdate,
                               child: Container(
@@ -262,7 +272,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               value: _isAcceptTNC,
                               title: RichText(
                                 text: TextSpan(
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  style: context.textStyle.subhead,
                                   children: [
                                     TextSpan(
                                       text: 'By signing up, I agree to the ',
@@ -293,8 +303,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },

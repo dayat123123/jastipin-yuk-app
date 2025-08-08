@@ -4,21 +4,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jastipin_yuk/core/localization/l10n/intl_l10n.dart';
 import 'package:jastipin_yuk/core/theme/src/app_theme.dart';
-import 'package:jastipin_yuk/shared/widgets/notification/notification_widgets.dart';
+import 'package:jastipin_yuk/shared/widgets/dialog/dialog_widgets.dart';
 
 export 'package:jastipin_yuk/core/theme/theme.dart';
-export 'package:jastipin_yuk/shared/widgets/notification/notification_widgets.dart';
+export 'package:jastipin_yuk/shared/widgets/dialog/dialog_widgets.dart';
 
 enum PickerMode { date, time, dateAndTime }
 
 extension ContextExtension on BuildContext {
   ThemeData get theme => Theme.of(this);
 
+  bool get isDarkBrightness => theme.brightness == Brightness.dark;
+
   MediaQueryData get mediaQuery => MediaQuery.of(this);
-
-  Brightness get platformBrightness => mediaQuery.platformBrightness;
-
-  bool get isDarkBrightness => platformBrightness == Brightness.dark;
 
   AppLocalizations get language => AppLocalizations.of(this);
 
@@ -30,14 +28,15 @@ extension ContextExtension on BuildContext {
 
   EdgeInsets get viewInsets => mediaQuery.viewInsets;
 
+  EdgeInsets get padding => mediaQuery.padding;
+
   Size get size => mediaQuery.size;
 
   double get fullHeight => size.height;
 
   double get fullWidth => size.width;
 
-  Future<DateTime?> showDatetimePicker(
-    BuildContext context, {
+  Future<DateTime?> showDatetimePicker({
     DateTime? initialDateTime,
     DateTime? firstDate,
     DateTime? lastDate,
@@ -59,7 +58,7 @@ extension ContextExtension on BuildContext {
       DateTime selectedDateTime = initial;
 
       final result = await showModalBottomSheet<DateTime>(
-        context: context,
+        context: this,
         showDragHandle: true,
         builder: (_) {
           return SizedBox(
@@ -82,12 +81,12 @@ extension ContextExtension on BuildContext {
                   ),
                 ),
                 TextButton(
-                  child: Text('Select', style: context.textStyle.headline),
+                  child: Text('SELECT', style: textStyle.headline),
                   onPressed: () {
-                    Navigator.of(context).pop(selectedDateTime);
+                    Navigator.of(this).pop(selectedDateTime);
                   },
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 24),
               ],
             ),
           );
@@ -97,7 +96,7 @@ extension ContextExtension on BuildContext {
     } else {
       if (mode == PickerMode.time) {
         final timeOfDay = await showTimePicker(
-          context: context,
+          context: this,
           initialTime: TimeOfDay.fromDateTime(initial),
           builder: (context, child) {
             return MediaQuery(
@@ -119,7 +118,7 @@ extension ContextExtension on BuildContext {
         );
       } else {
         final pickedDate = await showDatePicker(
-          context: context,
+          context: this,
           initialDate: initial,
           firstDate: first,
           lastDate: last,
@@ -129,9 +128,9 @@ extension ContextExtension on BuildContext {
         if (mode == PickerMode.date) {
           return pickedDate;
         } else if (mode == PickerMode.dateAndTime) {
-          if (!context.mounted) return null;
+          if (!mounted) return null;
           final timeOfDay = await showTimePicker(
-            context: context,
+            context: this,
             initialTime: TimeOfDay.fromDateTime(initial),
             builder: (context, child) {
               return MediaQuery(
@@ -162,13 +161,12 @@ extension ContextExtension on BuildContext {
     Color? color,
     String title = "",
     String subtitle = "",
-    required BuildContext context,
     Duration duration = const Duration(seconds: 2),
     ToastStatus status = ToastStatus.info,
     ToastPosition position = ToastPosition.top,
   }) {
-    NotificationWidgets.showToast(
-      context: context,
+    DialogWidgets.showToast(
+      context: this,
       title: title,
       subtitle: subtitle,
       color: color,
@@ -188,7 +186,7 @@ extension ContextExtension on BuildContext {
     void Function()? onPressed,
     void Function()? customOnpressed,
   }) {
-    NotificationWidgets.showAlertDialog(
+    DialogWidgets.showAlertDialog(
       context: this,
       alowDismiss: alowDismiss,
       contentWidget: contentWidget,
@@ -198,6 +196,81 @@ extension ContextExtension on BuildContext {
       customOnPressed: customOnpressed,
       aproveNameButton: aproveNameButton,
       withCancelButton: withCancelButton,
+    );
+  }
+
+  void showBottomSheet({
+    Widget? header,
+    required Widget Function(ScrollController) child,
+    Widget? footer,
+    bool showDragHandle = true,
+    bool isScrollControlled = false,
+    bool isOverallScreen = true,
+    bool isScrollable = true,
+    double? initialChildSize,
+    double? maxChildSize,
+    double? minChildSize,
+  }) {
+    showModalBottomSheet(
+      context: this,
+      showDragHandle: showDragHandle,
+      elevation: 0,
+      isScrollControlled: isScrollControlled,
+      useRootNavigator: isOverallScreen,
+      backgroundColor: themeColors.dialogColor,
+      sheetAnimationStyle: AnimationStyle().copyWith(
+        reverseDuration: const Duration(milliseconds: 250),
+      ),
+      builder: (_) {
+        final colors = themeColors;
+        return Padding(
+          padding: EdgeInsets.only(bottom: viewInsets.bottom),
+          child: DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: initialChildSize ?? 0.7,
+            minChildSize: minChildSize ?? 0.25,
+            maxChildSize: maxChildSize ?? 1.0,
+            builder: (context, scrollController) {
+              return Container(
+                width: context.fullWidth,
+                decoration: BoxDecoration(
+                  color: colors.dialogColor,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(25),
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (header != null) header,
+                    Expanded(
+                      child: Scrollbar(
+                        radius: const Radius.circular(10),
+                        thickness: 5,
+                        thumbVisibility: false,
+                        controller: scrollController,
+                        child: SingleChildScrollView(
+                          controller: scrollController,
+                          physics:
+                              isScrollable
+                                  ? const BouncingScrollPhysics()
+                                  : const NeverScrollableScrollPhysics(),
+                          child: child(scrollController),
+                        ),
+                      ),
+                    ),
+                    if (footer != null)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 30),
+                        child: footer,
+                      ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

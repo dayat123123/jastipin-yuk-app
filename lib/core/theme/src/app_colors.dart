@@ -6,11 +6,11 @@ abstract class AppColors {
   static const Color primaryDark = Color(0xFF1DB954);
 
   // Main background color for screens
-  static const Color systemBackgroundLight = Color(0xFFFFFFFF);
+  static const Color systemBackgroundLight = Color(0xFFF2F2F7);
   static const Color systemBackgroundDark = Color(0xFF000000);
 
   // Background color for cards or containers
-  static const Color systemGroupedBackgroundLight = Color(0xFFF5F5F5);
+  static const Color systemGroupedBackgroundLight = Color(0xFFFFFFFF);
   static const Color systemGroupedBackgroundDark = Color(0xFF1C1C1E);
 
   // Secondary background for containers, usually lighter or darker than main container background
@@ -18,8 +18,8 @@ abstract class AppColors {
   static const Color secondarySystemGroupedBackgroundDark = Color(0xFF1B1B1B);
 
   // Placeholder or hint text color with some transparency
-  static const Color placeholderTextLight = Color(0xFF3C3C43);
-  static const Color placeholderTextDark = Color(0xFFEBEBF5);
+  static const Color placeholderTextLight = Color(0x993C3C43);
+  static const Color placeholderTextDark = Color(0xDDC6C6C8);
 
   // Color for inactive text or icons (e.g., disabled state)
   static const Color inactiveGrayLight = Color(0xFF8E8E93);
@@ -49,10 +49,6 @@ abstract class AppColors {
   static const Color secondaryTextColorLight = Color(0x993C3C43);
   static const Color secondaryTextColorDark = Color(0xDDC6C6C8);
 
-  // Hint text color (same as placeholder)
-  static const Color hintTextLight = placeholderTextLight;
-  static const Color hintTextDark = placeholderTextDark;
-
   // Focus highlight color (e.g., when TextField is focused)
   static const Color focusColorLight = Color(0x3377AAFF);
   static const Color focusColorDark = Color(0x3355AAFF);
@@ -69,22 +65,18 @@ abstract class AppColors {
   static const Color destructiveRedLight = Color(0xFFFF3B30);
   static const Color destructiveRedDark = Color(0xFFFF453A);
 
-  // Color for cursor color
-  static Color cursorColorLight = Colors.grey.shade700;
-  static Color cursorColorDark = Colors.grey.shade700;
-
   static const Color shadowLight = Color(0x1F000000);
   static const Color shadowDark = Color(0x1F9B9B9B);
 
   // Soft shadow
   static const List<BoxShadow> softShadowLight = [
-    BoxShadow(color: shadowLight, blurRadius: 3, offset: Offset(0, 2)),
-    BoxShadow(color: shadowLight, blurRadius: 6, offset: Offset(0, 4)),
+    // BoxShadow(color: shadowLight, blurRadius: 3, offset: Offset(0, 2)),
+    // BoxShadow(color: shadowLight, blurRadius: 6, offset: Offset(0, 4)),
   ];
 
   static const List<BoxShadow> softShadowDark = [
-    BoxShadow(color: shadowDark, blurRadius: 3, offset: Offset(0, 1)),
-    BoxShadow(color: shadowDark, blurRadius: 6, offset: Offset(0, 1)),
+    // BoxShadow(color: shadowDark, blurRadius: 3, offset: Offset(0, 1)),
+    // BoxShadow(color: shadowDark, blurRadius: 6, offset: Offset(0, 1)),
   ];
 
   static const Color dialogLight = Color(0xFFF5F5F5);

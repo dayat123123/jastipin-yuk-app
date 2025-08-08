@@ -7,8 +7,8 @@ class GoogleAccountData with _$GoogleAccountData {
   const factory GoogleAccountData({
     required String uid,
     required bool emailVerified,
-    required String? email,
-    required String? idToken,
+    required String email,
+    required String idToken,
     String? photoURL,
     String? displayName,
   }) = _GoogleAccountData;

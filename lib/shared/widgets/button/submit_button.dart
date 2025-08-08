@@ -6,15 +6,19 @@ class SubmitButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isLoading;
   final bool isDisabled;
+  final Color? iconColor;
   final Color? bgColor;
+  final Widget? labelWidget;
 
   const SubmitButton({
     super.key,
-    required this.label,
+    this.label = 'Submit',
     required this.onPressed,
     this.isLoading = false,
     this.isDisabled = false,
     this.bgColor,
+    this.iconColor,
+    this.labelWidget,
   });
 
   @override
@@ -25,7 +29,10 @@ class SubmitButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: canPress ? onPressed : null,
-        style: ElevatedButton.styleFrom(backgroundColor: bgColor),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: bgColor,
+          foregroundColor: iconColor,
+        ),
         child:
             isLoading
                 ? const SizedBox(
@@ -33,7 +40,7 @@ class SubmitButton extends StatelessWidget {
                   height: 24,
                   child: LoadingIndicatorWidget(),
                 )
-                : Text(label),
+                : labelWidget ?? Text(label),
       ),
     );
   }

@@ -9,6 +9,7 @@ part of 'user_data_model.dart';
 _$UserDataModelImpl _$$UserDataModelImplFromJson(Map<String, dynamic> json) =>
     _$UserDataModelImpl(
       userId: json['userID'] as String,
+      firebaseUID: json['firebaseUID'] as String?,
       username: json['username'] as String,
       email: json['email'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
@@ -23,6 +24,7 @@ _$UserDataModelImpl _$$UserDataModelImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$UserDataModelImplToJson(_$UserDataModelImpl instance) =>
     <String, dynamic>{
       'userID': instance.userId,
+      'firebaseUID': instance.firebaseUID,
       'username': instance.username,
       'email': instance.email,
       'phoneNumber': instance.phoneNumber,

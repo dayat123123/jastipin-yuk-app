@@ -21,7 +21,7 @@ class CardContainerWidget extends StatelessWidget {
     this.padding,
     this.border,
     this.onLongPress,
-    this.borderRadius = AppStyles.borderRadiusMedium,
+    this.borderRadius = AppStyles.borderRadiusSmall,
     this.cardColor,
     this.shape = CardContainerShape.rounded,
     this.isTransparent = false,

@@ -15,9 +15,14 @@ final _privateConstructorUsedError = UnsupportedError(
   'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
 );
 
+UserData _$UserDataFromJson(Map<String, dynamic> json) {
+  return _UserData.fromJson(json);
+}
+
 /// @nodoc
 mixin _$UserData {
   String get userID => throw _privateConstructorUsedError;
+  String? get firebaseUID => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get phoneNumber => throw _privateConstructorUsedError;
@@ -27,6 +32,9 @@ mixin _$UserData {
   String? get profilePictureUrl => throw _privateConstructorUsedError;
   bool get emailVerified => throw _privateConstructorUsedError;
   bool get phoneVerified => throw _privateConstructorUsedError;
+
+  /// Serializes this UserData to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of UserData
   /// with the given fields replaced by the non-null parameter values.
@@ -42,6 +50,7 @@ abstract class $UserDataCopyWith<$Res> {
   @useResult
   $Res call({
     String userID,
+    String? firebaseUID,
     String username,
     String? email,
     String? phoneNumber,
@@ -70,6 +79,7 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
   @override
   $Res call({
     Object? userID = null,
+    Object? firebaseUID = freezed,
     Object? username = null,
     Object? email = freezed,
     Object? phoneNumber = freezed,
@@ -87,6 +97,11 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
                     ? _value.userID
                     : userID // ignore: cast_nullable_to_non_nullable
                         as String,
+            firebaseUID:
+                freezed == firebaseUID
+                    ? _value.firebaseUID
+                    : firebaseUID // ignore: cast_nullable_to_non_nullable
+                        as String?,
             username:
                 null == username
                     ? _value.username
@@ -149,6 +164,7 @@ abstract class _$$UserDataImplCopyWith<$Res>
   @useResult
   $Res call({
     String userID,
+    String? firebaseUID,
     String username,
     String? email,
     String? phoneNumber,
@@ -176,6 +192,7 @@ class __$$UserDataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? userID = null,
+    Object? firebaseUID = freezed,
     Object? username = null,
     Object? email = freezed,
     Object? phoneNumber = freezed,
@@ -193,6 +210,11 @@ class __$$UserDataImplCopyWithImpl<$Res>
                 ? _value.userID
                 : userID // ignore: cast_nullable_to_non_nullable
                     as String,
+        firebaseUID:
+            freezed == firebaseUID
+                ? _value.firebaseUID
+                : firebaseUID // ignore: cast_nullable_to_non_nullable
+                    as String?,
         username:
             null == username
                 ? _value.username
@@ -244,10 +266,11 @@ class __$$UserDataImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$UserDataImpl implements _UserData {
   const _$UserDataImpl({
     required this.userID,
+    this.firebaseUID,
     required this.username,
     this.email,
     this.phoneNumber,
@@ -259,8 +282,13 @@ class _$UserDataImpl implements _UserData {
     required this.phoneVerified,
   });
 
+  factory _$UserDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserDataImplFromJson(json);
+
   @override
   final String userID;
+  @override
+  final String? firebaseUID;
   @override
   final String username;
   @override
@@ -282,7 +310,7 @@ class _$UserDataImpl implements _UserData {
 
   @override
   String toString() {
-    return 'UserData(userID: $userID, username: $username, email: $email, phoneNumber: $phoneNumber, birthdate: $birthdate, gender: $gender, role: $role, profilePictureUrl: $profilePictureUrl, emailVerified: $emailVerified, phoneVerified: $phoneVerified)';
+    return 'UserData(userID: $userID, firebaseUID: $firebaseUID, username: $username, email: $email, phoneNumber: $phoneNumber, birthdate: $birthdate, gender: $gender, role: $role, profilePictureUrl: $profilePictureUrl, emailVerified: $emailVerified, phoneVerified: $phoneVerified)';
   }
 
   @override
@@ -291,6 +319,8 @@ class _$UserDataImpl implements _UserData {
         (other.runtimeType == runtimeType &&
             other is _$UserDataImpl &&
             (identical(other.userID, userID) || other.userID == userID) &&
+            (identical(other.firebaseUID, firebaseUID) ||
+                other.firebaseUID == firebaseUID) &&
             (identical(other.username, username) ||
                 other.username == username) &&
             (identical(other.email, email) || other.email == email) &&
@@ -308,10 +338,12 @@ class _$UserDataImpl implements _UserData {
                 other.phoneVerified == phoneVerified));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
     runtimeType,
     userID,
+    firebaseUID,
     username,
     email,
     phoneNumber,
@@ -330,11 +362,17 @@ class _$UserDataImpl implements _UserData {
   @pragma('vm:prefer-inline')
   _$$UserDataImplCopyWith<_$UserDataImpl> get copyWith =>
       __$$UserDataImplCopyWithImpl<_$UserDataImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$UserDataImplToJson(this);
+  }
 }
 
 abstract class _UserData implements UserData {
   const factory _UserData({
     required final String userID,
+    final String? firebaseUID,
     required final String username,
     final String? email,
     final String? phoneNumber,
@@ -346,8 +384,13 @@ abstract class _UserData implements UserData {
     required final bool phoneVerified,
   }) = _$UserDataImpl;
 
+  factory _UserData.fromJson(Map<String, dynamic> json) =
+      _$UserDataImpl.fromJson;
+
   @override
   String get userID;
+  @override
+  String? get firebaseUID;
   @override
   String get username;
   @override

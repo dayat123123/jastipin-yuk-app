@@ -2,11 +2,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jastipin_yuk/core/utils/result/result.dart';
 
-class FirebaseService {
+abstract class FirebaseService {
+  Future<Result<UserCredential>> signIn();
+  Future<void> signOut();
+}
+
+class FirebaseServiceImpl implements FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
-  Future<Result<UserCredential>> signInWithGoogle() async {
+  @override
+  Future<Result<UserCredential>> signIn() async {
     try {
       final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
       final GoogleSignInAuthentication googleAuth = googleUser.authentication;
@@ -26,6 +32,7 @@ class FirebaseService {
     }
   }
 
+  @override
   Future<void> signOut() async {
     await _googleSignIn.signOut();
     await _auth.signOut();

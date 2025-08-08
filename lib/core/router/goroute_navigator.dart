@@ -1,6 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jastipin_yuk/features/authentication/domain/enums/role.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/pages/forget_password_page.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/pages/home_wrapper_page.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/pages/login_page.dart';
@@ -11,6 +12,9 @@ import 'package:jastipin_yuk/features/settings/presentation/pages/customer_setti
 import 'package:jastipin_yuk/features/splash/presentation/pages/landing_page.dart';
 import 'package:jastipin_yuk/features/splash/presentation/pages/splash_page.dart';
 import 'package:jastipin_yuk/features/activity/presentation/pages/customer_activity_page.dart';
+import 'package:jastipin_yuk/features/verify_account/presentation/pages/customer_verify_account_page.dart';
+import 'package:jastipin_yuk/features/otp/presentation/pages/otp_phone_number_input_page.dart';
+import 'package:jastipin_yuk/features/otp/presentation/pages/otp_pin_input_page.dart';
 import 'package:jastipin_yuk/main.dart';
 
 part 'route_path.dart';
@@ -92,7 +96,6 @@ class GoRouteNavigator {
   ];
 
   // static final List<TabbarItem> _jastiperTabs = [];
-
   static final GoRouter router = GoRouter(
     initialLocation: RoutePath.root,
     navigatorKey: navigatorKey,
@@ -103,7 +106,7 @@ class GoRouteNavigator {
         builder: (BuildContext context, GoRouterState state) => SplashPage(),
       ),
       GoRoute(
-        path: RoutePath.splash,
+        path: RoutePath.landing,
         builder: (BuildContext context, GoRouterState state) => LandingPage(),
       ),
       GoRoute(
@@ -118,6 +121,19 @@ class GoRouteNavigator {
         path: RoutePath.forgetPassword,
         builder:
             (BuildContext context, GoRouterState state) => ForgetPasswordPage(),
+      ),
+      GoRoute(
+        path: RoutePath.customerverifyAccount,
+        builder: (context, state) => CustomerVerifyAccountPage(),
+        routes: [],
+      ),
+      GoRoute(
+        path: RoutePath.otpPhoneNumberInput,
+        builder: (context, state) => OtpPhoneNumberInputPage(),
+      ),
+      GoRoute(
+        path: RoutePath.otpPINInput,
+        builder: (context, state) => OtpPinInputPage(),
       ),
 
       /*Customer Wrapper */

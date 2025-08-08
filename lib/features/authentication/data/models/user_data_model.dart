@@ -10,6 +10,7 @@ part 'user_data_model.g.dart';
 class UserDataModel with _$UserDataModel {
   const factory UserDataModel({
     @JsonKey(name: "userID") required String userId,
+    @JsonKey(name: "firebaseUID") String? firebaseUID,
     required String username,
     String? email,
     String? phoneNumber,
@@ -38,6 +39,23 @@ extension UserDataModelMapper on UserDataModel {
       profilePictureUrl: profilePictureUrl,
       emailVerified: emailVerified,
       phoneVerified: phoneVerified,
+      firebaseUID: firebaseUID,
+    );
+  }
+
+  UserDataModel fromEntity(UserData data) {
+    return UserDataModel(
+      userId: data.userID,
+      username: data.username,
+      role: data.role.value,
+      birthdate: data.birthdate,
+      gender: data.gender.value,
+      emailVerified: data.emailVerified,
+      phoneVerified: data.phoneVerified,
+      email: data.email,
+      firebaseUID: data.firebaseUID,
+      phoneNumber: data.phoneNumber,
+      profilePictureUrl: data.profilePictureUrl,
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:jastipin_yuk/core/localization/l10n/intl_l10n.dart';
 import 'package:jastipin_yuk/core/localization/language.dart';
 import 'package:jastipin_yuk/core/localization/locale_cubit.dart';
 import 'package:jastipin_yuk/core/router/goroute_navigator.dart';
+import 'package:jastipin_yuk/core/theme/src/app_theme_mode_model.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/bloc/auth/auth_bloc.dart';
 import 'package:jastipin_yuk/main.dart';
 import 'package:jastipin_yuk/shared/extensions/context_extension.dart';
@@ -17,21 +18,16 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => ThemeCubit()),
-        BlocProvider(create: (_) => LocaleCubit()),
+        BlocProvider.value(value: injector.get<ThemeCubit>()),
+        BlocProvider.value(value: injector.get<LocaleCubit>()),
         BlocProvider.value(value: injector.get<AuthBloc>()),
       ],
-      child: BlocBuilder<ThemeCubit, ThemeMode>(
+      child: BlocBuilder<ThemeCubit, AppThemeMode>(
         builder: (context, themeMode) {
-          final isSystemDark = context.isDarkBrightness;
-          final overlay = switch (themeMode) {
-            ThemeMode.dark => SystemUiOverlayStyle.light,
-            ThemeMode.light => SystemUiOverlayStyle.dark,
-            ThemeMode.system =>
-              isSystemDark
+          final overlay =
+              themeMode.brightness == Brightness.dark
                   ? SystemUiOverlayStyle.light
-                  : SystemUiOverlayStyle.dark,
-          };
+                  : SystemUiOverlayStyle.dark;
 
           return BlocBuilder<LocaleCubit, Language>(
             builder: (context, locale) {
@@ -39,7 +35,7 @@ class App extends StatelessWidget {
                 value: overlay,
                 child: MaterialApp.router(
                   debugShowCheckedModeBanner: false,
-                  themeMode: themeMode,
+                  themeMode: themeMode.mode,
                   theme: AppTheme.lightTheme,
                   darkTheme: AppTheme.darkTheme,
                   routerConfig: GoRouteNavigator.router,

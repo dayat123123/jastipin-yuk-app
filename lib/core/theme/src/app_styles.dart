@@ -31,6 +31,9 @@ abstract class AppStyles {
     horizontal: 16,
   );
 
+  static EdgeInsets paddingHorizontalMediumWithBottom = paddingHorizontalMedium
+      .copyWith(bottom: 32);
+
   static const EdgeInsets paddingVerticalLarge = EdgeInsets.symmetric(
     vertical: 24,
   );
@@ -42,11 +45,6 @@ abstract class AppStyles {
   static const EdgeInsets paddingVerticalSmall = EdgeInsets.symmetric(
     vertical: 8,
   );
-
-  // Soft shadow typically used in iOS style (for cards, containers)
-  static const List<BoxShadow> softShadow = [
-    BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 2)),
-  ];
 
   // Button radius, slightly rounded for iOS-style buttons
   static const BorderRadius buttonRadius = BorderRadius.all(

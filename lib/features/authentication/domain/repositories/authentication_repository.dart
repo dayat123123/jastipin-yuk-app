@@ -5,6 +5,7 @@ import 'package:jastipin_yuk/features/authentication/domain/enums/gender.dart';
 import 'package:jastipin_yuk/features/authentication/domain/enums/role.dart';
 
 abstract class AuthenticationRepository {
+  Future<Result<UserData>> localLogin();
   Future<Result<UserData>> basicLogin({
     required String userName,
     required String password,
@@ -13,7 +14,7 @@ abstract class AuthenticationRepository {
   Future<Result<void>> logout(String userId);
   Future<Result<UserData>> firebaseLogin(String idToken);
 
-  Future<Result<UserData>> register({
+  Future<Result<void>> register({
     required String username,
     required String password,
     required Gender gender,
@@ -22,4 +23,8 @@ abstract class AuthenticationRepository {
   });
 
   Future<Result<GoogleAccountData>> getFirebaseUserData();
+  Future<Result<UserData>> verifyEmailUser({
+    required String userId,
+    required String idToken,
+  });
 }

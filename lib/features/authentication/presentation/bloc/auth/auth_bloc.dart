@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jastipin_yuk/features/authentication/domain/entities/user_data.dart';
 import 'package:jastipin_yuk/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:jastipin_yuk/features/authentication/domain/usecases/basic_login/basic_login_usecase.dart';
 import 'package:jastipin_yuk/features/authentication/domain/usecases/firebase_login/firebase_login_usecase.dart';
 import 'package:jastipin_yuk/features/authentication/domain/usecases/get_firebase_user_data/get_firebase_user_data_usecase.dart';
+import 'package:jastipin_yuk/features/authentication/domain/usecases/local_login/local_login_usecase.dart';
 import 'package:jastipin_yuk/features/authentication/domain/usecases/logout/logout_usecase.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/bloc/auth/auth_event.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/bloc/auth/auth_state.dart';
@@ -15,19 +17,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LogoutUsecase _logoutUsecase;
   final FirebaseLoginUseCase _firebaseLoginUseCase;
   final GetFirebaseUserDataUsecase _getFirebaseUserDataUsecase;
+  final LocalLoginUsecase _localLoginUsecase;
 
   AuthBloc({required AuthenticationRepository authRepository})
     : _basicLoginUsecase = BasicLoginUsecase(authRepository),
       _logoutUsecase = LogoutUsecase(authRepository),
       _getFirebaseUserDataUsecase = GetFirebaseUserDataUsecase(authRepository),
       _firebaseLoginUseCase = FirebaseLoginUseCase(authRepository),
+      _localLoginUsecase = LocalLoginUsecase(authRepository),
       super(const AuthState.initial()) {
-    on<Login>(_onLogin);
-    on<Logout>(_onLogout);
-    on<FirebaseLogin>(_onFirebaseLogin);
+    on<LoginEvent>(_onLoginEvent);
+    on<LocalLoginEvent>(_onLocalLoginEvent);
+    on<LogoutEvent>(_onLogoutEvent);
+    on<FirebaseLoginEvent>(_onFirebaseLoginEvent);
+    on<UpdateUserStateEvent>(_onUpdateUserStateEvent);
   }
 
-  void _onLogin(Login event, Emitter<AuthState> emit) async {
+  void _onLoginEvent(LoginEvent event, Emitter<AuthState> emit) async {
     emit(const AuthState.loading());
     final result = await _basicLoginUsecase.call(event.param);
     await Future.delayed(Duration(milliseconds: 250));
@@ -41,7 +47,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  void _onFirebaseLogin(FirebaseLogin event, Emitter<AuthState> emit) async {
+  void _onLocalLoginEvent(
+    LocalLoginEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    final result = await _localLoginUsecase.call(null);
+    await Future.delayed(Duration(milliseconds: 250));
+    result.when(
+      success: (value) => emit(AuthState.authenticated(userData: value)),
+      failed: (message) => emit(AuthState.initial()),
+    );
+  }
+
+  void _onFirebaseLoginEvent(
+    FirebaseLoginEvent event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(const AuthState.loading());
 
     final signInResult = await _getFirebaseUserDataUsecase.call(null);
@@ -66,7 +87,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  void _onLogout(Logout event, Emitter<AuthState> emit) async {
+  void _onLogoutEvent(LogoutEvent event, Emitter<AuthState> emit) async {
     final currentState = state;
     emit(AuthState.loading());
     if (currentState is Authenticated) {
@@ -76,4 +97,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await Future.delayed(Duration(milliseconds: 250));
     emit(AuthState.unauthenticated());
   }
+
+  void _onUpdateUserStateEvent(
+    UpdateUserStateEvent event,
+    Emitter<AuthState> emit,
+  ) {
+    if (state is Authenticated) {
+      emit((state as Authenticated).copyWith(userData: event.data));
+    }
+  }
+
+  UserData? get userData => state.maybeWhen(
+    authenticated: (userData) => userData,
+    orElse: () => null,
+  );
 }
