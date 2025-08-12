@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jastipin_yuk/core/router/goroute_navigator.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/bloc/auth/auth_bloc.dart';
-import 'package:jastipin_yuk/main.dart';
 import 'package:jastipin_yuk/shared/widgets/loading/loading_indicator_widget.dart';
 
 class SplashPage extends StatefulWidget {
@@ -14,10 +13,9 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  final _authBloc = injector.get<AuthBloc>();
   @override
   void initState() {
-    _authBloc.add(LocalLoginEvent());
+    context.read<AuthBloc>().add(AuthEvent.localLogin());
     super.initState();
   }
 

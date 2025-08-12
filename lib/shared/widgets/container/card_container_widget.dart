@@ -67,7 +67,6 @@ class CardContainerWidget extends StatelessWidget {
     );
   }
 
-  // Helper methods
   BorderRadiusGeometry? _borderRadiusGeometry() =>
       shape == CardContainerShape.rounded
           ? BorderRadius.circular(borderRadius)

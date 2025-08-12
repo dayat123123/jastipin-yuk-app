@@ -23,8 +23,4 @@ abstract class AuthenticationRepository {
   });
 
   Future<Result<GoogleAccountData>> getFirebaseUserData();
-  Future<Result<UserData>> verifyEmailUser({
-    required String userId,
-    required String idToken,
-  });
 }

@@ -97,15 +97,4 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       failed: (message) => Result.failed(accessToken.errorMessage ?? ""),
     );
   }
-
-  @override
-  Future<Result<UserData>> verifyEmailUser({
-    required String userId,
-    required String idToken,
-  }) async {
-    return await _networkDataSource.verifyEmailUser(
-      userId: userId,
-      idToken: idToken,
-    );
-  }
 }

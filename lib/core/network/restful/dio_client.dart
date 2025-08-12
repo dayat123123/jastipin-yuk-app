@@ -148,7 +148,7 @@ class DioClient {
 
       final Map<String, dynamic> responseData = result.resultValue ?? {};
 
-      final Map<String, dynamic>? tokenData = responseData["data"]['token'];
+      final Map<String, dynamic>? tokenData = responseData["data"];
 
       if (tokenData == null) {
         debugPrint('tokenData is null');
@@ -181,6 +181,19 @@ class DioClient {
   }) async {
     try {
       final response = await dio.post(path, data: data);
+      return _handleResponse(response, includeDataKey: includeDataKey);
+    } catch (e) {
+      return _handleError(e);
+    }
+  }
+
+  Future<Result<Map<String, dynamic>>> put(
+    String path, {
+    Map<String, dynamic>? data,
+    bool includeDataKey = true,
+  }) async {
+    try {
+      final response = await dio.put(path, data: data);
       return _handleResponse(response, includeDataKey: includeDataKey);
     } catch (e) {
       return _handleError(e);

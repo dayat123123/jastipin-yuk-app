@@ -6,14 +6,15 @@ part 'auth_event.freezed.dart';
 
 @freezed
 class AuthEvent with _$AuthEvent {
-  const factory AuthEvent.login({required BasicLoginParam param}) = LoginEvent;
+  const factory AuthEvent.login({required BasicLoginParam param}) =
+      AuthEventLogin;
 
-  const factory AuthEvent.localLogin() = LocalLoginEvent;
+  const factory AuthEvent.localLogin() = AuthEventLocalLogin;
 
-  const factory AuthEvent.logout() = LogoutEvent;
+  const factory AuthEvent.logout() = AuthEventLogout;
 
-  const factory AuthEvent.firebaseLogin() = FirebaseLoginEvent;
+  const factory AuthEvent.firebaseLogin() = AuthEventFirebaseLogin;
 
   const factory AuthEvent.updateUserState({required UserData data}) =
-      UpdateUserStateEvent;
+      AuthEventUpdateUserState;
 }

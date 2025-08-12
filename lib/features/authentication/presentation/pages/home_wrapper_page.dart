@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jastipin_yuk/core/router/goroute_navigator.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/bloc/auth/auth_bloc.dart';
-import 'package:jastipin_yuk/main.dart';
 import 'package:jastipin_yuk/shared/extensions/context_extension.dart';
 import 'package:jastipin_yuk/shared/widgets/icons/badge_icon_widget.dart';
 
@@ -22,15 +21,15 @@ class HomeWrapperPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
-      bloc: injector.get<AuthBloc>(),
+      bloc: context.read<AuthBloc>(),
       listenWhen: (previous, current) => previous != current,
       listener: _blocListener,
       builder: (context, state) {
         return PopScope(
           canPop: false,
           child: Scaffold(
-            // Penting: Memungkinkan body untuk berada di belakang bottomNavigationBar
             extendBody: true,
+            resizeToAvoidBottomInset: true,
             body: navigationShell,
             bottomNavigationBar: _buildCustomBottomNavbar(context),
           ),

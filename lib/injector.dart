@@ -13,6 +13,9 @@ import 'package:jastipin_yuk/features/authentication/data/repositories/user_repo
 import 'package:jastipin_yuk/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:jastipin_yuk/features/authentication/domain/repositories/user_repository.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/bloc/auth/auth_bloc.dart';
+import 'package:jastipin_yuk/features/otp/data/data_sources/otp_network_data_source.dart';
+import 'package:jastipin_yuk/features/otp/data/repositories/otp_repository_impl.dart';
+import 'package:jastipin_yuk/features/otp/domain/repositories/otp_repository.dart';
 import 'package:jastipin_yuk/firebase_options.dart';
 
 import 'package:jastipin_yuk/main.dart';
@@ -57,6 +60,13 @@ Future<void> _setupDependencies() async {
   );
   injector.registerFactory<UserRepository>(
     () => UserRepositoryImpl(injector.get<UserNetworkDataSource>()),
+  );
+
+  injector.registerFactory<OtpNetworkDataSource>(
+    () => OtpNetworkDataSourceImpl(injector.get<DioClient>()),
+  );
+  injector.registerFactory<OtpRepository>(
+    () => OtpRepositoryImpl(injector.get<OtpNetworkDataSource>()),
   );
 
   injector.registerSingleton<AuthBloc>(

@@ -13,13 +13,12 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc({required AuthenticationRepository authRepository})
     : _registerUseCase = RegisterUseCase(authRepository),
       super(const SignUpState.initial()) {
-    on<Register>(_onRegister);
+    on<SignUpEventRegister>(_onRegister);
   }
 
-  void _onRegister(Register event, Emitter<SignUpState> emit) async {
+  void _onRegister(SignUpEventRegister event, Emitter<SignUpState> emit) async {
     emit(const SignUpState.loading());
     final result = await _registerUseCase.call(event.param);
-    await Future.delayed(Duration(milliseconds: 250));
     result.when(
       success: (value) {
         emit(SignUpState.success());

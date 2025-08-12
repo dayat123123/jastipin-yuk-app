@@ -27,7 +27,7 @@ class UsernameTextFormField extends StatelessWidget {
       ],
       decoration: InputDecoration(
         hintText: hinttext ?? 'Username (e.g. yourname_12)',
-        prefixIcon: Icon(Icons.account_circle_rounded),
+        prefixIcon: const Icon(Icons.account_circle_rounded),
         counterText: '',
         isDense: true,
       ),

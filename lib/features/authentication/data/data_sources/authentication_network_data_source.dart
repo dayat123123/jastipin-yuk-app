@@ -4,10 +4,7 @@ import 'package:jastipin_yuk/core/network/restful/dio_client.dart';
 import 'package:jastipin_yuk/core/utils/result/result.dart';
 import 'package:jastipin_yuk/features/authentication/data/models/access_token_model.dart';
 import 'package:jastipin_yuk/features/authentication/data/models/login_response_model.dart';
-import 'package:jastipin_yuk/features/authentication/data/models/update_user_response_model.dart';
-import 'package:jastipin_yuk/features/authentication/data/models/user_data_model.dart';
 import 'package:jastipin_yuk/features/authentication/domain/entities/google_account_data.dart';
-import 'package:jastipin_yuk/features/authentication/domain/entities/user_data.dart';
 import 'package:jastipin_yuk/features/authentication/domain/enums/gender.dart';
 import 'package:jastipin_yuk/features/authentication/domain/enums/role.dart';
 import 'package:jastipin_yuk/shared/misc/api_paths.dart';
@@ -31,10 +28,6 @@ abstract class AuthenticationNetworkDataSource {
   });
 
   Future<Result<GoogleAccountData>> getFirebaseUserData();
-  Future<Result<UserData>> verifyEmailUser({
-    required String userId,
-    required String idToken,
-  });
 }
 
 class AuthenticationNetworkDataSourceImpl
@@ -221,30 +214,6 @@ class AuthenticationNetworkDataSourceImpl
       );
     } catch (e) {
       return Result.failed('Unexpected error while fetchGoogleSignIn: $e');
-    }
-  }
-
-  @override
-  Future<Result<UserData>> verifyEmailUser({
-    required String userId,
-    required String idToken,
-  }) async {
-    try {
-      final result = await _dioClient.post(
-        ApiPaths.verifyEmail,
-        data: {"userId": userId, "idToken": idToken},
-      );
-      return result.when(
-        success: (value) async {
-          final data = UpdateUserResponseModel.fromJson(value);
-          return Result.success(data.user.toEntity());
-        },
-        failed: (message) {
-          return Result.failed(message);
-        },
-      );
-    } catch (e) {
-      return Result.failed('Unexpected error while verifyEmailUser: $e');
     }
   }
 }

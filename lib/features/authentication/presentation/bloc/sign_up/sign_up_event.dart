@@ -5,5 +5,6 @@ part 'sign_up_event.freezed.dart';
 
 @freezed
 class SignUpEvent with _$SignUpEvent {
-  const factory SignUpEvent.register({required RegisterParam param}) = Register;
+  const factory SignUpEvent.register({required RegisterParam param}) =
+      SignUpEventRegister;
 }

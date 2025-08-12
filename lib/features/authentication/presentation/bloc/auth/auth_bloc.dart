@@ -26,17 +26,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       _firebaseLoginUseCase = FirebaseLoginUseCase(authRepository),
       _localLoginUsecase = LocalLoginUsecase(authRepository),
       super(const AuthState.initial()) {
-    on<LoginEvent>(_onLoginEvent);
-    on<LocalLoginEvent>(_onLocalLoginEvent);
-    on<LogoutEvent>(_onLogoutEvent);
-    on<FirebaseLoginEvent>(_onFirebaseLoginEvent);
-    on<UpdateUserStateEvent>(_onUpdateUserStateEvent);
+    on<AuthEventLogin>(_onLogin);
+    on<AuthEventLocalLogin>(_onLocalLogin);
+    on<AuthEventLogout>(_onLogout);
+    on<AuthEventFirebaseLogin>(_onFirebaseLogin);
+    on<AuthEventUpdateUserState>(_onUpdateUserState);
   }
 
-  void _onLoginEvent(LoginEvent event, Emitter<AuthState> emit) async {
+  void _onLogin(AuthEventLogin event, Emitter<AuthState> emit) async {
     emit(const AuthState.loading());
     final result = await _basicLoginUsecase.call(event.param);
-    await Future.delayed(Duration(milliseconds: 250));
     result.when(
       success: (value) {
         emit(AuthState.authenticated(userData: value));
@@ -47,20 +46,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  void _onLocalLoginEvent(
-    LocalLoginEvent event,
-    Emitter<AuthState> emit,
-  ) async {
+  void _onLocalLogin(AuthEventLocalLogin event, Emitter<AuthState> emit) async {
     final result = await _localLoginUsecase.call(null);
-    await Future.delayed(Duration(milliseconds: 250));
     result.when(
       success: (value) => emit(AuthState.authenticated(userData: value)),
       failed: (message) => emit(AuthState.initial()),
     );
   }
 
-  void _onFirebaseLoginEvent(
-    FirebaseLoginEvent event,
+  void _onFirebaseLogin(
+    AuthEventFirebaseLogin event,
     Emitter<AuthState> emit,
   ) async {
     emit(const AuthState.loading());
@@ -87,19 +82,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  void _onLogoutEvent(LogoutEvent event, Emitter<AuthState> emit) async {
+  void _onLogout(AuthEventLogout event, Emitter<AuthState> emit) async {
     final currentState = state;
     emit(AuthState.loading());
     if (currentState is Authenticated) {
       final userData = currentState.userData;
-      await _logoutUsecase.call(userData.userID);
+      await _logoutUsecase.call(userData.userID).timeout(Duration(seconds: 2));
     }
-    await Future.delayed(Duration(milliseconds: 250));
     emit(AuthState.unauthenticated());
   }
 
-  void _onUpdateUserStateEvent(
-    UpdateUserStateEvent event,
+  void _onUpdateUserState(
+    AuthEventUpdateUserState event,
     Emitter<AuthState> emit,
   ) {
     if (state is Authenticated) {

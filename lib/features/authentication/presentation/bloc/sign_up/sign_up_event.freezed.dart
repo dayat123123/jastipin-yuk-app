@@ -33,15 +33,15 @@ mixin _$SignUpEvent {
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Register value) register,
+    required TResult Function(SignUpEventRegister value) register,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Register value)? register,
+    TResult? Function(SignUpEventRegister value)? register,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Register value)? register,
+    TResult Function(SignUpEventRegister value)? register,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 
@@ -91,24 +91,24 @@ class _$SignUpEventCopyWithImpl<$Res, $Val extends SignUpEvent>
 }
 
 /// @nodoc
-abstract class _$$RegisterImplCopyWith<$Res>
+abstract class _$$SignUpEventRegisterImplCopyWith<$Res>
     implements $SignUpEventCopyWith<$Res> {
-  factory _$$RegisterImplCopyWith(
-    _$RegisterImpl value,
-    $Res Function(_$RegisterImpl) then,
-  ) = __$$RegisterImplCopyWithImpl<$Res>;
+  factory _$$SignUpEventRegisterImplCopyWith(
+    _$SignUpEventRegisterImpl value,
+    $Res Function(_$SignUpEventRegisterImpl) then,
+  ) = __$$SignUpEventRegisterImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({RegisterParam param});
 }
 
 /// @nodoc
-class __$$RegisterImplCopyWithImpl<$Res>
-    extends _$SignUpEventCopyWithImpl<$Res, _$RegisterImpl>
-    implements _$$RegisterImplCopyWith<$Res> {
-  __$$RegisterImplCopyWithImpl(
-    _$RegisterImpl _value,
-    $Res Function(_$RegisterImpl) _then,
+class __$$SignUpEventRegisterImplCopyWithImpl<$Res>
+    extends _$SignUpEventCopyWithImpl<$Res, _$SignUpEventRegisterImpl>
+    implements _$$SignUpEventRegisterImplCopyWith<$Res> {
+  __$$SignUpEventRegisterImplCopyWithImpl(
+    _$SignUpEventRegisterImpl _value,
+    $Res Function(_$SignUpEventRegisterImpl) _then,
   ) : super(_value, _then);
 
   /// Create a copy of SignUpEvent
@@ -117,7 +117,7 @@ class __$$RegisterImplCopyWithImpl<$Res>
   @override
   $Res call({Object? param = null}) {
     return _then(
-      _$RegisterImpl(
+      _$SignUpEventRegisterImpl(
         param:
             null == param
                 ? _value.param
@@ -130,8 +130,8 @@ class __$$RegisterImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$RegisterImpl implements Register {
-  const _$RegisterImpl({required this.param});
+class _$SignUpEventRegisterImpl implements SignUpEventRegister {
+  const _$SignUpEventRegisterImpl({required this.param});
 
   @override
   final RegisterParam param;
@@ -145,7 +145,7 @@ class _$RegisterImpl implements Register {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$RegisterImpl &&
+            other is _$SignUpEventRegisterImpl &&
             (identical(other.param, param) || other.param == param));
   }
 
@@ -157,8 +157,11 @@ class _$RegisterImpl implements Register {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$RegisterImplCopyWith<_$RegisterImpl> get copyWith =>
-      __$$RegisterImplCopyWithImpl<_$RegisterImpl>(this, _$identity);
+  _$$SignUpEventRegisterImplCopyWith<_$SignUpEventRegisterImpl> get copyWith =>
+      __$$SignUpEventRegisterImplCopyWithImpl<_$SignUpEventRegisterImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -191,7 +194,7 @@ class _$RegisterImpl implements Register {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Register value) register,
+    required TResult Function(SignUpEventRegister value) register,
   }) {
     return register(this);
   }
@@ -199,7 +202,7 @@ class _$RegisterImpl implements Register {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Register value)? register,
+    TResult? Function(SignUpEventRegister value)? register,
   }) {
     return register?.call(this);
   }
@@ -207,7 +210,7 @@ class _$RegisterImpl implements Register {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Register value)? register,
+    TResult Function(SignUpEventRegister value)? register,
     required TResult orElse(),
   }) {
     if (register != null) {
@@ -217,8 +220,9 @@ class _$RegisterImpl implements Register {
   }
 }
 
-abstract class Register implements SignUpEvent {
-  const factory Register({required final RegisterParam param}) = _$RegisterImpl;
+abstract class SignUpEventRegister implements SignUpEvent {
+  const factory SignUpEventRegister({required final RegisterParam param}) =
+      _$SignUpEventRegisterImpl;
 
   @override
   RegisterParam get param;
@@ -227,6 +231,6 @@ abstract class Register implements SignUpEvent {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$RegisterImplCopyWith<_$RegisterImpl> get copyWith =>
+  _$$SignUpEventRegisterImplCopyWith<_$SignUpEventRegisterImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

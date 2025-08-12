@@ -10,26 +10,42 @@ abstract class RoutePath {
   static const String login = "/login";
   static const String forgetPassword = "/forget-password";
 
-  static const String jastiperHome = "/jastiper/home";
+  /* Jastiper*/
   static const String jastiperActivity = "/jastiper/activity";
-  static const String jastiperSettings = "/jastiper/settings";
+  static const String jastiperStore = "/jastiper/store";
   static const String jastiperChat = "/jastiper/chat";
+  static const String jastiperSettings = "/jastiper/settings";
 
+  /* Customer*/
   static const String customerHome = "/customer/home";
   static const String customerActivity = "/customer/activity";
-  static const String customerSettings = "/customer/settings";
-  static const String customerverifyAccount = "/customer/verify-account";
+  static const String customerAccountLinked = "/customer/account-linked";
   static const String customerChat = "/customer/chat";
+  static const String customerSettings = "/customer/settings";
 
   /*OTP */
-  static const String otpPhoneNumberInput = "/otp/phone-number-input";
-  static const String otpPINInput = "/otp/pin-input";
+  static const String otpPhoneNumberRequestOtp = "/otp/phone-number/request";
+  static const String otpPhoneNumberValidateOtp = "/otp/phone-number/validate";
+  static const String otpEmailRequestOtp = "/otp/email/request";
+  static const String otpEmailValidateOtp = "/otp/email/validate";
+
+  /*Users */
+  static const String userProfile = "/users/user-profile";
 
   static String getUserHomeRoute(Role role) {
     return switch (role) {
       Role.guest => customerHome,
       Role.customer => customerHome,
-      Role.jastiper => jastiperHome,
+      Role.jastiper => jastiperStore,
+      Role.admin => throw UnimplementedError(),
+    };
+  }
+
+  static String getUserSettings(Role role) {
+    return switch (role) {
+      Role.guest => customerSettings,
+      Role.customer => customerSettings,
+      Role.jastiper => jastiperSettings,
       Role.admin => throw UnimplementedError(),
     };
   }

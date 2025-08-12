@@ -10,7 +10,9 @@ class NativeScaffold extends StatelessWidget {
   final Widget? title;
   final List<Widget>? actions;
   final Widget? bottomNavigationBar;
+  final FloatingActionButtonLocation? fabLocation;
   final List<Widget> body;
+  final Widget? floatingActionButton;
 
   const NativeScaffold({
     super.key,
@@ -19,7 +21,9 @@ class NativeScaffold extends StatelessWidget {
     this.actions,
     this.bottomNavigationBar,
     this.body = const [],
-    this.padding = const EdgeInsets.only(),
+    this.padding = EdgeInsets.zero,
+    this.floatingActionButton,
+    this.fabLocation,
   });
 
   @override
@@ -29,9 +33,22 @@ class NativeScaffold extends StatelessWidget {
     final double dynamicBottomPadding =
         (context.padding.bottom + 8) +
         (bottomNavigationBar != null ? kBottomNavigationBarHeight : 0);
+    bool isFabAtBottom =
+        fabLocation == null ||
+        fabLocation == FloatingActionButtonLocation.centerFloat ||
+        fabLocation == FloatingActionButtonLocation.endFloat;
     return Scaffold(
       extendBodyBehindAppBar: isIOS,
       extendBody: bottomNavigationBar != null,
+      floatingActionButton:
+          floatingActionButton != null
+              ? Padding(
+                padding: EdgeInsets.only(
+                  bottom: isFabAtBottom ? dynamicBottomPadding : 0,
+                ),
+                child: _fixHeroTag(floatingActionButton),
+              )
+              : null,
       body: Scrollbar(
         controller: scrollController,
         child: CustomScrollView(
@@ -53,7 +70,6 @@ class NativeScaffold extends StatelessWidget {
                 color: context.themeColors.textColor,
               ),
               systemOverlayStyle: context.theme.appBarTheme.systemOverlayStyle,
-
               flexibleSpace:
                   isIOS
                       ? ClipRect(
@@ -69,12 +85,41 @@ class NativeScaffold extends StatelessWidget {
                 top: dynamicTopPadding,
                 bottom: dynamicBottomPadding,
               ),
-              sliver: SliverList(delegate: SliverChildListDelegate(body)),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => body[index],
+                  childCount: body.length,
+                ),
+              ),
             ),
           ],
         ),
       ),
       bottomNavigationBar: bottomNavigationBar,
     );
+  }
+
+  Widget? _fixHeroTag(Widget? fab) {
+    if (fab is FloatingActionButton) {
+      return FloatingActionButton(
+        key: fab.key,
+        onPressed: fab.onPressed,
+        tooltip: fab.tooltip,
+        foregroundColor: fab.foregroundColor,
+        backgroundColor: fab.backgroundColor,
+        heroTag: null,
+        elevation: fab.elevation,
+        focusElevation: fab.focusElevation,
+        hoverElevation: fab.hoverElevation,
+        disabledElevation: fab.disabledElevation,
+        shape: fab.shape,
+        clipBehavior: fab.clipBehavior,
+        autofocus: fab.autofocus,
+        materialTapTargetSize: fab.materialTapTargetSize,
+        isExtended: fab.isExtended,
+        child: fab.child,
+      );
+    }
+    return fab;
   }
 }

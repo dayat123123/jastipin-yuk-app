@@ -44,27 +44,27 @@ mixin _$AuthEvent {
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(LoginEvent value) login,
-    required TResult Function(LocalLoginEvent value) localLogin,
-    required TResult Function(LogoutEvent value) logout,
-    required TResult Function(FirebaseLoginEvent value) firebaseLogin,
-    required TResult Function(UpdateUserStateEvent value) updateUserState,
+    required TResult Function(AuthEventLogin value) login,
+    required TResult Function(AuthEventLocalLogin value) localLogin,
+    required TResult Function(AuthEventLogout value) logout,
+    required TResult Function(AuthEventFirebaseLogin value) firebaseLogin,
+    required TResult Function(AuthEventUpdateUserState value) updateUserState,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoginEvent value)? login,
-    TResult? Function(LocalLoginEvent value)? localLogin,
-    TResult? Function(LogoutEvent value)? logout,
-    TResult? Function(FirebaseLoginEvent value)? firebaseLogin,
-    TResult? Function(UpdateUserStateEvent value)? updateUserState,
+    TResult? Function(AuthEventLogin value)? login,
+    TResult? Function(AuthEventLocalLogin value)? localLogin,
+    TResult? Function(AuthEventLogout value)? logout,
+    TResult? Function(AuthEventFirebaseLogin value)? firebaseLogin,
+    TResult? Function(AuthEventUpdateUserState value)? updateUserState,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoginEvent value)? login,
-    TResult Function(LocalLoginEvent value)? localLogin,
-    TResult Function(LogoutEvent value)? logout,
-    TResult Function(FirebaseLoginEvent value)? firebaseLogin,
-    TResult Function(UpdateUserStateEvent value)? updateUserState,
+    TResult Function(AuthEventLogin value)? login,
+    TResult Function(AuthEventLocalLogin value)? localLogin,
+    TResult Function(AuthEventLogout value)? logout,
+    TResult Function(AuthEventFirebaseLogin value)? firebaseLogin,
+    TResult Function(AuthEventUpdateUserState value)? updateUserState,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -90,22 +90,22 @@ class _$AuthEventCopyWithImpl<$Res, $Val extends AuthEvent>
 }
 
 /// @nodoc
-abstract class _$$LoginEventImplCopyWith<$Res> {
-  factory _$$LoginEventImplCopyWith(
-    _$LoginEventImpl value,
-    $Res Function(_$LoginEventImpl) then,
-  ) = __$$LoginEventImplCopyWithImpl<$Res>;
+abstract class _$$AuthEventLoginImplCopyWith<$Res> {
+  factory _$$AuthEventLoginImplCopyWith(
+    _$AuthEventLoginImpl value,
+    $Res Function(_$AuthEventLoginImpl) then,
+  ) = __$$AuthEventLoginImplCopyWithImpl<$Res>;
   @useResult
   $Res call({BasicLoginParam param});
 }
 
 /// @nodoc
-class __$$LoginEventImplCopyWithImpl<$Res>
-    extends _$AuthEventCopyWithImpl<$Res, _$LoginEventImpl>
-    implements _$$LoginEventImplCopyWith<$Res> {
-  __$$LoginEventImplCopyWithImpl(
-    _$LoginEventImpl _value,
-    $Res Function(_$LoginEventImpl) _then,
+class __$$AuthEventLoginImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$AuthEventLoginImpl>
+    implements _$$AuthEventLoginImplCopyWith<$Res> {
+  __$$AuthEventLoginImplCopyWithImpl(
+    _$AuthEventLoginImpl _value,
+    $Res Function(_$AuthEventLoginImpl) _then,
   ) : super(_value, _then);
 
   /// Create a copy of AuthEvent
@@ -114,7 +114,7 @@ class __$$LoginEventImplCopyWithImpl<$Res>
   @override
   $Res call({Object? param = null}) {
     return _then(
-      _$LoginEventImpl(
+      _$AuthEventLoginImpl(
         param:
             null == param
                 ? _value.param
@@ -127,8 +127,8 @@ class __$$LoginEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoginEventImpl implements LoginEvent {
-  const _$LoginEventImpl({required this.param});
+class _$AuthEventLoginImpl implements AuthEventLogin {
+  const _$AuthEventLoginImpl({required this.param});
 
   @override
   final BasicLoginParam param;
@@ -142,7 +142,7 @@ class _$LoginEventImpl implements LoginEvent {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LoginEventImpl &&
+            other is _$AuthEventLoginImpl &&
             (identical(other.param, param) || other.param == param));
   }
 
@@ -154,8 +154,11 @@ class _$LoginEventImpl implements LoginEvent {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$LoginEventImplCopyWith<_$LoginEventImpl> get copyWith =>
-      __$$LoginEventImplCopyWithImpl<_$LoginEventImpl>(this, _$identity);
+  _$$AuthEventLoginImplCopyWith<_$AuthEventLoginImpl> get copyWith =>
+      __$$AuthEventLoginImplCopyWithImpl<_$AuthEventLoginImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -200,11 +203,11 @@ class _$LoginEventImpl implements LoginEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(LoginEvent value) login,
-    required TResult Function(LocalLoginEvent value) localLogin,
-    required TResult Function(LogoutEvent value) logout,
-    required TResult Function(FirebaseLoginEvent value) firebaseLogin,
-    required TResult Function(UpdateUserStateEvent value) updateUserState,
+    required TResult Function(AuthEventLogin value) login,
+    required TResult Function(AuthEventLocalLogin value) localLogin,
+    required TResult Function(AuthEventLogout value) logout,
+    required TResult Function(AuthEventFirebaseLogin value) firebaseLogin,
+    required TResult Function(AuthEventUpdateUserState value) updateUserState,
   }) {
     return login(this);
   }
@@ -212,11 +215,11 @@ class _$LoginEventImpl implements LoginEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoginEvent value)? login,
-    TResult? Function(LocalLoginEvent value)? localLogin,
-    TResult? Function(LogoutEvent value)? logout,
-    TResult? Function(FirebaseLoginEvent value)? firebaseLogin,
-    TResult? Function(UpdateUserStateEvent value)? updateUserState,
+    TResult? Function(AuthEventLogin value)? login,
+    TResult? Function(AuthEventLocalLogin value)? localLogin,
+    TResult? Function(AuthEventLogout value)? logout,
+    TResult? Function(AuthEventFirebaseLogin value)? firebaseLogin,
+    TResult? Function(AuthEventUpdateUserState value)? updateUserState,
   }) {
     return login?.call(this);
   }
@@ -224,11 +227,11 @@ class _$LoginEventImpl implements LoginEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoginEvent value)? login,
-    TResult Function(LocalLoginEvent value)? localLogin,
-    TResult Function(LogoutEvent value)? logout,
-    TResult Function(FirebaseLoginEvent value)? firebaseLogin,
-    TResult Function(UpdateUserStateEvent value)? updateUserState,
+    TResult Function(AuthEventLogin value)? login,
+    TResult Function(AuthEventLocalLogin value)? localLogin,
+    TResult Function(AuthEventLogout value)? logout,
+    TResult Function(AuthEventFirebaseLogin value)? firebaseLogin,
+    TResult Function(AuthEventUpdateUserState value)? updateUserState,
     required TResult orElse(),
   }) {
     if (login != null) {
@@ -238,34 +241,34 @@ class _$LoginEventImpl implements LoginEvent {
   }
 }
 
-abstract class LoginEvent implements AuthEvent {
-  const factory LoginEvent({required final BasicLoginParam param}) =
-      _$LoginEventImpl;
+abstract class AuthEventLogin implements AuthEvent {
+  const factory AuthEventLogin({required final BasicLoginParam param}) =
+      _$AuthEventLoginImpl;
 
   BasicLoginParam get param;
 
   /// Create a copy of AuthEvent
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LoginEventImplCopyWith<_$LoginEventImpl> get copyWith =>
+  _$$AuthEventLoginImplCopyWith<_$AuthEventLoginImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$LocalLoginEventImplCopyWith<$Res> {
-  factory _$$LocalLoginEventImplCopyWith(
-    _$LocalLoginEventImpl value,
-    $Res Function(_$LocalLoginEventImpl) then,
-  ) = __$$LocalLoginEventImplCopyWithImpl<$Res>;
+abstract class _$$AuthEventLocalLoginImplCopyWith<$Res> {
+  factory _$$AuthEventLocalLoginImplCopyWith(
+    _$AuthEventLocalLoginImpl value,
+    $Res Function(_$AuthEventLocalLoginImpl) then,
+  ) = __$$AuthEventLocalLoginImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$LocalLoginEventImplCopyWithImpl<$Res>
-    extends _$AuthEventCopyWithImpl<$Res, _$LocalLoginEventImpl>
-    implements _$$LocalLoginEventImplCopyWith<$Res> {
-  __$$LocalLoginEventImplCopyWithImpl(
-    _$LocalLoginEventImpl _value,
-    $Res Function(_$LocalLoginEventImpl) _then,
+class __$$AuthEventLocalLoginImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$AuthEventLocalLoginImpl>
+    implements _$$AuthEventLocalLoginImplCopyWith<$Res> {
+  __$$AuthEventLocalLoginImplCopyWithImpl(
+    _$AuthEventLocalLoginImpl _value,
+    $Res Function(_$AuthEventLocalLoginImpl) _then,
   ) : super(_value, _then);
 
   /// Create a copy of AuthEvent
@@ -274,8 +277,8 @@ class __$$LocalLoginEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LocalLoginEventImpl implements LocalLoginEvent {
-  const _$LocalLoginEventImpl();
+class _$AuthEventLocalLoginImpl implements AuthEventLocalLogin {
+  const _$AuthEventLocalLoginImpl();
 
   @override
   String toString() {
@@ -285,7 +288,8 @@ class _$LocalLoginEventImpl implements LocalLoginEvent {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LocalLoginEventImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$AuthEventLocalLoginImpl);
   }
 
   @override
@@ -334,11 +338,11 @@ class _$LocalLoginEventImpl implements LocalLoginEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(LoginEvent value) login,
-    required TResult Function(LocalLoginEvent value) localLogin,
-    required TResult Function(LogoutEvent value) logout,
-    required TResult Function(FirebaseLoginEvent value) firebaseLogin,
-    required TResult Function(UpdateUserStateEvent value) updateUserState,
+    required TResult Function(AuthEventLogin value) login,
+    required TResult Function(AuthEventLocalLogin value) localLogin,
+    required TResult Function(AuthEventLogout value) logout,
+    required TResult Function(AuthEventFirebaseLogin value) firebaseLogin,
+    required TResult Function(AuthEventUpdateUserState value) updateUserState,
   }) {
     return localLogin(this);
   }
@@ -346,11 +350,11 @@ class _$LocalLoginEventImpl implements LocalLoginEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoginEvent value)? login,
-    TResult? Function(LocalLoginEvent value)? localLogin,
-    TResult? Function(LogoutEvent value)? logout,
-    TResult? Function(FirebaseLoginEvent value)? firebaseLogin,
-    TResult? Function(UpdateUserStateEvent value)? updateUserState,
+    TResult? Function(AuthEventLogin value)? login,
+    TResult? Function(AuthEventLocalLogin value)? localLogin,
+    TResult? Function(AuthEventLogout value)? logout,
+    TResult? Function(AuthEventFirebaseLogin value)? firebaseLogin,
+    TResult? Function(AuthEventUpdateUserState value)? updateUserState,
   }) {
     return localLogin?.call(this);
   }
@@ -358,11 +362,11 @@ class _$LocalLoginEventImpl implements LocalLoginEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoginEvent value)? login,
-    TResult Function(LocalLoginEvent value)? localLogin,
-    TResult Function(LogoutEvent value)? logout,
-    TResult Function(FirebaseLoginEvent value)? firebaseLogin,
-    TResult Function(UpdateUserStateEvent value)? updateUserState,
+    TResult Function(AuthEventLogin value)? login,
+    TResult Function(AuthEventLocalLogin value)? localLogin,
+    TResult Function(AuthEventLogout value)? logout,
+    TResult Function(AuthEventFirebaseLogin value)? firebaseLogin,
+    TResult Function(AuthEventUpdateUserState value)? updateUserState,
     required TResult orElse(),
   }) {
     if (localLogin != null) {
@@ -372,25 +376,25 @@ class _$LocalLoginEventImpl implements LocalLoginEvent {
   }
 }
 
-abstract class LocalLoginEvent implements AuthEvent {
-  const factory LocalLoginEvent() = _$LocalLoginEventImpl;
+abstract class AuthEventLocalLogin implements AuthEvent {
+  const factory AuthEventLocalLogin() = _$AuthEventLocalLoginImpl;
 }
 
 /// @nodoc
-abstract class _$$LogoutEventImplCopyWith<$Res> {
-  factory _$$LogoutEventImplCopyWith(
-    _$LogoutEventImpl value,
-    $Res Function(_$LogoutEventImpl) then,
-  ) = __$$LogoutEventImplCopyWithImpl<$Res>;
+abstract class _$$AuthEventLogoutImplCopyWith<$Res> {
+  factory _$$AuthEventLogoutImplCopyWith(
+    _$AuthEventLogoutImpl value,
+    $Res Function(_$AuthEventLogoutImpl) then,
+  ) = __$$AuthEventLogoutImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$LogoutEventImplCopyWithImpl<$Res>
-    extends _$AuthEventCopyWithImpl<$Res, _$LogoutEventImpl>
-    implements _$$LogoutEventImplCopyWith<$Res> {
-  __$$LogoutEventImplCopyWithImpl(
-    _$LogoutEventImpl _value,
-    $Res Function(_$LogoutEventImpl) _then,
+class __$$AuthEventLogoutImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$AuthEventLogoutImpl>
+    implements _$$AuthEventLogoutImplCopyWith<$Res> {
+  __$$AuthEventLogoutImplCopyWithImpl(
+    _$AuthEventLogoutImpl _value,
+    $Res Function(_$AuthEventLogoutImpl) _then,
   ) : super(_value, _then);
 
   /// Create a copy of AuthEvent
@@ -399,8 +403,8 @@ class __$$LogoutEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LogoutEventImpl implements LogoutEvent {
-  const _$LogoutEventImpl();
+class _$AuthEventLogoutImpl implements AuthEventLogout {
+  const _$AuthEventLogoutImpl();
 
   @override
   String toString() {
@@ -410,7 +414,7 @@ class _$LogoutEventImpl implements LogoutEvent {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LogoutEventImpl);
+        (other.runtimeType == runtimeType && other is _$AuthEventLogoutImpl);
   }
 
   @override
@@ -459,11 +463,11 @@ class _$LogoutEventImpl implements LogoutEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(LoginEvent value) login,
-    required TResult Function(LocalLoginEvent value) localLogin,
-    required TResult Function(LogoutEvent value) logout,
-    required TResult Function(FirebaseLoginEvent value) firebaseLogin,
-    required TResult Function(UpdateUserStateEvent value) updateUserState,
+    required TResult Function(AuthEventLogin value) login,
+    required TResult Function(AuthEventLocalLogin value) localLogin,
+    required TResult Function(AuthEventLogout value) logout,
+    required TResult Function(AuthEventFirebaseLogin value) firebaseLogin,
+    required TResult Function(AuthEventUpdateUserState value) updateUserState,
   }) {
     return logout(this);
   }
@@ -471,11 +475,11 @@ class _$LogoutEventImpl implements LogoutEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoginEvent value)? login,
-    TResult? Function(LocalLoginEvent value)? localLogin,
-    TResult? Function(LogoutEvent value)? logout,
-    TResult? Function(FirebaseLoginEvent value)? firebaseLogin,
-    TResult? Function(UpdateUserStateEvent value)? updateUserState,
+    TResult? Function(AuthEventLogin value)? login,
+    TResult? Function(AuthEventLocalLogin value)? localLogin,
+    TResult? Function(AuthEventLogout value)? logout,
+    TResult? Function(AuthEventFirebaseLogin value)? firebaseLogin,
+    TResult? Function(AuthEventUpdateUserState value)? updateUserState,
   }) {
     return logout?.call(this);
   }
@@ -483,11 +487,11 @@ class _$LogoutEventImpl implements LogoutEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoginEvent value)? login,
-    TResult Function(LocalLoginEvent value)? localLogin,
-    TResult Function(LogoutEvent value)? logout,
-    TResult Function(FirebaseLoginEvent value)? firebaseLogin,
-    TResult Function(UpdateUserStateEvent value)? updateUserState,
+    TResult Function(AuthEventLogin value)? login,
+    TResult Function(AuthEventLocalLogin value)? localLogin,
+    TResult Function(AuthEventLogout value)? logout,
+    TResult Function(AuthEventFirebaseLogin value)? firebaseLogin,
+    TResult Function(AuthEventUpdateUserState value)? updateUserState,
     required TResult orElse(),
   }) {
     if (logout != null) {
@@ -497,25 +501,25 @@ class _$LogoutEventImpl implements LogoutEvent {
   }
 }
 
-abstract class LogoutEvent implements AuthEvent {
-  const factory LogoutEvent() = _$LogoutEventImpl;
+abstract class AuthEventLogout implements AuthEvent {
+  const factory AuthEventLogout() = _$AuthEventLogoutImpl;
 }
 
 /// @nodoc
-abstract class _$$FirebaseLoginEventImplCopyWith<$Res> {
-  factory _$$FirebaseLoginEventImplCopyWith(
-    _$FirebaseLoginEventImpl value,
-    $Res Function(_$FirebaseLoginEventImpl) then,
-  ) = __$$FirebaseLoginEventImplCopyWithImpl<$Res>;
+abstract class _$$AuthEventFirebaseLoginImplCopyWith<$Res> {
+  factory _$$AuthEventFirebaseLoginImplCopyWith(
+    _$AuthEventFirebaseLoginImpl value,
+    $Res Function(_$AuthEventFirebaseLoginImpl) then,
+  ) = __$$AuthEventFirebaseLoginImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$FirebaseLoginEventImplCopyWithImpl<$Res>
-    extends _$AuthEventCopyWithImpl<$Res, _$FirebaseLoginEventImpl>
-    implements _$$FirebaseLoginEventImplCopyWith<$Res> {
-  __$$FirebaseLoginEventImplCopyWithImpl(
-    _$FirebaseLoginEventImpl _value,
-    $Res Function(_$FirebaseLoginEventImpl) _then,
+class __$$AuthEventFirebaseLoginImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$AuthEventFirebaseLoginImpl>
+    implements _$$AuthEventFirebaseLoginImplCopyWith<$Res> {
+  __$$AuthEventFirebaseLoginImplCopyWithImpl(
+    _$AuthEventFirebaseLoginImpl _value,
+    $Res Function(_$AuthEventFirebaseLoginImpl) _then,
   ) : super(_value, _then);
 
   /// Create a copy of AuthEvent
@@ -524,8 +528,8 @@ class __$$FirebaseLoginEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$FirebaseLoginEventImpl implements FirebaseLoginEvent {
-  const _$FirebaseLoginEventImpl();
+class _$AuthEventFirebaseLoginImpl implements AuthEventFirebaseLogin {
+  const _$AuthEventFirebaseLoginImpl();
 
   @override
   String toString() {
@@ -535,7 +539,8 @@ class _$FirebaseLoginEventImpl implements FirebaseLoginEvent {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$FirebaseLoginEventImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$AuthEventFirebaseLoginImpl);
   }
 
   @override
@@ -584,11 +589,11 @@ class _$FirebaseLoginEventImpl implements FirebaseLoginEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(LoginEvent value) login,
-    required TResult Function(LocalLoginEvent value) localLogin,
-    required TResult Function(LogoutEvent value) logout,
-    required TResult Function(FirebaseLoginEvent value) firebaseLogin,
-    required TResult Function(UpdateUserStateEvent value) updateUserState,
+    required TResult Function(AuthEventLogin value) login,
+    required TResult Function(AuthEventLocalLogin value) localLogin,
+    required TResult Function(AuthEventLogout value) logout,
+    required TResult Function(AuthEventFirebaseLogin value) firebaseLogin,
+    required TResult Function(AuthEventUpdateUserState value) updateUserState,
   }) {
     return firebaseLogin(this);
   }
@@ -596,11 +601,11 @@ class _$FirebaseLoginEventImpl implements FirebaseLoginEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoginEvent value)? login,
-    TResult? Function(LocalLoginEvent value)? localLogin,
-    TResult? Function(LogoutEvent value)? logout,
-    TResult? Function(FirebaseLoginEvent value)? firebaseLogin,
-    TResult? Function(UpdateUserStateEvent value)? updateUserState,
+    TResult? Function(AuthEventLogin value)? login,
+    TResult? Function(AuthEventLocalLogin value)? localLogin,
+    TResult? Function(AuthEventLogout value)? logout,
+    TResult? Function(AuthEventFirebaseLogin value)? firebaseLogin,
+    TResult? Function(AuthEventUpdateUserState value)? updateUserState,
   }) {
     return firebaseLogin?.call(this);
   }
@@ -608,11 +613,11 @@ class _$FirebaseLoginEventImpl implements FirebaseLoginEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoginEvent value)? login,
-    TResult Function(LocalLoginEvent value)? localLogin,
-    TResult Function(LogoutEvent value)? logout,
-    TResult Function(FirebaseLoginEvent value)? firebaseLogin,
-    TResult Function(UpdateUserStateEvent value)? updateUserState,
+    TResult Function(AuthEventLogin value)? login,
+    TResult Function(AuthEventLocalLogin value)? localLogin,
+    TResult Function(AuthEventLogout value)? logout,
+    TResult Function(AuthEventFirebaseLogin value)? firebaseLogin,
+    TResult Function(AuthEventUpdateUserState value)? updateUserState,
     required TResult orElse(),
   }) {
     if (firebaseLogin != null) {
@@ -622,16 +627,16 @@ class _$FirebaseLoginEventImpl implements FirebaseLoginEvent {
   }
 }
 
-abstract class FirebaseLoginEvent implements AuthEvent {
-  const factory FirebaseLoginEvent() = _$FirebaseLoginEventImpl;
+abstract class AuthEventFirebaseLogin implements AuthEvent {
+  const factory AuthEventFirebaseLogin() = _$AuthEventFirebaseLoginImpl;
 }
 
 /// @nodoc
-abstract class _$$UpdateUserStateEventImplCopyWith<$Res> {
-  factory _$$UpdateUserStateEventImplCopyWith(
-    _$UpdateUserStateEventImpl value,
-    $Res Function(_$UpdateUserStateEventImpl) then,
-  ) = __$$UpdateUserStateEventImplCopyWithImpl<$Res>;
+abstract class _$$AuthEventUpdateUserStateImplCopyWith<$Res> {
+  factory _$$AuthEventUpdateUserStateImplCopyWith(
+    _$AuthEventUpdateUserStateImpl value,
+    $Res Function(_$AuthEventUpdateUserStateImpl) then,
+  ) = __$$AuthEventUpdateUserStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({UserData data});
 
@@ -639,12 +644,12 @@ abstract class _$$UpdateUserStateEventImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$UpdateUserStateEventImplCopyWithImpl<$Res>
-    extends _$AuthEventCopyWithImpl<$Res, _$UpdateUserStateEventImpl>
-    implements _$$UpdateUserStateEventImplCopyWith<$Res> {
-  __$$UpdateUserStateEventImplCopyWithImpl(
-    _$UpdateUserStateEventImpl _value,
-    $Res Function(_$UpdateUserStateEventImpl) _then,
+class __$$AuthEventUpdateUserStateImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$AuthEventUpdateUserStateImpl>
+    implements _$$AuthEventUpdateUserStateImplCopyWith<$Res> {
+  __$$AuthEventUpdateUserStateImplCopyWithImpl(
+    _$AuthEventUpdateUserStateImpl _value,
+    $Res Function(_$AuthEventUpdateUserStateImpl) _then,
   ) : super(_value, _then);
 
   /// Create a copy of AuthEvent
@@ -653,7 +658,7 @@ class __$$UpdateUserStateEventImplCopyWithImpl<$Res>
   @override
   $Res call({Object? data = null}) {
     return _then(
-      _$UpdateUserStateEventImpl(
+      _$AuthEventUpdateUserStateImpl(
         data:
             null == data
                 ? _value.data
@@ -676,8 +681,8 @@ class __$$UpdateUserStateEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UpdateUserStateEventImpl implements UpdateUserStateEvent {
-  const _$UpdateUserStateEventImpl({required this.data});
+class _$AuthEventUpdateUserStateImpl implements AuthEventUpdateUserState {
+  const _$AuthEventUpdateUserStateImpl({required this.data});
 
   @override
   final UserData data;
@@ -691,7 +696,7 @@ class _$UpdateUserStateEventImpl implements UpdateUserStateEvent {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UpdateUserStateEventImpl &&
+            other is _$AuthEventUpdateUserStateImpl &&
             (identical(other.data, data) || other.data == data));
   }
 
@@ -703,12 +708,10 @@ class _$UpdateUserStateEventImpl implements UpdateUserStateEvent {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$UpdateUserStateEventImplCopyWith<_$UpdateUserStateEventImpl>
-  get copyWith =>
-      __$$UpdateUserStateEventImplCopyWithImpl<_$UpdateUserStateEventImpl>(
-        this,
-        _$identity,
-      );
+  _$$AuthEventUpdateUserStateImplCopyWith<_$AuthEventUpdateUserStateImpl>
+  get copyWith => __$$AuthEventUpdateUserStateImplCopyWithImpl<
+    _$AuthEventUpdateUserStateImpl
+  >(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -753,11 +756,11 @@ class _$UpdateUserStateEventImpl implements UpdateUserStateEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(LoginEvent value) login,
-    required TResult Function(LocalLoginEvent value) localLogin,
-    required TResult Function(LogoutEvent value) logout,
-    required TResult Function(FirebaseLoginEvent value) firebaseLogin,
-    required TResult Function(UpdateUserStateEvent value) updateUserState,
+    required TResult Function(AuthEventLogin value) login,
+    required TResult Function(AuthEventLocalLogin value) localLogin,
+    required TResult Function(AuthEventLogout value) logout,
+    required TResult Function(AuthEventFirebaseLogin value) firebaseLogin,
+    required TResult Function(AuthEventUpdateUserState value) updateUserState,
   }) {
     return updateUserState(this);
   }
@@ -765,11 +768,11 @@ class _$UpdateUserStateEventImpl implements UpdateUserStateEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoginEvent value)? login,
-    TResult? Function(LocalLoginEvent value)? localLogin,
-    TResult? Function(LogoutEvent value)? logout,
-    TResult? Function(FirebaseLoginEvent value)? firebaseLogin,
-    TResult? Function(UpdateUserStateEvent value)? updateUserState,
+    TResult? Function(AuthEventLogin value)? login,
+    TResult? Function(AuthEventLocalLogin value)? localLogin,
+    TResult? Function(AuthEventLogout value)? logout,
+    TResult? Function(AuthEventFirebaseLogin value)? firebaseLogin,
+    TResult? Function(AuthEventUpdateUserState value)? updateUserState,
   }) {
     return updateUserState?.call(this);
   }
@@ -777,11 +780,11 @@ class _$UpdateUserStateEventImpl implements UpdateUserStateEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoginEvent value)? login,
-    TResult Function(LocalLoginEvent value)? localLogin,
-    TResult Function(LogoutEvent value)? logout,
-    TResult Function(FirebaseLoginEvent value)? firebaseLogin,
-    TResult Function(UpdateUserStateEvent value)? updateUserState,
+    TResult Function(AuthEventLogin value)? login,
+    TResult Function(AuthEventLocalLogin value)? localLogin,
+    TResult Function(AuthEventLogout value)? logout,
+    TResult Function(AuthEventFirebaseLogin value)? firebaseLogin,
+    TResult Function(AuthEventUpdateUserState value)? updateUserState,
     required TResult orElse(),
   }) {
     if (updateUserState != null) {
@@ -791,15 +794,15 @@ class _$UpdateUserStateEventImpl implements UpdateUserStateEvent {
   }
 }
 
-abstract class UpdateUserStateEvent implements AuthEvent {
-  const factory UpdateUserStateEvent({required final UserData data}) =
-      _$UpdateUserStateEventImpl;
+abstract class AuthEventUpdateUserState implements AuthEvent {
+  const factory AuthEventUpdateUserState({required final UserData data}) =
+      _$AuthEventUpdateUserStateImpl;
 
   UserData get data;
 
   /// Create a copy of AuthEvent
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$UpdateUserStateEventImplCopyWith<_$UpdateUserStateEventImpl>
+  _$$AuthEventUpdateUserStateImplCopyWith<_$AuthEventUpdateUserStateImpl>
   get copyWith => throw _privateConstructorUsedError;
 }

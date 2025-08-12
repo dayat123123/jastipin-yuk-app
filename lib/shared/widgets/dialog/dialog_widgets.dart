@@ -348,7 +348,6 @@ class _TopSnackbarWidgetState extends State<_TopSnackbarWidget>
   @override
   void initState() {
     super.initState();
-
     _controller = AnimationController(
       duration: const Duration(milliseconds: 250),
       reverseDuration: const Duration(milliseconds: 500),

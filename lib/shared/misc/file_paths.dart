@@ -7,7 +7,6 @@ class FilePaths {
   static const String googleImg = "$_imagesPath/google.png";
   static const String englishImg = "$_imagesPath/en.png";
   static const String indonesiaImg = "$_imagesPath/id.png";
-
   static const String otpPhoneSvg = "$_imagesPath/otp_phone.svg";
 
   /*Icons */

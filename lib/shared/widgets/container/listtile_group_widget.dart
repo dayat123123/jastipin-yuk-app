@@ -51,6 +51,10 @@ class ListTileGroupWidget extends StatelessWidget {
         data.title,
         style: data.titleTextStyle ?? context.textStyle.labelStyle,
       ),
+      subtitle:
+          data.subtitle != null
+              ? Text(data.subtitle!, style: context.textStyle.subhead)
+              : null,
       onTap: data.onTap,
     );
   }
@@ -58,6 +62,7 @@ class ListTileGroupWidget extends StatelessWidget {
 
 class ItemGroup {
   final String title;
+  final String? subtitle;
   final Widget? icon;
   final Widget? trailing;
   final bool withDefaultTrailingIcon;
@@ -66,6 +71,7 @@ class ItemGroup {
 
   ItemGroup({
     required this.title,
+    this.subtitle,
     this.icon,
     this.onTap,
     this.trailing,

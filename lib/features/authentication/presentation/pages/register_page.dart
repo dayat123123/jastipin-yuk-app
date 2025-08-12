@@ -12,6 +12,7 @@ import 'package:jastipin_yuk/shared/extensions/context_extension.dart';
 import 'package:jastipin_yuk/shared/misc/formatters.dart';
 import 'package:jastipin_yuk/shared/widgets/button/submit_button.dart';
 import 'package:jastipin_yuk/shared/widgets/loading/loading_indicator_widget.dart';
+import 'package:jastipin_yuk/shared/widgets/scaffold/native_scaffold.dart';
 import 'package:jastipin_yuk/shared/widgets/text_form_field/password_text_form_field.dart';
 import 'package:jastipin_yuk/shared/widgets/text_form_field/username_text_form_field.dart';
 
@@ -31,7 +32,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -131,7 +131,7 @@ class _RegisterPageState extends State<RegisterPage> {
         title: "Register Successful",
         subtitle: "Account registered successfully",
       );
-      context.pop();
+      if (context.canPop()) context.pop();
     }
   }
 
@@ -140,7 +140,6 @@ class _RegisterPageState extends State<RegisterPage> {
     _signupBloc.close();
     _userNameController.dispose();
     _passwordController.dispose();
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -162,150 +161,140 @@ class _RegisterPageState extends State<RegisterPage> {
             );
           }
 
-          return Scaffold(
-            appBar: AppBar(),
-            resizeToAvoidBottomInset: true,
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text("Create Your Account", style: context.textStyle.title),
-                const Divider(),
-                const SizedBox(height: 8.0),
-                Expanded(
-                  child: Scrollbar(
-                    controller: _scrollController,
-                    child: SingleChildScrollView(
-                      padding: AppStyles.paddingHorizontalMediumWithBottom,
-                      controller: _scrollController,
-                      child: Form(
-                        key: _formKey,
-                        autovalidateMode: AutovalidateMode.disabled,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+          return NativeScaffold(
+            padding: AppStyles.paddingHorizontalMediumWithBottom,
+            body: [
+              Text("Create Your Account", style: context.textStyle.title),
+              const Divider(),
+              const SizedBox(height: 8.0),
+              Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.disabled,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Username", style: labelTextStyle),
+                    const SizedBox(height: 16.0),
+                    UsernameTextFormField(controller: _userNameController),
+                    const SizedBox(height: 16.0),
+                    Text("Password", style: labelTextStyle),
+                    const SizedBox(height: 16.0),
+                    PasswordTextFormField(controller: _passwordController),
+                    const SizedBox(height: 16.0),
+                    Text("Birthdate", style: labelTextStyle),
+                    const SizedBox(height: 16.0),
+                    GestureDetector(
+                      onTap: _onTapBirthdate,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: AppStyles.borderRadiusMediumG,
+                          border: Border.all(
+                            width: AppStyles.borderWidth,
+                            color:
+                                _selectedDate == null
+                                    ? context.themeColors.separator
+                                    : context.themeColors.primary,
+                          ),
+                        ),
+                        padding: AppStyles.paddingAllSmall,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text("Username", style: labelTextStyle),
-                            const SizedBox(height: 16.0),
-                            UsernameTextFormField(
-                              controller: _userNameController,
+                            Icon(
+                              Icons.calendar_today,
+                              size: 20,
+                              color:
+                                  _selectedDate == null
+                                      ? context.themeColors.disabled
+                                      : context.themeColors.primary,
                             ),
-                            const SizedBox(height: 16.0),
-                            Text("Password", style: labelTextStyle),
-                            const SizedBox(height: 16.0),
-                            PasswordTextFormField(
-                              controller: _passwordController,
-                            ),
-                            const SizedBox(height: 16.0),
-                            Text("Gender", style: labelTextStyle),
-                            const SizedBox(height: 8.0),
-                            for (int i = 0; i < Gender.values.length; i++)
-                              RadioListTile<Gender>(
-                                title: Text(Gender.values[i].label),
-                                value: Gender.values[i],
-                                groupValue: _selectedGender,
-                                onChanged: _onTapGender,
+                            SizedBox(height: 24, child: VerticalDivider()),
+                            Text(
+                              _selectedDate == null
+                                  ? "Tap to select your birthdate"
+                                  : Formatters.formatDateTime(_selectedDate),
+                              style: context.textStyle.body.copyWith(
+                                color:
+                                    _selectedDate == null
+                                        ? context.themeColors.hintText
+                                        : null,
                               ),
-                            const SizedBox(height: 16.0),
-                            Text("Birthdate", style: labelTextStyle),
-                            const SizedBox(height: 16.0),
-                            GestureDetector(
-                              onTap: _onTapBirthdate,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: AppStyles.borderRadiusMediumG,
-                                  border: Border.all(
-                                    width: AppStyles.borderWidth,
-                                    color:
-                                        _selectedDate == null
-                                            ? context.themeColors.separator
-                                            : context.themeColors.primary,
-                                  ),
-                                ),
-                                padding: AppStyles.paddingAllSmall,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.calendar_today,
-                                      size: 20,
-                                      color:
-                                          _selectedDate == null
-                                              ? context.themeColors.disabled
-                                              : context.themeColors.primary,
-                                    ),
-                                    SizedBox(
-                                      height: 24,
-                                      child: VerticalDivider(),
-                                    ),
-                                    Text(
-                                      _selectedDate == null
-                                          ? "Tap to select your birthdate"
-                                          : Formatters.formatDateTime(
-                                            _selectedDate,
-                                          ),
-                                      style: context.textStyle.body.copyWith(
-                                        color:
-                                            _selectedDate == null
-                                                ? context.themeColors.hintText
-                                                : null,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 16.0),
-                            Text("Role", style: labelTextStyle),
-                            const SizedBox(height: 8.0),
-                            for (int i = 0; i < Role.values.length; i++) ...[
-                              if (Role.values[i] != Role.admin)
-                                RadioListTile<Role>(
-                                  title: Text(Role.values[i].label),
-                                  value: Role.values[i],
-                                  groupValue: _selectedRole,
-                                  onChanged: _onTapRole,
-                                ),
-                            ],
-                            const SizedBox(height: 8.0),
-                            CheckboxListTile(
-                              contentPadding: EdgeInsets.zero,
-                              value: _isAcceptTNC,
-                              title: RichText(
-                                text: TextSpan(
-                                  style: context.textStyle.subhead,
-                                  children: [
-                                    TextSpan(
-                                      text: 'By signing up, I agree to the ',
-                                    ),
-                                    TextSpan(
-                                      text: 'Terms and Conditions.',
-                                      style: TextStyle(
-                                        color: context.themeColors.info,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      recognizer:
-                                          TapGestureRecognizer()
-                                            ..onTap = _onTapTermAndCondition,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              onChanged: _onTapCheckboxTNC,
-                            ),
-                            SizedBox(height: 8.0),
-                            SubmitButton(
-                              label: 'Sign Up',
-                              onPressed: _onTapSignUp,
                             ),
                           ],
                         ),
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 16.0),
+                    Text("Gender", style: labelTextStyle),
+                    const SizedBox(height: 8.0),
+                    DropdownButton<Gender>(
+                      borderRadius: AppStyles.buttonRadius,
+                      style: context.textStyle.labelStyle,
+                      alignment: Alignment.center,
+                      value: _selectedGender,
+                      dropdownColor: context.themeColors.dialogColor,
+                      elevation: 0,
+                      items:
+                          Gender.values.map((gender) {
+                            return DropdownMenuItem<Gender>(
+                              value: gender,
+                              child: Text(gender.label),
+                            );
+                          }).toList(),
+                      onChanged: _onTapGender,
+                      disabledHint: Text(_selectedGender.label),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Text("Role", style: labelTextStyle),
+                    const SizedBox(height: 8.0),
+                    DropdownButton<Role>(
+                      borderRadius: AppStyles.buttonRadius,
+                      style: context.textStyle.labelStyle,
+                      alignment: Alignment.center,
+                      value: _selectedRole,
+                      dropdownColor: context.themeColors.dialogColor,
+                      elevation: 0,
+                      items:
+                          Role.values.map((role) {
+                            return DropdownMenuItem<Role>(
+                              value: role,
+                              child: Text(role.label),
+                            );
+                          }).toList(),
+                      onChanged: _onTapRole,
+                      disabledHint: Text(_selectedRole.label),
+                    ),
+                    const SizedBox(height: 8.0),
+                    CheckboxListTile(
+                      contentPadding: EdgeInsets.zero,
+                      value: _isAcceptTNC,
+                      title: RichText(
+                        text: TextSpan(
+                          style: context.textStyle.subhead,
+                          children: [
+                            TextSpan(text: 'By signing up, I agree to the '),
+                            TextSpan(
+                              text: 'Terms and Conditions.',
+                              style: TextStyle(
+                                color: context.themeColors.info,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              recognizer:
+                                  TapGestureRecognizer()
+                                    ..onTap = _onTapTermAndCondition,
+                            ),
+                          ],
+                        ),
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      onChanged: _onTapCheckboxTNC,
+                    ),
+                    SizedBox(height: 8.0),
+                    SubmitButton(label: 'Sign Up', onPressed: _onTapSignUp),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         },
       ),

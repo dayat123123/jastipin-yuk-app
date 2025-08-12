@@ -14,8 +14,8 @@ abstract class AppColors {
   static const Color systemGroupedBackgroundDark = Color(0xFF1C1C1E);
 
   // Secondary background for containers, usually lighter or darker than main container background
-  static const Color secondarySystemGroupedBackgroundLight = Color(0xFFFFFFFF);
-  static const Color secondarySystemGroupedBackgroundDark = Color(0xFF1B1B1B);
+  static const Color secondarySystemGroupedBackgroundLight = Color(0xFFF2F2F7);
+  static const Color secondarySystemGroupedBackgroundDark = Color(0xFF2E2E2E);
 
   // Placeholder or hint text color with some transparency
   static const Color placeholderTextLight = Color(0x993C3C43);
