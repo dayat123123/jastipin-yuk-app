@@ -58,9 +58,8 @@ abstract class AppStyles {
 
   // Input field radius for TextFields or form inputs
   static const BorderRadius inputFieldRadius = BorderRadius.all(
-    Radius.circular(10),
+    Radius.circular(8.0),
   );
 
   static const double textinputBorderWidth = 1;
-  static const double borderWidth = 0.5;
 }

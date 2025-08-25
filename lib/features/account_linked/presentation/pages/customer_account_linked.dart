@@ -11,19 +11,11 @@ import 'package:jastipin_yuk/shared/widgets/container/listtile_group_widget.dart
 class CustomerAccountLinked extends StatelessWidget {
   const CustomerAccountLinked({super.key});
 
-  void _onTapVerifiedEmail(BuildContext context, String? email) {
-    context.push(RoutePath.otpEmailRequestOtp, extra: email);
-  }
-
-  void _onTapVerifiedPhoneNumber(BuildContext context, String? phoneNumber) {
-    context.push(RoutePath.otpPhoneNumberRequestOtp, extra: phoneNumber);
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocSelector<AuthBloc, AuthState, UserData?>(
       selector: (authState) {
-        if (authState is Authenticated) {
+        if (authState is AuthAuthenticated) {
           return authState.userData;
         }
         return null;
@@ -35,7 +27,7 @@ class CustomerAccountLinked extends StatelessWidget {
         final email = userData?.email;
 
         return Scaffold(
-          appBar: AppBar(title: Text("Verify Account")),
+          appBar: AppBar(title: Text("Account Linked")),
           body: Padding(
             padding: AppStyles.paddingHorizontalMedium,
 
@@ -99,5 +91,13 @@ class CustomerAccountLinked extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _onTapVerifiedEmail(BuildContext context, String? email) {
+    context.push(RoutePath.otpEmailRequestOtp, extra: email);
+  }
+
+  void _onTapVerifiedPhoneNumber(BuildContext context, String? phoneNumber) {
+    context.push(RoutePath.otpPhoneNumberRequestOtp, extra: phoneNumber);
   }
 }

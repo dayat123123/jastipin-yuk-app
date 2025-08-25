@@ -10,6 +10,8 @@ class UserProfile with _$UserProfile {
   const factory UserProfile({
     required String userID,
     required String username,
+    String? bio,
+    String? displayName,
     String? email,
     String? phoneNumber,
     DateTime? birthdate,

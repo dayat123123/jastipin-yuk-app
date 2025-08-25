@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jastipin_yuk/shared/extensions/context_extension.dart';
 import 'package:jastipin_yuk/shared/widgets/loading/loading_indicator_widget.dart';
 
 class SubmitButton extends StatelessWidget {
@@ -30,7 +31,7 @@ class SubmitButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: canPress ? onPressed : null,
         style: ElevatedButton.styleFrom(
-          backgroundColor: bgColor,
+          backgroundColor: bgColor ?? context.themeColors.primary,
           foregroundColor: iconColor,
         ),
         child:

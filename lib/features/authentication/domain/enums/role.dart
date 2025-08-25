@@ -1,12 +1,12 @@
-enum Role { customer, jastiper, admin, guest }
+enum Role { customer, seller, admin, guest }
 
 extension RoleX on Role {
   String get label {
     switch (this) {
       case Role.customer:
         return 'Customer';
-      case Role.jastiper:
-        return 'Jastiper';
+      case Role.seller:
+        return 'Seller';
       case Role.admin:
         return 'Admin';
       case Role.guest:
@@ -18,8 +18,8 @@ extension RoleX on Role {
     switch (this) {
       case Role.customer:
         return 'customer';
-      case Role.jastiper:
-        return 'jastiper';
+      case Role.seller:
+        return 'seller';
       case Role.admin:
         return 'admin';
       case Role.guest:
@@ -31,8 +31,8 @@ extension RoleX on Role {
     switch (value.toUpperCase()) {
       case 'CUSTOMER':
         return Role.customer;
-      case 'JASTIPER':
-        return Role.jastiper;
+      case 'SELLER':
+        return Role.seller;
       case 'ADMIN':
         return Role.admin;
       case 'GUEST':
@@ -42,7 +42,7 @@ extension RoleX on Role {
     }
   }
 
-  bool get isJastiper => this == Role.jastiper;
+  bool get isSeler => this == Role.seller;
   bool get isCustomer => this == Role.customer;
   bool get isGuest => this == Role.guest;
 }

@@ -34,11 +34,11 @@ class PhoneNumberOtpBloc
   ) async {
     emit(PhoneNumberOtpState.loading());
 
-    if (_authBloc.state is Authenticated) {
-      final currentState = _authBloc.state as Authenticated;
+    final userData = _authBloc.userData;
+    if (userData != null) {
       final result = await _requestOTPUsecase.call(
         RequestOtpPhoneNumberParam(
-          userId: currentState.userData.userID,
+          userId: userData.userID,
           phoneNumber: event.phoneNumber,
         ),
       );

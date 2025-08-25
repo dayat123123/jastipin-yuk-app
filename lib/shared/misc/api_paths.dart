@@ -1,6 +1,6 @@
 class ApiPaths {
   const ApiPaths._();
-  // static const String baseUrl = "http://172.20.10.4:8088/api";
+  // static const String baseUrl = "http://127.0.0.1:8088/api";
   static const String baseUrl = "http://127.0.0.1:8088/api";
 
   /*Auth */

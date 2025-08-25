@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:jastipin_yuk/shared/extensions/context_extension.dart';
 import 'package:jastipin_yuk/shared/widgets/loading/loading_indicator_widget.dart';
-import 'package:jastipin_yuk/shared/widgets/pin/on_screen_number_keyboard_widget.dart';
+import 'package:jastipin_yuk/shared/widgets/otp/on_screen_number_keyboard_widget.dart';
 
 class OtpInputBoxesWidget extends StatefulWidget {
   final int length;

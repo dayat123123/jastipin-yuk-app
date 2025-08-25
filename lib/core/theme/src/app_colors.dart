@@ -6,7 +6,7 @@ abstract class AppColors {
   static const Color primaryDark = Color(0xFF1DB954);
 
   // Main background color for screens
-  static const Color systemBackgroundLight = Color(0xFFF2F2F7);
+  static const Color systemBackgroundLight = Color(0xFFFCFCFC);
   static const Color systemBackgroundDark = Color(0xFF000000);
 
   // Background color for cards or containers

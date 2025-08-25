@@ -1,8 +1,10 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:jastipin_yuk/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:jastipin_yuk/shared/extensions/context_extension.dart';
 import 'package:jastipin_yuk/shared/widgets/scaffold/native_scaffold.dart';
-import 'package:jastipin_yuk/shared/widgets/text_form_field/search_text_form_field.dart';
+import 'package:jastipin_yuk/shared/widgets/form_picker/search_text_form_field.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -12,6 +14,21 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  // late final ChatBloc _chatBloc;
+  final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    // _chatBloc = context.read<ChatBloc>();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final chats = [
@@ -49,7 +66,10 @@ class _ChatPageState extends State<ChatPage> {
       ),
       padding: AppStyles.paddingHorizontalMediumWithBottom,
       body: [
-        SearchTextFormField(controller: TextEditingController()),
+        SearchTextFormField(
+          controller: _searchController,
+          hinttext: "Search chat",
+        ),
         const SizedBox(height: 16),
         ListView.separated(
           padding: EdgeInsets.zero,

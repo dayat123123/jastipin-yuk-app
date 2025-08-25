@@ -4,8 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:jastipin_yuk/features/otp/presentation/bloc/phone_number_otp_bloc/phone_number_otp_bloc.dart';
 import 'package:jastipin_yuk/features/otp/presentation/params/phone_number_validate_page_param.dart';
 import 'package:jastipin_yuk/shared/extensions/context_extension.dart';
+import 'package:jastipin_yuk/shared/misc/formatters.dart';
 import 'package:jastipin_yuk/shared/misc/global_variables.dart';
-import 'package:jastipin_yuk/shared/widgets/pin/otp_input_boxes_widget.dart';
+import 'package:jastipin_yuk/shared/widgets/otp/otp_input_boxes_widget.dart';
 
 class PhoneNumberValidateOtpPage extends StatefulWidget {
   final PhoneNumberValidatePageParam param;
@@ -82,7 +83,12 @@ class _PhoneNumberValidateOtpPageState
                       ],
                     ),
                   ),
-                  SizedBox(height: 32),
+                  const SizedBox(height: 16),
+                  Text(
+                    "OTP will expire at ${Formatters.formatDateTime(widget.param.data.expireAt, mode: PickerMode.time)}",
+                  ),
+
+                  const SizedBox(height: 32),
                   Spacer(),
                   OtpInputBoxesWidget(
                     length: GlobalVariables.maxOTPLength,

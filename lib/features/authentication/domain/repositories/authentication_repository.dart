@@ -1,11 +1,12 @@
 import 'package:jastipin_yuk/core/utils/result/result.dart';
+import 'package:jastipin_yuk/features/authentication/domain/entities/access_token_data.dart';
 import 'package:jastipin_yuk/features/authentication/domain/entities/google_account_data.dart';
 import 'package:jastipin_yuk/features/authentication/domain/entities/user_data.dart';
 import 'package:jastipin_yuk/features/authentication/domain/enums/gender.dart';
 import 'package:jastipin_yuk/features/authentication/domain/enums/role.dart';
 
 abstract class AuthenticationRepository {
-  Future<Result<UserData>> localLogin();
+  Future<Result<UserData>> localLogin(AccessTokenData tokens);
   Future<Result<UserData>> basicLogin({
     required String userName,
     required String password,
@@ -23,4 +24,6 @@ abstract class AuthenticationRepository {
   });
 
   Future<Result<GoogleAccountData>> getFirebaseUserData();
+
+  Future<Result<AccessTokenData>> getLocalAuthToken();
 }

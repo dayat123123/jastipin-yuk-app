@@ -10,11 +10,11 @@ abstract class RoutePath {
   static const String login = "/login";
   static const String forgetPassword = "/forget-password";
 
-  /* Jastiper*/
-  static const String jastiperActivity = "/jastiper/activity";
-  static const String jastiperStore = "/jastiper/store";
-  static const String jastiperChat = "/jastiper/chat";
-  static const String jastiperSettings = "/jastiper/settings";
+  /* Seller*/
+  static const String sellerActivity = "/seller/activity";
+  static const String sellerStore = "/seller/store";
+  static const String sellerChat = "/seller/chat";
+  static const String sellerSettings = "/seller/settings";
 
   /* Customer*/
   static const String customerHome = "/customer/home";
@@ -36,7 +36,7 @@ abstract class RoutePath {
     return switch (role) {
       Role.guest => customerHome,
       Role.customer => customerHome,
-      Role.jastiper => jastiperStore,
+      Role.seller => sellerStore,
       Role.admin => throw UnimplementedError(),
     };
   }
@@ -45,7 +45,7 @@ abstract class RoutePath {
     return switch (role) {
       Role.guest => customerSettings,
       Role.customer => customerSettings,
-      Role.jastiper => jastiperSettings,
+      Role.seller => sellerSettings,
       Role.admin => throw UnimplementedError(),
     };
   }

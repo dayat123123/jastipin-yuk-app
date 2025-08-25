@@ -5,8 +5,10 @@ part 'user_profile_event.freezed.dart';
 
 @freezed
 class UserProfileEvent with _$UserProfileEvent {
-  const factory UserProfileEvent.loadUserProfile() =
-      UserProfileEventLoadUserProfile;
+  const factory UserProfileEvent.loadUserProfile({
+    @Default(false) bool isRefresh,
+  }) = UserProfileEventLoadUserProfile;
+
   const factory UserProfileEvent.updateUserProfile({
     required UpdateUserProfileParam param,
   }) = UserProfileEventUpdateUserProfile;

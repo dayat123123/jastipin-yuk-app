@@ -11,6 +11,8 @@ _$UserProfileModelImpl _$$UserProfileModelImplFromJson(
 ) => _$UserProfileModelImpl(
   userId: json['userID'] as String,
   username: json['username'] as String,
+  bio: json['bio'] as String?,
+  displayName: json['displayName'] as String?,
   email: json['email'] as String?,
   phoneNumber: json['phoneNumber'] as String?,
   role: json['role'] as String,
@@ -28,6 +30,8 @@ Map<String, dynamic> _$$UserProfileModelImplToJson(
 ) => <String, dynamic>{
   'userID': instance.userId,
   'username': instance.username,
+  'bio': instance.bio,
+  'displayName': instance.displayName,
   'email': instance.email,
   'phoneNumber': instance.phoneNumber,
   'role': instance.role,

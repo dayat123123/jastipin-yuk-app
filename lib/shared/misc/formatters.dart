@@ -29,13 +29,4 @@ class Formatters {
 
     return DateFormat(pattern, getCurrentLocale).format(time);
   }
-
-  static String formatDateFromString(String dateString) {
-    try {
-      final date = DateTime.parse(dateString);
-      return DateFormat('dd MMMM yyyy', getCurrentLocale).format(date);
-    } catch (e) {
-      return '';
-    }
-  }
 }

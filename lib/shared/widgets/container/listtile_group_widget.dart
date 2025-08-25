@@ -39,7 +39,7 @@ class ListTileGroupWidget extends StatelessWidget {
   Widget _itemWidget(ItemGroup data, BuildContext context) {
     return ListTile(
       dense: true,
-      visualDensity: VisualDensity.adaptivePlatformDensity,
+      visualDensity: VisualDensity.comfortable,
       contentPadding: AppStyles.paddingHorizontalMedium,
       trailing:
           data.trailing ??
@@ -49,11 +49,21 @@ class ListTileGroupWidget extends StatelessWidget {
       leading: data.icon,
       title: Text(
         data.title,
-        style: data.titleTextStyle ?? context.textStyle.labelStyle,
+        style:
+            data.titleTextStyle ??
+            TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
       ),
       subtitle:
           data.subtitle != null
-              ? Text(data.subtitle!, style: context.textStyle.subhead)
+              ? Text(
+                data.subtitle!,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+
+                  color: context.themeColors.hintText,
+                ),
+              )
               : null,
       onTap: data.onTap,
     );

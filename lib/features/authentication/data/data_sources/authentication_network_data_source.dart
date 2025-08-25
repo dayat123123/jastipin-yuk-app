@@ -1,10 +1,10 @@
 import 'package:intl/intl.dart';
 import 'package:jastipin_yuk/core/network/firebase/firebase_service.dart';
-import 'package:jastipin_yuk/core/network/restful/dio_client.dart';
+import 'package:jastipin_yuk/core/network/restful_api/dio_client.dart';
 import 'package:jastipin_yuk/core/utils/result/result.dart';
 import 'package:jastipin_yuk/features/authentication/data/models/access_token_model.dart';
+import 'package:jastipin_yuk/features/authentication/data/models/google_account_model.dart';
 import 'package:jastipin_yuk/features/authentication/data/models/login_response_model.dart';
-import 'package:jastipin_yuk/features/authentication/domain/entities/google_account_data.dart';
 import 'package:jastipin_yuk/features/authentication/domain/enums/gender.dart';
 import 'package:jastipin_yuk/features/authentication/domain/enums/role.dart';
 import 'package:jastipin_yuk/shared/misc/api_paths.dart';
@@ -27,7 +27,7 @@ abstract class AuthenticationNetworkDataSource {
     required DateTime birthdate,
   });
 
-  Future<Result<GoogleAccountData>> getFirebaseUserData();
+  Future<Result<GoogleAccountModel>> getFirebaseUserData();
 }
 
 class AuthenticationNetworkDataSourceImpl
@@ -156,7 +156,7 @@ class AuthenticationNetworkDataSourceImpl
   }
 
   @override
-  Future<Result<GoogleAccountData>> getFirebaseUserData() async {
+  Future<Result<GoogleAccountModel>> getFirebaseUserData() async {
     try {
       final result = await _firebaseService.signIn();
       return result.when(
@@ -175,7 +175,7 @@ class AuthenticationNetworkDataSourceImpl
             return Result.failed("Invalid crendetials from google account");
           }
           return Result.success(
-            GoogleAccountData(
+            GoogleAccountModel(
               email: email,
               emailVerified: user.emailVerified,
               photoURL: user.photoURL,

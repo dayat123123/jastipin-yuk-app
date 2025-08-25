@@ -83,7 +83,7 @@ class CardContainerWidget extends StatelessWidget {
       border:
           border ??
           Border.all(
-            width: AppStyles.borderWidth,
+            width: AppStyles.textinputBorderWidth,
             color: context.themeColors.separator,
           ),
       borderRadius: BorderRadius.circular(borderRadius),

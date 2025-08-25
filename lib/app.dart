@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jastipin_yuk/core/localization/l10n/intl_l10n.dart';
 import 'package:jastipin_yuk/core/localization/language.dart';
 import 'package:jastipin_yuk/core/localization/locale_cubit.dart';
-import 'package:jastipin_yuk/core/router/goroute_navigator.dart';
 import 'package:jastipin_yuk/core/theme/src/app_theme_mode_model.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/bloc/auth/auth_bloc.dart';
+import 'package:jastipin_yuk/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:jastipin_yuk/main.dart';
 import 'package:jastipin_yuk/shared/extensions/context_extension.dart';
 
@@ -21,6 +22,7 @@ class App extends StatelessWidget {
         BlocProvider.value(value: injector.get<ThemeCubit>()),
         BlocProvider.value(value: injector.get<LocaleCubit>()),
         BlocProvider.value(value: injector.get<AuthBloc>()),
+        BlocProvider.value(value: injector.get<ChatBloc>()),
       ],
       child: BlocBuilder<ThemeCubit, AppThemeMode>(
         builder: (context, themeMode) {
@@ -28,7 +30,7 @@ class App extends StatelessWidget {
               themeMode.brightness == Brightness.dark
                   ? SystemUiOverlayStyle.light
                   : SystemUiOverlayStyle.dark;
-
+          final router = injector.get<GoRouter>();
           return BlocBuilder<LocaleCubit, Language>(
             builder: (context, locale) {
               return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -38,7 +40,7 @@ class App extends StatelessWidget {
                   themeMode: themeMode.mode,
                   theme: AppTheme.lightTheme,
                   darkTheme: AppTheme.darkTheme,
-                  routerConfig: GoRouteNavigator.router,
+                  routerConfig: router,
                   highContrastTheme: AppTheme.lightTheme,
                   highContrastDarkTheme: AppTheme.darkTheme,
                   locale: locale.locale,

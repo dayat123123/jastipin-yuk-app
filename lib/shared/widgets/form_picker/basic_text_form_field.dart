@@ -52,6 +52,8 @@ class BasicTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      ignorePointers: !enabled,
+      readOnly: !enabled,
       enabled: enabled,
       controller: controller,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -62,7 +64,6 @@ class BasicTextFormField extends StatelessWidget {
         labelText: labelText,
         hintText: hintText,
         counterText: '',
-        isDense: true,
       ),
       validator: validator ?? _checker,
     );

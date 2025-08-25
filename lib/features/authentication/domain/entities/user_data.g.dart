@@ -40,7 +40,7 @@ const _$GenderEnumMap = {Gender.male: 'male', Gender.female: 'female'};
 
 const _$RoleEnumMap = {
   Role.customer: 'customer',
-  Role.jastiper: 'jastiper',
+  Role.seller: 'seller',
   Role.admin: 'admin',
   Role.guest: 'guest',
 };

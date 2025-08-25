@@ -60,6 +60,7 @@ extension ContextExtension on BuildContext {
       final result = await showModalBottomSheet<DateTime>(
         context: this,
         showDragHandle: true,
+        backgroundColor: themeColors.dialogColor,
         builder: (_) {
           return SizedBox(
             height: 350,

@@ -1,8 +1,7 @@
-import 'package:jastipin_yuk/core/network/restful/dio_client.dart';
+import 'package:jastipin_yuk/core/network/restful_api/dio_client.dart';
 import 'package:jastipin_yuk/core/utils/result/result.dart';
 import 'package:jastipin_yuk/features/authentication/data/models/update_user_response_model.dart';
 import 'package:jastipin_yuk/features/authentication/data/models/user_data_model.dart';
-import 'package:jastipin_yuk/features/authentication/domain/entities/user_data.dart';
 import 'package:jastipin_yuk/features/otp/data/models/otp_email_request_model.dart';
 import 'package:jastipin_yuk/features/otp/data/models/otp_phone_number_request_model.dart';
 import 'package:jastipin_yuk/shared/misc/api_paths.dart';
@@ -12,7 +11,7 @@ abstract class OtpNetworkDataSource {
     required String userId,
     required String phoneNumber,
   });
-  Future<Result<UserData>> validateOTPPhoneNumber({
+  Future<Result<UserDataModel>> validateOTPPhoneNumber({
     required String userId,
     required String phoneNumber,
     required String otpCode,
@@ -22,7 +21,7 @@ abstract class OtpNetworkDataSource {
     required String userId,
     required String email,
   });
-  Future<Result<UserData>> validateOTPEmail({
+  Future<Result<UserDataModel>> validateOTPEmail({
     required String userId,
     required String email,
     required String otpCode,
@@ -58,7 +57,7 @@ class OtpNetworkDataSourceImpl implements OtpNetworkDataSource {
   }
 
   @override
-  Future<Result<UserData>> validateOTPPhoneNumber({
+  Future<Result<UserDataModel>> validateOTPPhoneNumber({
     required String userId,
     required String phoneNumber,
     required String otpCode,
@@ -75,7 +74,7 @@ class OtpNetworkDataSourceImpl implements OtpNetworkDataSource {
       return result.when(
         success: (value) async {
           final data = UpdateUserResponseModel.fromJson(value);
-          return Result.success(data.user.toEntity());
+          return Result.success(data.user);
         },
         failed: (message) {
           return Result.failed(message);
@@ -111,7 +110,7 @@ class OtpNetworkDataSourceImpl implements OtpNetworkDataSource {
   }
 
   @override
-  Future<Result<UserData>> validateOTPEmail({
+  Future<Result<UserDataModel>> validateOTPEmail({
     required String userId,
     required String email,
     required String otpCode,
@@ -124,7 +123,7 @@ class OtpNetworkDataSourceImpl implements OtpNetworkDataSource {
       return result.when(
         success: (value) async {
           final data = UpdateUserResponseModel.fromJson(value);
-          return Result.success(data.user.toEntity());
+          return Result.success(data.user);
         },
         failed: (message) {
           return Result.failed(message);

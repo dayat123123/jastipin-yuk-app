@@ -12,10 +12,6 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  void _onTapGetStarted() {
-    context.push(RoutePath.login);
-  }
-
   @override
   Widget build(BuildContext context) {
     final locale = context.language;
@@ -32,5 +28,9 @@ class _LandingPageState extends State<LandingPage> {
         ),
       ),
     );
+  }
+
+  void _onTapGetStarted() {
+    context.push(RoutePath.login);
   }
 }

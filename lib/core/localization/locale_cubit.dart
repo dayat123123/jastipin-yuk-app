@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:jastipin_yuk/core/local_storage/local_storage.dart';
 import 'package:jastipin_yuk/core/localization/language.dart';
 import 'package:jastipin_yuk/shared/misc/local_storage_keys.dart';
@@ -18,7 +19,7 @@ class LocaleCubit extends Cubit<Language> {
       final storedData = await _localStorage.read(_key);
       if (storedData != null && storedData is String) {
         final storedMode = LanguageX.fromCode(storedData);
-        emit(storedMode);
+        setLocale(storedMode);
       }
     } catch (e) {
       emit(Language.indonesia);
@@ -27,6 +28,7 @@ class LocaleCubit extends Cubit<Language> {
 
   void setLocale(Language language) async {
     emit(language);
+    Intl.defaultLocale = language.locale.toString();
     try {
       await _localStorage.write(_key, language.locale.languageCode);
     } catch (_) {}

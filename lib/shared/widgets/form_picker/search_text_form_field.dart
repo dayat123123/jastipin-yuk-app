@@ -26,7 +26,6 @@ class SearchTextFormField extends StatelessWidget {
         hintText: hinttext ?? 'Search',
         prefixIcon: const Icon(FluentIcons.search_12_filled),
         counterText: '',
-        isDense: true,
       ),
       validator: validator,
     );

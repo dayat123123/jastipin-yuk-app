@@ -23,6 +23,8 @@ UserProfile _$UserProfileFromJson(Map<String, dynamic> json) {
 mixin _$UserProfile {
   String get userID => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
+  String? get bio => throw _privateConstructorUsedError;
+  String? get displayName => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get phoneNumber => throw _privateConstructorUsedError;
   DateTime? get birthdate => throw _privateConstructorUsedError;
@@ -54,6 +56,8 @@ abstract class $UserProfileCopyWith<$Res> {
   $Res call({
     String userID,
     String username,
+    String? bio,
+    String? displayName,
     String? email,
     String? phoneNumber,
     DateTime? birthdate,
@@ -84,6 +88,8 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
   $Res call({
     Object? userID = null,
     Object? username = null,
+    Object? bio = freezed,
+    Object? displayName = freezed,
     Object? email = freezed,
     Object? phoneNumber = freezed,
     Object? birthdate = freezed,
@@ -107,6 +113,16 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
                     ? _value.username
                     : username // ignore: cast_nullable_to_non_nullable
                         as String,
+            bio:
+                freezed == bio
+                    ? _value.bio
+                    : bio // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            displayName:
+                freezed == displayName
+                    ? _value.displayName
+                    : displayName // ignore: cast_nullable_to_non_nullable
+                        as String?,
             email:
                 freezed == email
                     ? _value.email
@@ -175,6 +191,8 @@ abstract class _$$UserProfileImplCopyWith<$Res>
   $Res call({
     String userID,
     String username,
+    String? bio,
+    String? displayName,
     String? email,
     String? phoneNumber,
     DateTime? birthdate,
@@ -204,6 +222,8 @@ class __$$UserProfileImplCopyWithImpl<$Res>
   $Res call({
     Object? userID = null,
     Object? username = null,
+    Object? bio = freezed,
+    Object? displayName = freezed,
     Object? email = freezed,
     Object? phoneNumber = freezed,
     Object? birthdate = freezed,
@@ -227,6 +247,16 @@ class __$$UserProfileImplCopyWithImpl<$Res>
                 ? _value.username
                 : username // ignore: cast_nullable_to_non_nullable
                     as String,
+        bio:
+            freezed == bio
+                ? _value.bio
+                : bio // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        displayName:
+            freezed == displayName
+                ? _value.displayName
+                : displayName // ignore: cast_nullable_to_non_nullable
+                    as String?,
         email:
             freezed == email
                 ? _value.email
@@ -288,6 +318,8 @@ class _$UserProfileImpl implements _UserProfile {
   const _$UserProfileImpl({
     required this.userID,
     required this.username,
+    this.bio,
+    this.displayName,
     this.email,
     this.phoneNumber,
     this.birthdate,
@@ -307,6 +339,10 @@ class _$UserProfileImpl implements _UserProfile {
   final String userID;
   @override
   final String username;
+  @override
+  final String? bio;
+  @override
+  final String? displayName;
   @override
   final String? email;
   @override
@@ -330,7 +366,7 @@ class _$UserProfileImpl implements _UserProfile {
 
   @override
   String toString() {
-    return 'UserProfile(userID: $userID, username: $username, email: $email, phoneNumber: $phoneNumber, birthdate: $birthdate, role: $role, gender: $gender, profilePictureUrl: $profilePictureUrl, emailVerified: $emailVerified, phoneVerified: $phoneVerified, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'UserProfile(userID: $userID, username: $username, bio: $bio, displayName: $displayName, email: $email, phoneNumber: $phoneNumber, birthdate: $birthdate, role: $role, gender: $gender, profilePictureUrl: $profilePictureUrl, emailVerified: $emailVerified, phoneVerified: $phoneVerified, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -341,6 +377,9 @@ class _$UserProfileImpl implements _UserProfile {
             (identical(other.userID, userID) || other.userID == userID) &&
             (identical(other.username, username) ||
                 other.username == username) &&
+            (identical(other.bio, bio) || other.bio == bio) &&
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
@@ -366,6 +405,8 @@ class _$UserProfileImpl implements _UserProfile {
     runtimeType,
     userID,
     username,
+    bio,
+    displayName,
     email,
     phoneNumber,
     birthdate,
@@ -396,6 +437,8 @@ abstract class _UserProfile implements UserProfile {
   const factory _UserProfile({
     required final String userID,
     required final String username,
+    final String? bio,
+    final String? displayName,
     final String? email,
     final String? phoneNumber,
     final DateTime? birthdate,
@@ -415,6 +458,10 @@ abstract class _UserProfile implements UserProfile {
   String get userID;
   @override
   String get username;
+  @override
+  String? get bio;
+  @override
+  String? get displayName;
   @override
   String? get email;
   @override

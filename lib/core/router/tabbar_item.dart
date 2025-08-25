@@ -7,7 +7,7 @@ class TabbarItem {
   final Widget page;
   final List<RouteBase> routes;
   final GlobalKey<NavigatorState> navigatorKey;
-  final bool isChatTab;
+  final TabType tabType;
   const TabbarItem({
     required this.label,
     required this.activeIcon,
@@ -15,6 +15,8 @@ class TabbarItem {
     required this.page,
     this.routes = const [],
     required this.navigatorKey,
-    this.isChatTab = false,
+    this.tabType = TabType.general,
   });
 }
+
+enum TabType { chat, setting, general }

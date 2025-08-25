@@ -14,15 +14,18 @@ import 'package:jastipin_yuk/main.dart';
 import 'package:jastipin_yuk/shared/extensions/context_extension.dart';
 import 'package:jastipin_yuk/shared/extensions/string_extension.dart';
 import 'package:jastipin_yuk/shared/extensions/text_editing_controller_extension.dart';
-import 'package:jastipin_yuk/shared/misc/formatters.dart';
+import 'package:jastipin_yuk/shared/misc/global_variables.dart';
 import 'package:jastipin_yuk/shared/widgets/avatar/profile_picture_avatar.dart';
 import 'package:jastipin_yuk/shared/widgets/button/submit_button.dart';
-import 'package:jastipin_yuk/shared/widgets/container/card_container_widget.dart';
+import 'package:jastipin_yuk/shared/widgets/form_picker/date_form_picker_field.dart';
+import 'package:jastipin_yuk/shared/widgets/form_picker/gender_radio_group_field.dart';
 import 'package:jastipin_yuk/shared/widgets/loading/loading_indicator_widget.dart';
 import 'package:jastipin_yuk/shared/widgets/scaffold/native_scaffold.dart';
-import 'package:jastipin_yuk/shared/widgets/text_form_field/email_text_form_field.dart';
-import 'package:jastipin_yuk/shared/widgets/text_form_field/phone_number_text_form_field.dart';
-import 'package:jastipin_yuk/shared/widgets/text_form_field/username_text_form_field.dart';
+import 'package:jastipin_yuk/shared/widgets/form_picker/basic_text_form_field.dart';
+import 'package:jastipin_yuk/shared/widgets/form_picker/email_text_form_field.dart';
+import 'package:jastipin_yuk/shared/widgets/form_picker/phone_number_text_form_field.dart';
+import 'package:jastipin_yuk/shared/widgets/form_picker/username_text_form_field.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UserProfilePage extends StatefulWidget {
   final String userId;
@@ -35,11 +38,17 @@ class UserProfilePage extends StatefulWidget {
 class _UserProfilePageState extends State<UserProfilePage> {
   bool _isEditing = false;
   late final UserProfileBloc _userProfileBloc;
+  final _formKey = GlobalKey<FormState>();
+  final _refreshController = RefreshController();
+  final _scrollController = ScrollController();
+
+  final _userIdController = TextEditingController();
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneNumberController = TextEditingController();
-  Gender _gender = Gender.male;
-  final _formKey = GlobalKey<FormState>();
+  final _bioController = TextEditingController();
+  final _displayNameController = TextEditingController();
+  Gender _selectedGender = Gender.male;
   DateTime? _selectedDate;
 
   @override
@@ -48,7 +57,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
     _userProfileBloc = UserProfileBloc(
       userRepository: injector.get<UserRepository>(),
       authBloc: context.read<AuthBloc>(),
-    )..add(UserProfileEvent.loadUserProfile());
+    )..add(UserProfileEvent.loadUserProfile(isRefresh: false));
+  }
+
+  void _onRefresh() {
+    _userProfileBloc.add(UserProfileEvent.loadUserProfile(isRefresh: true));
   }
 
   void _toggleEdit() {
@@ -78,9 +91,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 ),
               ),
               title: Text("Choose from Gallery", style: labelStyle),
-              onTap: () {
-                // TODO: Add gallery picker logic
-              },
+              onTap: () {},
             ),
             const SizedBox(height: 8),
             ListTile(
@@ -94,9 +105,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 ),
               ),
               title: Text("Take Photo", style: labelStyle),
-              onTap: () {
-                // TODO: Add camera capture logic
-              },
+              onTap: () {},
             ),
             const SizedBox(height: 8),
             ListTile(
@@ -113,9 +122,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 "Remove Photo",
                 style: labelStyle.copyWith(color: redColor),
               ),
-              onTap: () {
-                // TODO: Add remove photo logic
-              },
+              onTap: () {},
             ),
           ],
         );
@@ -124,6 +131,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   void _onTapProfile(String imageUrl) {
+    if (imageUrl.isEmpty) return;
     showDialog(
       context: context,
       builder:
@@ -149,7 +157,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   void _onTapGender(Gender? value) {
     if (value != null && _isEditing) {
       setState(() {
-        _gender = value;
+        _selectedGender = value;
       });
     }
   }
@@ -167,26 +175,36 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   void _blocListener(BuildContext ctx, UserProfileState state) {
-    if (state is UserProfileStateSuccess) {
-      final userData = state.data;
-      _usernameController.text = userData.username;
-      _emailController.text = userData.email ?? "";
-      _phoneNumberController.text = userData.phoneNumber ?? "";
-      setState(() {
-        _gender = userData.gender;
-        _selectedDate = userData.birthdate;
-        _isEditing = false;
-      });
-    } else if (state is UserProfileStateSuccessUpdate) {
-      context.showToast(
-        status: ToastStatus.success,
-        title: "Update success",
-        subtitle: "User Profile Updated Successfully",
-      );
-      while (context.canPop()) {
-        context.pop();
+    final isRefreshing = _refreshController.isRefresh;
+
+    if (state is UserProfileStateSuccess ||
+        state is UserProfileStateSuccessUpdate) {
+      if (isRefreshing) _refreshController.refreshCompleted();
+      if (state is UserProfileStateSuccess) {
+        final userData = state.data;
+        _userIdController.text = userData.userID;
+        _usernameController.text = userData.username;
+        _emailController.text = userData.email ?? "";
+        _phoneNumberController.text = userData.phoneNumber ?? "";
+        _bioController.text = userData.bio ?? "";
+        _displayNameController.text = userData.displayName ?? "";
+        setState(() {
+          _selectedGender = userData.gender;
+          _selectedDate = userData.birthdate;
+          _isEditing = false;
+        });
+      } else if (state is UserProfileStateSuccessUpdate) {
+        context.showToast(
+          status: ToastStatus.success,
+          title: "Update success",
+          subtitle: "User Profile Updated Successfully",
+        );
+        while (context.canPop()) {
+          context.pop();
+        }
       }
     } else if (state is UserProfileStateFailed) {
+      if (isRefreshing) _refreshController.refreshFailed();
       context.showToast(
         status: ToastStatus.failed,
         title: "Update Failed",
@@ -211,8 +229,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
             userName: _usernameController.text,
             email: _emailController.text,
             phoneNumber: _phoneNumberController.cleanNumberString,
-            gender: _gender,
+            gender: _selectedGender,
             birthDate: _selectedDate!,
+            bio: _bioController.text,
+            displayName: _displayNameController.text,
           ),
         ),
       );
@@ -222,9 +242,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
   @override
   void dispose() {
     _userProfileBloc.close();
+    _refreshController.dispose();
+    _scrollController.dispose();
+    _userIdController.dispose();
     _usernameController.dispose();
     _emailController.dispose();
     _phoneNumberController.dispose();
+    _bioController.dispose();
+    _displayNameController.dispose();
     super.dispose();
   }
 
@@ -233,6 +258,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
     return BlocProvider.value(
       value: _userProfileBloc,
       child: NativeScaffold(
+        scrollController: _scrollController,
+        onRefresh: _onRefresh,
+        refreshController: _refreshController,
         title: const Text("User Profile"),
         actions: [
           TextButton(
@@ -243,171 +271,136 @@ class _UserProfilePageState extends State<UserProfilePage> {
         padding: AppStyles.paddingHorizontalMediumWithBottom,
         body: [
           BlocConsumer<UserProfileBloc, UserProfileState>(
+            buildWhen:
+                (previous, current) =>
+                    current is UserProfileStateLoading ||
+                    current is UserProfileStateSuccess ||
+                    current is UserProfileStateFailed,
             listener: _blocListener,
             builder: (context, state) {
-              if (state is UserProfileStateLoading) {
-                return const Center(child: LoadingIndicatorWidget());
-              }
-
-              if (state is UserProfileStateFailed) {
-                return Center(child: Text('Error: ${state.message}'));
-              }
-
+              final isRefreshing = _refreshController.isRefresh;
               UserProfile? userData;
+
               if (state is UserProfileStateSuccess) {
                 userData = state.data;
               } else if (state is UserProfileStateSuccessUpdate) {
                 userData = state.data;
+              } else if (state is UserProfileStateFailed) {
+                userData = state.previousData;
               }
 
               if (userData == null) {
-                return Center(child: Text('Error: Unknown state'));
+                if (state is UserProfileStateLoading) {
+                  return const Center(child: LoadingIndicatorWidget());
+                } else if (state is UserProfileStateFailed) {
+                  return Center(child: Text(state.message));
+                } else {
+                  return const SizedBox();
+                }
               }
 
-              final userId = userData.userID;
-              final imageURL = userData.profilePictureUrl;
-              final userName = userData.username;
+              if (state is UserProfileStateLoading && isRefreshing) {
+                return _buildForm(context, userData);
+              }
 
-              return Form(
-                key: _formKey,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () => _onTapProfile(imageURL ?? ""),
-                        child: Center(
-                          child: ProfilePictureAvatar(
-                            imageUrl: imageURL,
-                            titleOnFailedLoadImage: userName.firstLetter,
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: TextButton(
-                          onPressed: _onTapEditProfile,
-                          child: Text("Edit"),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text("User ID", style: context.textStyle.labelStyle),
-                      const SizedBox(height: 16.0),
-                      SizedBox(
-                        height: 50,
-                        child: CardContainerWidget(
-                          padding: AppStyles.paddingHorizontalMedium,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            userData.userID,
-                            style: context.textStyle.hintStyle,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16.0),
-                      Text("Username", style: context.textStyle.labelStyle),
-                      const SizedBox(height: 16.0),
-                      UsernameTextFormField(
-                        enabled: _isEditing,
-                        controller: _usernameController,
-                      ),
-                      const SizedBox(height: 16),
-                      Text("Email", style: context.textStyle.labelStyle),
-                      const SizedBox(height: 16.0),
-                      EmailTextFormField(
-                        enabled: _isEditing,
-                        controller: _emailController,
-                      ),
-                      const SizedBox(height: 16),
-                      Text("Phone Number", style: context.textStyle.labelStyle),
-                      const SizedBox(height: 16.0),
-                      PhoneNumberTextFormField(
-                        enabled: _isEditing,
-                        controller: _phoneNumberController,
-                      ),
-                      const SizedBox(height: 16),
-                      Text("Gender", style: context.textStyle.labelStyle),
-                      const SizedBox(height: 8.0),
-                      DropdownButton<Gender>(
-                        borderRadius: AppStyles.buttonRadius,
-                        style: context.textStyle.labelStyle,
-                        alignment: Alignment.center,
-                        value: _gender,
-                        dropdownColor: context.themeColors.dialogColor,
-                        elevation: 0,
-                        items:
-                            Gender.values.map((gender) {
-                              return DropdownMenuItem<Gender>(
-                                value: gender,
-                                child: Text(gender.label),
-                              );
-                            }).toList(),
-                        onChanged:
-                            _isEditing
-                                ? (Gender? newGender) {
-                                  if (newGender != null) {
-                                    _onTapGender(newGender);
-                                  }
-                                }
-                                : null,
-                        disabledHint: Text(_gender.label),
-                      ),
+              if (state is UserProfileStateFailed) {
+                return _buildForm(context, userData);
+              }
 
-                      const SizedBox(height: 16),
-                      Text("Birthdate", style: context.textStyle.labelStyle),
-                      const SizedBox(height: 16.0),
-                      GestureDetector(
-                        onTap: _isEditing ? _onTapBirthdate : null,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: AppStyles.borderRadiusMediumG,
-                            border: Border.all(
-                              width: AppStyles.borderWidth,
-                              color:
-                                  _selectedDate == null || !_isEditing
-                                      ? context.themeColors.separator
-                                      : context.themeColors.primary,
-                            ),
-                          ),
-                          padding: AppStyles.paddingAllSmall,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.calendar_today,
-                                size: 20,
-                                color:
-                                    _selectedDate == null || !_isEditing
-                                        ? context.themeColors.disabled
-                                        : context.themeColors.primary,
-                              ),
-                              SizedBox(height: 24, child: VerticalDivider()),
-                              Text(
-                                _selectedDate == null
-                                    ? "Tap to select your birthdate"
-                                    : Formatters.formatDateTime(_selectedDate),
-                                style: context.textStyle.body.copyWith(
-                                  color:
-                                      _selectedDate == null || !_isEditing
-                                          ? context.themeColors.hintText
-                                          : null,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 32),
-                      SubmitButton(
-                        isDisabled: !_isEditing,
-                        onPressed: () => _onTapSubmit(userId: userId),
-                        label: "Edit Profile",
-                      ),
-                    ],
-                  ),
-                ),
-              );
+              return _buildForm(context, userData);
             },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildForm(BuildContext context, UserProfile userData) {
+    final userId = userData.userID;
+    final imageURL = userData.profilePictureUrl ?? "";
+    final userName = userData.username;
+
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () => _onTapProfile(imageURL),
+            child: Center(
+              child: ProfilePictureAvatar(
+                imageUrl: imageURL,
+                titleOnFailedLoadImage: userName.firstLetter,
+              ),
+            ),
+          ),
+          Center(
+            child: TextButton(
+              onPressed: _onTapEditProfile,
+              child: Text("Edit"),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text("User ID", style: context.textStyle.labelStyle),
+          const SizedBox(height: 16.0),
+          BasicTextFormField(controller: _userIdController, enabled: false),
+          const SizedBox(height: 16.0),
+          Text("Username", style: context.textStyle.labelStyle),
+          const SizedBox(height: 16.0),
+          UsernameTextFormField(
+            enabled: _isEditing,
+            controller: _usernameController,
+          ),
+          const SizedBox(height: 16.0),
+          Text("Display Name", style: context.textStyle.labelStyle),
+          const SizedBox(height: 16.0),
+          BasicTextFormField(
+            enabled: _isEditing,
+            controller: _displayNameController,
+            maxLength: GlobalVariables.maxDisplayName,
+            hintText: "Your store or personal name (e.g., Jane's Shop)",
+          ),
+          const SizedBox(height: 16.0),
+          Text("Bio", style: context.textStyle.labelStyle),
+          const SizedBox(height: 16.0),
+          BasicTextFormField(
+            enabled: _isEditing,
+            controller: _bioController,
+            hintText:
+                "Short description about you or your store (e.g., selling handmade crafts)",
+          ),
+          const SizedBox(height: 16),
+          Text("Email", style: context.textStyle.labelStyle),
+          const SizedBox(height: 16.0),
+          EmailTextFormField(enabled: _isEditing, controller: _emailController),
+          const SizedBox(height: 16),
+          Text("Phone Number", style: context.textStyle.labelStyle),
+          const SizedBox(height: 16.0),
+          PhoneNumberTextFormField(
+            enabled: _isEditing,
+            controller: _phoneNumberController,
+          ),
+          const SizedBox(height: 16),
+          Text("Gender", style: context.textStyle.labelStyle),
+          const SizedBox(height: 16.0),
+          GenderRadioGroupField(
+            selectedGender: _selectedGender,
+            onChanged: _onTapGender,
+            enabled: _isEditing,
+          ),
+          const SizedBox(height: 16),
+          Text("Birthdate", style: context.textStyle.labelStyle),
+          const SizedBox(height: 16.0),
+          DateFormPickerField(
+            selectedDate: _selectedDate,
+            onTap: _isEditing ? _onTapBirthdate : null,
+            enabled: _isEditing,
+          ),
+          const SizedBox(height: 32),
+          SubmitButton(
+            isDisabled: !_isEditing,
+            onPressed: () => _onTapSubmit(userId: userId),
+            label: "Edit Profile",
           ),
         ],
       ),

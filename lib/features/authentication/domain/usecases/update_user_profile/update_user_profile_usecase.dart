@@ -18,6 +18,8 @@ class UpdateUserProfileUsecase
       phoneNumber: params.phoneNumber,
       gender: params.gender,
       birthDate: params.birthDate,
+      bio: params.bio,
+      displayName: params.displayName,
     );
   }
 }

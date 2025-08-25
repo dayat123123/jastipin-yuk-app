@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jastipin_yuk/shared/misc/file_paths.dart';
 
 enum Language {
-  english(Locale('en'), 'English', FilePaths.englishImg),
-  indonesia(Locale('id'), 'Indonesian', FilePaths.indonesiaImg);
+  english(Locale('en', 'US'), 'English', FilePaths.englishImg),
+  indonesia(Locale('id', 'ID'), 'Indonesian', FilePaths.indonesiaImg);
 
   const Language(this.locale, this.text, this.imagePath);
 

@@ -4,6 +4,7 @@ import 'package:jastipin_yuk/features/authentication/domain/repositories/authent
 import 'package:jastipin_yuk/features/authentication/domain/usecases/basic_login/basic_login_usecase.dart';
 import 'package:jastipin_yuk/features/authentication/domain/usecases/firebase_login/firebase_login_usecase.dart';
 import 'package:jastipin_yuk/features/authentication/domain/usecases/get_firebase_user_data/get_firebase_user_data_usecase.dart';
+import 'package:jastipin_yuk/features/authentication/domain/usecases/get_local_auth_token/get_local_auth_token_usecase.dart';
 import 'package:jastipin_yuk/features/authentication/domain/usecases/local_login/local_login_usecase.dart';
 import 'package:jastipin_yuk/features/authentication/domain/usecases/logout/logout_usecase.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/bloc/auth/auth_event.dart';
@@ -17,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LogoutUsecase _logoutUsecase;
   final FirebaseLoginUseCase _firebaseLoginUseCase;
   final GetFirebaseUserDataUsecase _getFirebaseUserDataUsecase;
+  final GetLocalAuthTokenUsecase _getLocalAuthTokenUsecase;
   final LocalLoginUsecase _localLoginUsecase;
 
   AuthBloc({required AuthenticationRepository authRepository})
@@ -25,6 +27,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       _getFirebaseUserDataUsecase = GetFirebaseUserDataUsecase(authRepository),
       _firebaseLoginUseCase = FirebaseLoginUseCase(authRepository),
       _localLoginUsecase = LocalLoginUsecase(authRepository),
+      _getLocalAuthTokenUsecase = GetLocalAuthTokenUsecase(authRepository),
       super(const AuthState.initial()) {
     on<AuthEventLogin>(_onLogin);
     on<AuthEventLocalLogin>(_onLocalLogin);
@@ -47,10 +50,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onLocalLogin(AuthEventLocalLogin event, Emitter<AuthState> emit) async {
-    final result = await _localLoginUsecase.call(null);
-    result.when(
-      success: (value) => emit(AuthState.authenticated(userData: value)),
-      failed: (message) => emit(AuthState.initial()),
+    final result = await _getLocalAuthTokenUsecase.call(null);
+
+    await result.when(
+      success: (token) async {
+        final loginResult = await _localLoginUsecase.call(token);
+
+        loginResult.when(
+          success: (userData) {
+            emit(AuthState.authenticated(userData: userData));
+          },
+          failed: (message) {
+            emit(AuthState.failed(message: message));
+          },
+        );
+      },
+      failed: (_) {
+        emit(AuthState.initial());
+      },
     );
   }
 
@@ -85,7 +102,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _onLogout(AuthEventLogout event, Emitter<AuthState> emit) async {
     final currentState = state;
     emit(AuthState.loading());
-    if (currentState is Authenticated) {
+
+    if (currentState is AuthAuthenticated) {
       final userData = currentState.userData;
       await _logoutUsecase.call(userData.userID).timeout(Duration(seconds: 2));
     }
@@ -96,8 +114,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthEventUpdateUserState event,
     Emitter<AuthState> emit,
   ) {
-    if (state is Authenticated) {
-      emit((state as Authenticated).copyWith(userData: event.data));
+    if (state is AuthAuthenticated) {
+      emit((state as AuthAuthenticated).copyWith(userData: event.data));
     }
   }
 

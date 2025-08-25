@@ -6,7 +6,7 @@ import 'package:jastipin_yuk/features/otp/presentation/bloc/phone_number_otp_blo
 import 'package:jastipin_yuk/features/otp/presentation/params/email_validate_page_param.dart';
 import 'package:jastipin_yuk/shared/extensions/context_extension.dart';
 import 'package:jastipin_yuk/shared/misc/global_variables.dart';
-import 'package:jastipin_yuk/shared/widgets/pin/otp_input_boxes_widget.dart';
+import 'package:jastipin_yuk/shared/widgets/otp/otp_input_boxes_widget.dart';
 
 class EmailValidateOtpPage extends StatefulWidget {
   final EmailValidatePageParam param;

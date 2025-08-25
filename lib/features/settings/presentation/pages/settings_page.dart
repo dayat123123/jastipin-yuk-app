@@ -38,6 +38,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _onTapProfile(String imageUrl) {
+    if (imageUrl.isEmpty) return;
     showDialog(
       context: context,
       builder:
@@ -165,15 +166,16 @@ class _SettingsPageState extends State<SettingsPage> {
       title: Text("Settings"),
       body: [
         BlocSelector<AuthBloc, AuthState, UserData?>(
-          selector: (state) => state is Authenticated ? state.userData : null,
+          selector:
+              (state) => state is AuthAuthenticated ? state.userData : null,
           builder: (context, state) {
             final imageUrl = state?.profilePictureUrl ?? "";
             final username = state?.username ?? "";
             final userId = state?.userID ?? "";
             final firstLetter = username.firstLetter.toUpperCase();
             final email = state?.email ?? "";
-            final isShowAlert =
-                !(state?.emailVerified == true && state?.phoneVerified == true);
+            final isVerified =
+                (state?.emailVerified == true && state?.phoneVerified == true);
             return Column(
               children: [
                 GestureDetector(
@@ -183,7 +185,9 @@ class _SettingsPageState extends State<SettingsPage> {
                     titleOnFailedLoadImage: firstLetter,
                   ),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
+                if (isVerified) Icon(Icons.verified),
+                const SizedBox(height: 8.0),
                 if (username.isNotEmpty)
                   Text(username, style: context.textStyle.labelStyle),
                 if (email.isNotEmpty)
@@ -203,10 +207,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       },
                     ),
                     ItemGroup(
-                      title: "Verify Account",
+                      title: "Account Linked",
                       icon: BadgeIconWidget(
-                        icon: FluentIcons.mail_24_filled,
-                        isShowAlert: isShowAlert,
+                        icon: Icons.link,
+                        isShowAlert: !isVerified,
                       ),
                       onTap: _onTapVerifyAccount,
                     ),
@@ -226,7 +230,7 @@ class _SettingsPageState extends State<SettingsPage> {
           listWidget: [
             ItemGroup(
               title: "Theme Mode",
-              icon: const Icon(FluentIcons.dark_theme_20_filled, size: 24),
+              icon: const Icon(FluentIcons.dark_theme_20_regular, size: 24),
               withDefaultTrailingIcon: false,
               onTap: _onTapDarkTheme,
             ),

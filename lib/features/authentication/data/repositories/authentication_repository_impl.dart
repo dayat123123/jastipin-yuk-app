@@ -1,7 +1,10 @@
 import 'package:jastipin_yuk/core/utils/result/result.dart';
 import 'package:jastipin_yuk/features/authentication/data/data_sources/authentication_local_data_source.dart';
 import 'package:jastipin_yuk/features/authentication/data/data_sources/authentication_network_data_source.dart';
+import 'package:jastipin_yuk/features/authentication/data/models/access_token_model.dart';
+import 'package:jastipin_yuk/features/authentication/data/models/google_account_model.dart';
 import 'package:jastipin_yuk/features/authentication/data/models/user_data_model.dart';
+import 'package:jastipin_yuk/features/authentication/domain/entities/access_token_data.dart';
 import 'package:jastipin_yuk/features/authentication/domain/entities/google_account_data.dart';
 import 'package:jastipin_yuk/features/authentication/domain/entities/user_data.dart';
 import 'package:jastipin_yuk/features/authentication/domain/enums/gender.dart';
@@ -54,7 +57,11 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<Result<GoogleAccountData>> getFirebaseUserData() async {
-    return await _networkDataSource.getFirebaseUserData();
+    final result = await _networkDataSource.getFirebaseUserData();
+    return result.when(
+      success: (value) => Result.success(value.toEntity()),
+      failed: (message) => Result.failed(message),
+    );
   }
 
   @override
@@ -79,22 +86,25 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Result<UserData>> localLogin() async {
-    final accessToken = await _localDataSource.getAuthToken();
-    return accessToken.when(
+  Future<Result<UserData>> localLogin(AccessTokenData tokens) async {
+    final result = await _networkDataSource.localLogin(tokens.toModel());
+    return result.when(
       success: (value) async {
-        final result = await _networkDataSource.localLogin(value);
-        return result.when(
-          success: (value) async {
-            final userData = value.user.toEntity();
-            final accessToken = value.token;
-            await _localDataSource.saveTokenData(token: accessToken);
-            return Result.success(userData);
-          },
-          failed: (message) => Result.failed(message),
-        );
+        final userData = value.user.toEntity();
+        final accessToken = value.token;
+        await _localDataSource.saveTokenData(token: accessToken);
+        return Result.success(userData);
       },
-      failed: (message) => Result.failed(accessToken.errorMessage ?? ""),
+      failed: (message) => Result.failed(message),
+    );
+  }
+
+  @override
+  Future<Result<AccessTokenData>> getLocalAuthToken() async {
+    final result = await _localDataSource.getAuthToken();
+    return result.when(
+      success: (value) => Result.success(value.toEntity()),
+      failed: (message) => Result.failed(message),
     );
   }
 }

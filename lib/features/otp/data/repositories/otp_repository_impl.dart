@@ -1,4 +1,5 @@
 import 'package:jastipin_yuk/core/utils/result/result.dart';
+import 'package:jastipin_yuk/features/authentication/data/models/user_data_model.dart';
 import 'package:jastipin_yuk/features/authentication/domain/entities/user_data.dart';
 import 'package:jastipin_yuk/features/otp/data/data_sources/otp_network_data_source.dart';
 import 'package:jastipin_yuk/features/otp/data/models/otp_email_request_model.dart';
@@ -32,10 +33,14 @@ class OtpRepositoryImpl implements OtpRepository {
     required String phoneNumber,
     required String otpCode,
   }) async {
-    return await _networkDataSource.validateOTPPhoneNumber(
+    final result = await _networkDataSource.validateOTPPhoneNumber(
       userId: userId,
       phoneNumber: phoneNumber,
       otpCode: otpCode,
+    );
+    return result.when(
+      success: (value) => Result.success(value.toEntity()),
+      failed: (message) => Result.failed(message),
     );
   }
 
@@ -60,10 +65,14 @@ class OtpRepositoryImpl implements OtpRepository {
     required String email,
     required String otpCode,
   }) async {
-    return await _networkDataSource.validateOTPEmail(
+    final result = await _networkDataSource.validateOTPEmail(
       userId: userId,
       email: email,
       otpCode: otpCode,
+    );
+    return result.when(
+      success: (value) => Result.success(value.toEntity()),
+      failed: (message) => Result.failed(message),
     );
   }
 }

@@ -42,7 +42,6 @@ class PhoneNumberTextFormField extends StatelessWidget {
       decoration: const InputDecoration(
         hintText: '0812-xxxx-xxxxx',
         prefixIcon: Icon(Icons.phone),
-        isDense: true,
       ),
       validator:
           validator ??

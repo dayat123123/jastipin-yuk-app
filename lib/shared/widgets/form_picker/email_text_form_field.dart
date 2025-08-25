@@ -24,7 +24,6 @@ class EmailTextFormField extends StatelessWidget {
       decoration: const InputDecoration(
         hintText: 'yourname@email.com',
         prefixIcon: Icon(Icons.email),
-        isDense: true,
       ),
       validator:
           validator ??

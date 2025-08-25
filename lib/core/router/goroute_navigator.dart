@@ -1,8 +1,11 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jastipin_yuk/features/activity/presentation/pages/jastiper_activity_page.dart';
+import 'package:jastipin_yuk/core/router/auth_listener.dart';
+import 'package:jastipin_yuk/features/activity/presentation/pages/seller_activity_page.dart';
 import 'package:jastipin_yuk/features/authentication/domain/enums/role.dart';
+import 'package:jastipin_yuk/features/authentication/presentation/bloc/auth/auth_bloc.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/pages/forget_password_page.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/pages/home_wrapper_page.dart';
 import 'package:jastipin_yuk/features/authentication/presentation/pages/login_page.dart';
@@ -72,7 +75,7 @@ class GoRouteNavigator {
     ),
     TabbarItem(
       label: "Chat",
-      isChatTab: true,
+      tabType: TabType.chat,
       activeIcon: FluentIcons.chat_12_filled,
       inactiveIcon: FluentIcons.chat_12_filled,
       page: ChatPage(),
@@ -103,16 +106,16 @@ class GoRouteNavigator {
     ),
   ];
 
-  static final List<TabbarItem> _jastiperTabs = [
+  static final List<TabbarItem> _sellerTabs = [
     TabbarItem(
       label: "Store",
       activeIcon: FluentIcons.store_microsoft_16_filled,
       inactiveIcon: FluentIcons.store_microsoft_16_filled,
       page: StorePage(),
-      navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'shellJastiperStore'),
+      navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'shellSellerStore'),
       routes: [
         GoRoute(
-          path: RoutePath.jastiperStore,
+          path: RoutePath.sellerStore,
           builder: (context, state) => StorePage(),
           routes: [],
         ),
@@ -122,28 +125,28 @@ class GoRouteNavigator {
       label: "Activity",
       activeIcon: FluentIcons.history_24_filled,
       inactiveIcon: FluentIcons.history_24_filled,
-      page: JastiperActivityPage(),
+      page: SellerActivityPage(),
       navigatorKey: GlobalKey<NavigatorState>(
-        debugLabel: 'shellJastiperActivity',
+        debugLabel: 'shellSellerActivity',
       ),
       routes: [
         GoRoute(
-          path: RoutePath.jastiperActivity,
-          builder: (context, state) => JastiperActivityPage(),
+          path: RoutePath.sellerActivity,
+          builder: (context, state) => SellerActivityPage(),
         ),
       ],
     ),
 
     TabbarItem(
       label: "Chat",
-      isChatTab: true,
+      tabType: TabType.chat,
       activeIcon: FluentIcons.chat_12_filled,
       inactiveIcon: FluentIcons.chat_12_filled,
       page: ChatPage(),
-      navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'shellJastiperChat'),
+      navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'shellSellerChat'),
       routes: [
         GoRoute(
-          path: RoutePath.jastiperChat,
+          path: RoutePath.sellerChat,
           builder: (context, state) => ChatPage(),
           routes: [],
         ),
@@ -156,11 +159,11 @@ class GoRouteNavigator {
       inactiveIcon: FluentIcons.settings_16_filled,
       page: SettingsPage(),
       navigatorKey: GlobalKey<NavigatorState>(
-        debugLabel: 'shellJastiperSettings',
+        debugLabel: 'shellSellerSettings',
       ),
       routes: [
         GoRoute(
-          path: RoutePath.jastiperSettings,
+          path: RoutePath.sellerSettings,
           builder: (context, state) => SettingsPage(),
           routes: [],
         ),
@@ -168,55 +171,71 @@ class GoRouteNavigator {
     ),
   ];
 
-  static final GoRouter router = GoRouter(
+  static GoRouter router(AuthBloc authBloc) => GoRouter(
     initialLocation: RoutePath.root,
     navigatorKey: navigatorKey,
+    debugLogDiagnostics: true,
     errorBuilder:
         (context, state) =>
-            ErrorPage(errorMessage: "Not found route ${state.path ?? ""}"),
-    debugLogDiagnostics: true,
+            ErrorPage(errorMessage: "Not found route for ${state.path ?? ""}"),
+    refreshListenable: AuthListener(authBloc),
+    redirect: (context, state) {
+      final authBloc = context.read<AuthBloc>();
+      final userData = authBloc.userData;
+      final path = state.fullPath;
+
+      const publicPaths = {
+        RoutePath.login,
+        RoutePath.landing,
+        RoutePath.register,
+        RoutePath.forgetPassword,
+      };
+
+      final isAuthenticated =
+          userData != null && authBloc.state is AuthAuthenticated;
+
+      if (!isAuthenticated &&
+          !publicPaths.contains(path) &&
+          path != RoutePath.root) {
+        return RoutePath.login;
+      }
+
+      if (isAuthenticated && publicPaths.contains(path)) {
+        return RoutePath.getUserHomeRoute(userData.role);
+      }
+
+      return null;
+    },
     routes: [
-      GoRoute(
-        path: RoutePath.root,
-        builder: (BuildContext context, GoRouterState state) => SplashPage(),
-      ),
-      GoRoute(
-        path: RoutePath.landing,
-        builder: (BuildContext context, GoRouterState state) => LandingPage(),
-      ),
+      GoRoute(path: RoutePath.root, builder: (_, __) => SplashPage()),
+      GoRoute(path: RoutePath.landing, builder: (_, __) => LandingPage()),
       GoRoute(
         path: RoutePath.login,
-        builder: (BuildContext context, GoRouterState state) => LoginPage(),
+        name: RoutePath.login,
+        builder: (_, __) => LoginPage(),
       ),
-      GoRoute(
-        path: RoutePath.register,
-        builder: (BuildContext context, GoRouterState state) => RegisterPage(),
-      ),
+      GoRoute(path: RoutePath.register, builder: (_, __) => RegisterPage()),
       GoRoute(
         path: RoutePath.forgetPassword,
-        builder:
-            (BuildContext context, GoRouterState state) => ForgetPasswordPage(),
+        builder: (_, __) => ForgetPasswordPage(),
       ),
       GoRoute(
         path: RoutePath.customerAccountLinked,
-        builder: (context, state) => CustomerAccountLinked(),
-        routes: [],
+        builder: (_, __) => CustomerAccountLinked(),
       ),
       GoRoute(
         path: RoutePath.otpEmailRequestOtp,
         builder: (context, state) {
-          final param =
-              (state.extra is String) ? (state.extra as String) : null;
+          final param = state.extra is String ? state.extra as String : null;
           return EmailRequestOtpPage(email: param);
         },
-        routes: [],
       ),
       GoRoute(
         path: RoutePath.otpEmailValidateOtp,
         builder: (context, state) {
           final param =
-              (state.extra is EmailValidatePageParam)
-                  ? (state.extra as EmailValidatePageParam)
+              state.extra is EmailValidatePageParam
+                  ? state.extra as EmailValidatePageParam
                   : null;
           if (param == null) {
             return ErrorPage(errorMessage: "Missing parameter for OTP Page");
@@ -224,21 +243,19 @@ class GoRouteNavigator {
           return EmailValidateOtpPage(param: param);
         },
       ),
-
       GoRoute(
         path: RoutePath.otpPhoneNumberRequestOtp,
         builder: (context, state) {
           final param = state.extra is String ? state.extra as String : null;
           return PhoneNumberRequestOtpPage(phoneNumber: param);
         },
-        routes: [],
       ),
       GoRoute(
         path: RoutePath.otpPhoneNumberValidateOtp,
         builder: (context, state) {
           final param =
-              (state.extra is PhoneNumberValidatePageParam)
-                  ? (state.extra as PhoneNumberValidatePageParam)
+              state.extra is PhoneNumberValidatePageParam
+                  ? state.extra as PhoneNumberValidatePageParam
                   : null;
           if (param == null) {
             return ErrorPage(errorMessage: "Missing parameter for OTP Page");
@@ -246,12 +263,10 @@ class GoRouteNavigator {
           return PhoneNumberValidateOtpPage(param: param);
         },
       ),
-
       GoRoute(
         path: RoutePath.userProfile,
         builder: (context, state) {
-          final param =
-              (state.extra is String) ? (state.extra as String) : null;
+          final param = state.extra is String ? state.extra as String : null;
           if (param == null) {
             return ErrorPage(
               errorMessage: "Missing parameter for User Profile Page",
@@ -261,7 +276,7 @@ class GoRouteNavigator {
         },
       ),
 
-      /*Customer Wrapper */
+      /// Customer Tabs Wrapper
       StatefulShellRoute.indexedStack(
         builder:
             (context, state, navigationShell) => HomeWrapperPage(
@@ -279,15 +294,15 @@ class GoRouteNavigator {
                 .toList(),
       ),
 
-      /*Jastiper Wrapper */
+      /// Seller Tabs Wrapper
       StatefulShellRoute.indexedStack(
         builder:
             (context, state, navigationShell) => HomeWrapperPage(
               navigationShell: navigationShell,
-              tablist: _jastiperTabs,
+              tablist: _sellerTabs,
             ),
         branches:
-            _jastiperTabs
+            _sellerTabs
                 .map(
                   (item) => StatefulShellBranch(
                     navigatorKey: item.navigatorKey,

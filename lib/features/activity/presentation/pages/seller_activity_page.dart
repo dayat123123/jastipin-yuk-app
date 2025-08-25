@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-class JastiperActivityPage extends StatelessWidget {
-  const JastiperActivityPage({super.key});
+class SellerActivityPage extends StatelessWidget {
+  const SellerActivityPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -23,7 +23,7 @@ mixin _$UserProfileState {
     required TResult Function() loading,
     required TResult Function(UserProfile data) success,
     required TResult Function(UserProfile data) successUpdate,
-    required TResult Function(String message) failed,
+    required TResult Function(String message, UserProfile? previousData) failed,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
@@ -31,7 +31,7 @@ mixin _$UserProfileState {
     TResult? Function()? loading,
     TResult? Function(UserProfile data)? success,
     TResult? Function(UserProfile data)? successUpdate,
-    TResult? Function(String message)? failed,
+    TResult? Function(String message, UserProfile? previousData)? failed,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
@@ -39,7 +39,7 @@ mixin _$UserProfileState {
     TResult Function()? loading,
     TResult Function(UserProfile data)? success,
     TResult Function(UserProfile data)? successUpdate,
-    TResult Function(String message)? failed,
+    TResult Function(String message, UserProfile? previousData)? failed,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -140,7 +140,7 @@ class _$UserProfileStateInitialImpl implements UserProfileStateInitial {
     required TResult Function() loading,
     required TResult Function(UserProfile data) success,
     required TResult Function(UserProfile data) successUpdate,
-    required TResult Function(String message) failed,
+    required TResult Function(String message, UserProfile? previousData) failed,
   }) {
     return initial();
   }
@@ -152,7 +152,7 @@ class _$UserProfileStateInitialImpl implements UserProfileStateInitial {
     TResult? Function()? loading,
     TResult? Function(UserProfile data)? success,
     TResult? Function(UserProfile data)? successUpdate,
-    TResult? Function(String message)? failed,
+    TResult? Function(String message, UserProfile? previousData)? failed,
   }) {
     return initial?.call();
   }
@@ -164,7 +164,7 @@ class _$UserProfileStateInitialImpl implements UserProfileStateInitial {
     TResult Function()? loading,
     TResult Function(UserProfile data)? success,
     TResult Function(UserProfile data)? successUpdate,
-    TResult Function(String message)? failed,
+    TResult Function(String message, UserProfile? previousData)? failed,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -267,7 +267,7 @@ class _$UserProfileStateLoadingImpl implements UserProfileStateLoading {
     required TResult Function() loading,
     required TResult Function(UserProfile data) success,
     required TResult Function(UserProfile data) successUpdate,
-    required TResult Function(String message) failed,
+    required TResult Function(String message, UserProfile? previousData) failed,
   }) {
     return loading();
   }
@@ -279,7 +279,7 @@ class _$UserProfileStateLoadingImpl implements UserProfileStateLoading {
     TResult? Function()? loading,
     TResult? Function(UserProfile data)? success,
     TResult? Function(UserProfile data)? successUpdate,
-    TResult? Function(String message)? failed,
+    TResult? Function(String message, UserProfile? previousData)? failed,
   }) {
     return loading?.call();
   }
@@ -291,7 +291,7 @@ class _$UserProfileStateLoadingImpl implements UserProfileStateLoading {
     TResult Function()? loading,
     TResult Function(UserProfile data)? success,
     TResult Function(UserProfile data)? successUpdate,
-    TResult Function(String message)? failed,
+    TResult Function(String message, UserProfile? previousData)? failed,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -435,7 +435,7 @@ class _$UserProfileStateSuccessImpl implements UserProfileStateSuccess {
     required TResult Function() loading,
     required TResult Function(UserProfile data) success,
     required TResult Function(UserProfile data) successUpdate,
-    required TResult Function(String message) failed,
+    required TResult Function(String message, UserProfile? previousData) failed,
   }) {
     return success(data);
   }
@@ -447,7 +447,7 @@ class _$UserProfileStateSuccessImpl implements UserProfileStateSuccess {
     TResult? Function()? loading,
     TResult? Function(UserProfile data)? success,
     TResult? Function(UserProfile data)? successUpdate,
-    TResult? Function(String message)? failed,
+    TResult? Function(String message, UserProfile? previousData)? failed,
   }) {
     return success?.call(data);
   }
@@ -459,7 +459,7 @@ class _$UserProfileStateSuccessImpl implements UserProfileStateSuccess {
     TResult Function()? loading,
     TResult Function(UserProfile data)? success,
     TResult Function(UserProfile data)? successUpdate,
-    TResult Function(String message)? failed,
+    TResult Function(String message, UserProfile? previousData)? failed,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -619,7 +619,7 @@ class _$UserProfileStateSuccessUpdateImpl
     required TResult Function() loading,
     required TResult Function(UserProfile data) success,
     required TResult Function(UserProfile data) successUpdate,
-    required TResult Function(String message) failed,
+    required TResult Function(String message, UserProfile? previousData) failed,
   }) {
     return successUpdate(data);
   }
@@ -631,7 +631,7 @@ class _$UserProfileStateSuccessUpdateImpl
     TResult? Function()? loading,
     TResult? Function(UserProfile data)? success,
     TResult? Function(UserProfile data)? successUpdate,
-    TResult? Function(String message)? failed,
+    TResult? Function(String message, UserProfile? previousData)? failed,
   }) {
     return successUpdate?.call(data);
   }
@@ -643,7 +643,7 @@ class _$UserProfileStateSuccessUpdateImpl
     TResult Function()? loading,
     TResult Function(UserProfile data)? success,
     TResult Function(UserProfile data)? successUpdate,
-    TResult Function(String message)? failed,
+    TResult Function(String message, UserProfile? previousData)? failed,
     required TResult orElse(),
   }) {
     if (successUpdate != null) {
@@ -717,7 +717,9 @@ abstract class _$$UserProfileStateFailedImplCopyWith<$Res> {
     $Res Function(_$UserProfileStateFailedImpl) then,
   ) = __$$UserProfileStateFailedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String message});
+  $Res call({String message, UserProfile? previousData});
+
+  $UserProfileCopyWith<$Res>? get previousData;
 }
 
 /// @nodoc
@@ -733,7 +735,7 @@ class __$$UserProfileStateFailedImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? message = null}) {
+  $Res call({Object? message = null, Object? previousData = freezed}) {
     return _then(
       _$UserProfileStateFailedImpl(
         message:
@@ -741,22 +743,46 @@ class __$$UserProfileStateFailedImplCopyWithImpl<$Res>
                 ? _value.message
                 : message // ignore: cast_nullable_to_non_nullable
                     as String,
+        previousData:
+            freezed == previousData
+                ? _value.previousData
+                : previousData // ignore: cast_nullable_to_non_nullable
+                    as UserProfile?,
       ),
     );
+  }
+
+  /// Create a copy of UserProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UserProfileCopyWith<$Res>? get previousData {
+    if (_value.previousData == null) {
+      return null;
+    }
+
+    return $UserProfileCopyWith<$Res>(_value.previousData!, (value) {
+      return _then(_value.copyWith(previousData: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$UserProfileStateFailedImpl implements UserProfileStateFailed {
-  const _$UserProfileStateFailedImpl({required this.message});
+  const _$UserProfileStateFailedImpl({
+    required this.message,
+    this.previousData,
+  });
 
   @override
   final String message;
+  @override
+  final UserProfile? previousData;
 
   @override
   String toString() {
-    return 'UserProfileState.failed(message: $message)';
+    return 'UserProfileState.failed(message: $message, previousData: $previousData)';
   }
 
   @override
@@ -764,11 +790,13 @@ class _$UserProfileStateFailedImpl implements UserProfileStateFailed {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserProfileStateFailedImpl &&
-            (identical(other.message, message) || other.message == message));
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.previousData, previousData) ||
+                other.previousData == previousData));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode => Object.hash(runtimeType, message, previousData);
 
   /// Create a copy of UserProfileState
   /// with the given fields replaced by the non-null parameter values.
@@ -789,9 +817,9 @@ class _$UserProfileStateFailedImpl implements UserProfileStateFailed {
     required TResult Function() loading,
     required TResult Function(UserProfile data) success,
     required TResult Function(UserProfile data) successUpdate,
-    required TResult Function(String message) failed,
+    required TResult Function(String message, UserProfile? previousData) failed,
   }) {
-    return failed(message);
+    return failed(message, previousData);
   }
 
   @override
@@ -801,9 +829,9 @@ class _$UserProfileStateFailedImpl implements UserProfileStateFailed {
     TResult? Function()? loading,
     TResult? Function(UserProfile data)? success,
     TResult? Function(UserProfile data)? successUpdate,
-    TResult? Function(String message)? failed,
+    TResult? Function(String message, UserProfile? previousData)? failed,
   }) {
-    return failed?.call(message);
+    return failed?.call(message, previousData);
   }
 
   @override
@@ -813,11 +841,11 @@ class _$UserProfileStateFailedImpl implements UserProfileStateFailed {
     TResult Function()? loading,
     TResult Function(UserProfile data)? success,
     TResult Function(UserProfile data)? successUpdate,
-    TResult Function(String message)? failed,
+    TResult Function(String message, UserProfile? previousData)? failed,
     required TResult orElse(),
   }) {
     if (failed != null) {
-      return failed(message);
+      return failed(message, previousData);
     }
     return orElse();
   }
@@ -865,10 +893,13 @@ class _$UserProfileStateFailedImpl implements UserProfileStateFailed {
 }
 
 abstract class UserProfileStateFailed implements UserProfileState {
-  const factory UserProfileStateFailed({required final String message}) =
-      _$UserProfileStateFailedImpl;
+  const factory UserProfileStateFailed({
+    required final String message,
+    final UserProfile? previousData,
+  }) = _$UserProfileStateFailedImpl;
 
   String get message;
+  UserProfile? get previousData;
 
   /// Create a copy of UserProfileState
   /// with the given fields replaced by the non-null parameter values.

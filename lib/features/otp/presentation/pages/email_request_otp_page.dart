@@ -15,7 +15,7 @@ import 'package:jastipin_yuk/shared/misc/file_paths.dart';
 import 'package:jastipin_yuk/shared/widgets/button/submit_button.dart';
 import 'package:jastipin_yuk/shared/widgets/divider/dashed_text_divider.dart';
 import 'package:jastipin_yuk/shared/widgets/scaffold/native_scaffold.dart';
-import 'package:jastipin_yuk/shared/widgets/text_form_field/email_text_form_field.dart';
+import 'package:jastipin_yuk/shared/widgets/form_picker/email_text_form_field.dart';
 
 class EmailRequestOtpPage extends StatefulWidget {
   final String? email;

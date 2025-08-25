@@ -1,8 +1,9 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:jastipin_yuk/shared/extensions/context_extension.dart';
+import 'package:jastipin_yuk/shared/widgets/loading/loading_indicator_widget.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NativeScaffold extends StatelessWidget {
   final ScrollController? scrollController;
@@ -13,6 +14,8 @@ class NativeScaffold extends StatelessWidget {
   final FloatingActionButtonLocation? fabLocation;
   final List<Widget> body;
   final Widget? floatingActionButton;
+  final RefreshController? refreshController;
+  final VoidCallback? onRefresh;
 
   const NativeScaffold({
     super.key,
@@ -24,12 +27,13 @@ class NativeScaffold extends StatelessWidget {
     this.padding = EdgeInsets.zero,
     this.floatingActionButton,
     this.fabLocation,
+    this.refreshController,
+    this.onRefresh,
   });
 
   @override
   Widget build(BuildContext context) {
     final isIOS = Platform.isIOS;
-    final double dynamicTopPadding = isIOS ? 16 : 0;
     final double dynamicBottomPadding =
         (context.padding.bottom + 8) +
         (bottomNavigationBar != null ? kBottomNavigationBarHeight : 0);
@@ -37,9 +41,37 @@ class NativeScaffold extends StatelessWidget {
         fabLocation == null ||
         fabLocation == FloatingActionButtonLocation.centerFloat ||
         fabLocation == FloatingActionButtonLocation.endFloat;
+
+    final appBar = AppBar(
+      actions: actions,
+      elevation: 0,
+      title: title,
+      centerTitle: isIOS,
+      titleTextStyle: context.textStyle.headline.copyWith(
+        color: context.themeColors.textColor,
+      ),
+      systemOverlayStyle: context.theme.appBarTheme.systemOverlayStyle,
+    );
+
+    Widget bodyContent = ListView.builder(
+      controller: scrollController,
+      padding: padding.copyWith(top: 6, bottom: dynamicBottomPadding),
+      itemCount: body.length,
+      itemBuilder: (context, index) => body[index],
+    );
+
+    if (refreshController != null && onRefresh != null) {
+      bodyContent = SmartRefresher(
+        controller: refreshController!,
+        onRefresh: onRefresh,
+        enablePullDown: true,
+        header: ClassicHeader(refreshingIcon: LoadingIndicatorWidget()),
+        child: bodyContent,
+      );
+    }
+
     return Scaffold(
-      extendBodyBehindAppBar: isIOS,
-      extendBody: bottomNavigationBar != null,
+      appBar: appBar,
       floatingActionButton:
           floatingActionButton != null
               ? Padding(
@@ -49,52 +81,7 @@ class NativeScaffold extends StatelessWidget {
                 child: _fixHeroTag(floatingActionButton),
               )
               : null,
-      body: Scrollbar(
-        controller: scrollController,
-        child: CustomScrollView(
-          controller: scrollController,
-          slivers: [
-            SliverAppBar(
-              backgroundColor:
-                  isIOS
-                      ? context.theme.scaffoldBackgroundColor.withValues(
-                        alpha: 0.5,
-                      )
-                      : context.theme.appBarTheme.backgroundColor,
-              actions: actions,
-              elevation: 0,
-              pinned: true,
-              title: title,
-              centerTitle: isIOS,
-              titleTextStyle: context.textStyle.headline.copyWith(
-                color: context.themeColors.textColor,
-              ),
-              systemOverlayStyle: context.theme.appBarTheme.systemOverlayStyle,
-              flexibleSpace:
-                  isIOS
-                      ? ClipRect(
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                          child: Container(color: Colors.transparent),
-                        ),
-                      )
-                      : null,
-            ),
-            SliverPadding(
-              padding: padding.copyWith(
-                top: dynamicTopPadding,
-                bottom: dynamicBottomPadding,
-              ),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) => body[index],
-                  childCount: body.length,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: bodyContent,
       bottomNavigationBar: bottomNavigationBar,
     );
   }

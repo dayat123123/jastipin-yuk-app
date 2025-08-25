@@ -7,6 +7,8 @@ class UpdateUserProfileParam {
   final String phoneNumber;
   final Gender gender;
   final DateTime birthDate;
+  final String bio;
+  final String displayName;
 
   UpdateUserProfileParam({
     required this.userId,
@@ -15,5 +17,7 @@ class UpdateUserProfileParam {
     required this.phoneNumber,
     required this.gender,
     required this.birthDate,
+    required this.bio,
+    required this.displayName,
   });
 }

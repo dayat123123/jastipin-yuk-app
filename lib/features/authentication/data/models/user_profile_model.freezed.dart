@@ -24,6 +24,8 @@ mixin _$UserProfileModel {
   @JsonKey(name: "userID")
   String get userId => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
+  String? get bio => throw _privateConstructorUsedError;
+  String? get displayName => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get phoneNumber => throw _privateConstructorUsedError;
   String get role => throw _privateConstructorUsedError;
@@ -56,6 +58,8 @@ abstract class $UserProfileModelCopyWith<$Res> {
   $Res call({
     @JsonKey(name: "userID") String userId,
     String username,
+    String? bio,
+    String? displayName,
     String? email,
     String? phoneNumber,
     String role,
@@ -86,6 +90,8 @@ class _$UserProfileModelCopyWithImpl<$Res, $Val extends UserProfileModel>
   $Res call({
     Object? userId = null,
     Object? username = null,
+    Object? bio = freezed,
+    Object? displayName = freezed,
     Object? email = freezed,
     Object? phoneNumber = freezed,
     Object? role = null,
@@ -109,6 +115,16 @@ class _$UserProfileModelCopyWithImpl<$Res, $Val extends UserProfileModel>
                     ? _value.username
                     : username // ignore: cast_nullable_to_non_nullable
                         as String,
+            bio:
+                freezed == bio
+                    ? _value.bio
+                    : bio // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            displayName:
+                freezed == displayName
+                    ? _value.displayName
+                    : displayName // ignore: cast_nullable_to_non_nullable
+                        as String?,
             email:
                 freezed == email
                     ? _value.email
@@ -177,6 +193,8 @@ abstract class _$$UserProfileModelImplCopyWith<$Res>
   $Res call({
     @JsonKey(name: "userID") String userId,
     String username,
+    String? bio,
+    String? displayName,
     String? email,
     String? phoneNumber,
     String role,
@@ -206,6 +224,8 @@ class __$$UserProfileModelImplCopyWithImpl<$Res>
   $Res call({
     Object? userId = null,
     Object? username = null,
+    Object? bio = freezed,
+    Object? displayName = freezed,
     Object? email = freezed,
     Object? phoneNumber = freezed,
     Object? role = null,
@@ -229,6 +249,16 @@ class __$$UserProfileModelImplCopyWithImpl<$Res>
                 ? _value.username
                 : username // ignore: cast_nullable_to_non_nullable
                     as String,
+        bio:
+            freezed == bio
+                ? _value.bio
+                : bio // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        displayName:
+            freezed == displayName
+                ? _value.displayName
+                : displayName // ignore: cast_nullable_to_non_nullable
+                    as String?,
         email:
             freezed == email
                 ? _value.email
@@ -290,6 +320,8 @@ class _$UserProfileModelImpl implements _UserProfileModel {
   const _$UserProfileModelImpl({
     @JsonKey(name: "userID") required this.userId,
     required this.username,
+    this.bio,
+    this.displayName,
     this.email,
     this.phoneNumber,
     required this.role,
@@ -310,6 +342,10 @@ class _$UserProfileModelImpl implements _UserProfileModel {
   final String userId;
   @override
   final String username;
+  @override
+  final String? bio;
+  @override
+  final String? displayName;
   @override
   final String? email;
   @override
@@ -334,7 +370,7 @@ class _$UserProfileModelImpl implements _UserProfileModel {
 
   @override
   String toString() {
-    return 'UserProfileModel(userId: $userId, username: $username, email: $email, phoneNumber: $phoneNumber, role: $role, birthdate: $birthdate, gender: $gender, profilePictureUrl: $profilePictureUrl, emailVerified: $emailVerified, phoneVerified: $phoneVerified, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'UserProfileModel(userId: $userId, username: $username, bio: $bio, displayName: $displayName, email: $email, phoneNumber: $phoneNumber, role: $role, birthdate: $birthdate, gender: $gender, profilePictureUrl: $profilePictureUrl, emailVerified: $emailVerified, phoneVerified: $phoneVerified, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -345,6 +381,9 @@ class _$UserProfileModelImpl implements _UserProfileModel {
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.username, username) ||
                 other.username == username) &&
+            (identical(other.bio, bio) || other.bio == bio) &&
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
@@ -370,6 +409,8 @@ class _$UserProfileModelImpl implements _UserProfileModel {
     runtimeType,
     userId,
     username,
+    bio,
+    displayName,
     email,
     phoneNumber,
     role,
@@ -403,6 +444,8 @@ abstract class _UserProfileModel implements UserProfileModel {
   const factory _UserProfileModel({
     @JsonKey(name: "userID") required final String userId,
     required final String username,
+    final String? bio,
+    final String? displayName,
     final String? email,
     final String? phoneNumber,
     required final String role,
@@ -423,6 +466,10 @@ abstract class _UserProfileModel implements UserProfileModel {
   String get userId;
   @override
   String get username;
+  @override
+  String? get bio;
+  @override
+  String? get displayName;
   @override
   String? get email;
   @override

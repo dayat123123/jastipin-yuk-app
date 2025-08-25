@@ -11,6 +11,8 @@ class UserProfileState with _$UserProfileState {
       UserProfileStateSuccess;
   const factory UserProfileState.successUpdate({required UserProfile data}) =
       UserProfileStateSuccessUpdate;
-  const factory UserProfileState.failed({required String message}) =
-      UserProfileStateFailed;
+  const factory UserProfileState.failed({
+    required String message,
+    UserProfile? previousData,
+  }) = UserProfileStateFailed;
 }

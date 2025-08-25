@@ -1,28 +1,26 @@
 import 'package:intl/intl.dart';
-import 'package:jastipin_yuk/core/network/restful/dio_client.dart';
+import 'package:jastipin_yuk/core/network/restful_api/dio_client.dart';
 import 'package:jastipin_yuk/core/utils/result/result.dart';
 import 'package:jastipin_yuk/features/authentication/data/models/update_user_profile_response_model.dart';
 import 'package:jastipin_yuk/features/authentication/data/models/update_user_response_model.dart';
-import 'package:jastipin_yuk/features/authentication/data/models/user_data_model.dart';
 import 'package:jastipin_yuk/features/authentication/data/models/user_profile_model.dart';
 import 'package:jastipin_yuk/features/authentication/data/models/user_profile_response_model.dart';
-import 'package:jastipin_yuk/features/authentication/domain/entities/update_user_profile.dart';
-import 'package:jastipin_yuk/features/authentication/domain/entities/user_data.dart';
-import 'package:jastipin_yuk/features/authentication/domain/entities/user_profile.dart';
 import 'package:jastipin_yuk/features/authentication/domain/enums/gender.dart';
 import 'package:jastipin_yuk/shared/misc/api_paths.dart';
 
 abstract class UserNetworkDataSource {
-  Future<Result<UserProfile>> getUserProfile({required String userID});
-  Future<Result<UpdateUserProfile>> updateUserProfile({
+  Future<Result<UserProfileModel>> getUserProfile({required String userID});
+  Future<Result<UpdateUserProfileResponseModel>> updateUserProfile({
     required String userId,
     required String userName,
     required String email,
     required String phoneNumber,
     required Gender gender,
     required DateTime birthdate,
+    required String bio,
+    required String displayName,
   });
-  Future<Result<UserData>> validateEmailWithGoogleAccount({
+  Future<Result<UpdateUserResponseModel>> validateEmailWithGoogleAccount({
     required String userId,
     required String idToken,
   });
@@ -34,7 +32,9 @@ class UserNetworkDataSourceImpl implements UserNetworkDataSource {
   const UserNetworkDataSourceImpl(this._dioClient);
 
   @override
-  Future<Result<UserProfile>> getUserProfile({required String userID}) async {
+  Future<Result<UserProfileModel>> getUserProfile({
+    required String userID,
+  }) async {
     try {
       final result = await _dioClient.get(
         ApiPaths.getUserProfile,
@@ -43,7 +43,7 @@ class UserNetworkDataSourceImpl implements UserNetworkDataSource {
       return result.when(
         success: (value) async {
           final data = UserProfileResponseModel.fromJson(value);
-          return Result.success(data.profile.toEntity());
+          return Result.success(data.profile);
         },
         failed: (message) {
           return Result.failed(message);
@@ -55,13 +55,15 @@ class UserNetworkDataSourceImpl implements UserNetworkDataSource {
   }
 
   @override
-  Future<Result<UpdateUserProfile>> updateUserProfile({
+  Future<Result<UpdateUserProfileResponseModel>> updateUserProfile({
     required String userId,
     required String userName,
     required String email,
     required String phoneNumber,
     required Gender gender,
     required DateTime birthdate,
+    required String bio,
+    required String displayName,
   }) async {
     try {
       final formattedBirthdate = DateFormat('yyyy-MM-dd').format(birthdate);
@@ -74,12 +76,14 @@ class UserNetworkDataSourceImpl implements UserNetworkDataSource {
           "phoneNumber": phoneNumber,
           "gender": gender.value,
           "birthdate": formattedBirthdate,
+          "bio": bio,
+          "displayName": displayName,
         },
       );
       return result.when(
         success: (value) async {
           final data = UpdateUserProfileResponseModel.fromJson(value);
-          return Result.success(data.toEntity());
+          return Result.success(data);
         },
         failed: (message) {
           return Result.failed(message);
@@ -91,7 +95,7 @@ class UserNetworkDataSourceImpl implements UserNetworkDataSource {
   }
 
   @override
-  Future<Result<UserData>> validateEmailWithGoogleAccount({
+  Future<Result<UpdateUserResponseModel>> validateEmailWithGoogleAccount({
     required String userId,
     required String idToken,
   }) async {
@@ -103,7 +107,7 @@ class UserNetworkDataSourceImpl implements UserNetworkDataSource {
       return result.when(
         success: (value) async {
           final data = UpdateUserResponseModel.fromJson(value);
-          return Result.success(data.user.toEntity());
+          return Result.success(data);
         },
         failed: (message) {
           return Result.failed(message);

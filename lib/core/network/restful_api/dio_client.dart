@@ -35,13 +35,9 @@ class DioClient {
         onError: (error, handler) async {
           final statusCode = error.response?.statusCode;
           final errorData = error.response?.data;
-          final isTokenExpiredError =
-              errorData != null && errorData['error'] == 'token_expired';
-
-          if (statusCode == 401 && isTokenExpiredError) {
+          if (isTokenExpired(statusCode, errorData)) {
             if (!_isRefreshing) {
               _isRefreshing = true;
-
               try {
                 final success = await _refreshAccessToken();
 
@@ -231,15 +227,35 @@ class DioClient {
 
   Result<Map<String, dynamic>> _handleError(Object e) {
     if (e is DioException) {
-      final message =
-          e.response?.data?['error']?.toString() ??
-          e.response?.data?['message']?.toString() ??
-          e.message ??
-          'Unknown Dio error';
+      String message;
+
+      switch (e.type) {
+        case DioExceptionType.connectionTimeout:
+        case DioExceptionType.sendTimeout:
+        case DioExceptionType.receiveTimeout:
+          message = "Request timed out. Please try again.";
+          break;
+        case DioExceptionType.badResponse:
+          message =
+              e.response?.data?['error']?.toString() ??
+              e.response?.data?['message']?.toString() ??
+              "Server returned an error response.";
+          break;
+        case DioExceptionType.connectionError:
+          message = "No internet connection or server unreachable.";
+          break;
+        default:
+          message = e.message ?? "Unknown Dio error";
+      }
+
       return Result.failed(message);
     }
-    return Result.failed('Unexpected error: ${e.toString()}');
+
+    return Result.failed("Unexpected error: ${e.toString()}");
   }
 
   static bool isResponseSuccess(int? code) => code == 200 || code == 201;
+
+  static bool isTokenExpired(int? code, dynamic errorData) =>
+      code == 401 && errorData != null && errorData['error'] == 'token_expired';
 }

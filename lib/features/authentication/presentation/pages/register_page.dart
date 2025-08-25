@@ -9,12 +9,14 @@ import 'package:jastipin_yuk/features/authentication/domain/usecases/register/re
 import 'package:jastipin_yuk/features/authentication/presentation/bloc/sign_up/sign_up_bloc.dart'; // Import SignupBloc
 import 'package:jastipin_yuk/main.dart';
 import 'package:jastipin_yuk/shared/extensions/context_extension.dart';
-import 'package:jastipin_yuk/shared/misc/formatters.dart';
 import 'package:jastipin_yuk/shared/widgets/button/submit_button.dart';
+import 'package:jastipin_yuk/shared/widgets/form_picker/gender_radio_group_field.dart';
+import 'package:jastipin_yuk/shared/widgets/form_picker/role_radio_group_field.dart';
 import 'package:jastipin_yuk/shared/widgets/loading/loading_indicator_widget.dart';
 import 'package:jastipin_yuk/shared/widgets/scaffold/native_scaffold.dart';
-import 'package:jastipin_yuk/shared/widgets/text_form_field/password_text_form_field.dart';
-import 'package:jastipin_yuk/shared/widgets/text_form_field/username_text_form_field.dart';
+import 'package:jastipin_yuk/shared/widgets/form_picker/date_form_picker_field.dart';
+import 'package:jastipin_yuk/shared/widgets/form_picker/password_text_form_field.dart';
+import 'package:jastipin_yuk/shared/widgets/form_picker/username_text_form_field.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -164,9 +166,19 @@ class _RegisterPageState extends State<RegisterPage> {
           return NativeScaffold(
             padding: AppStyles.paddingHorizontalMediumWithBottom,
             body: [
-              Text("Create Your Account", style: context.textStyle.title),
-              const Divider(),
+              Text(
+                "Register",
+                style: context.textStyle.title.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+              ),
               const SizedBox(height: 8.0),
+              Text(
+                "Silahkan masukkan data diri anda",
+                style: context.textStyle.subhead,
+              ),
+              const SizedBox(height: 24.0),
               Form(
                 key: _formKey,
                 autovalidateMode: AutovalidateMode.disabled,
@@ -183,88 +195,25 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(height: 16.0),
                     Text("Birthdate", style: labelTextStyle),
                     const SizedBox(height: 16.0),
-                    GestureDetector(
+                    DateFormPickerField(
+                      selectedDate: _selectedDate,
                       onTap: _onTapBirthdate,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: AppStyles.borderRadiusMediumG,
-                          border: Border.all(
-                            width: AppStyles.borderWidth,
-                            color:
-                                _selectedDate == null
-                                    ? context.themeColors.separator
-                                    : context.themeColors.primary,
-                          ),
-                        ),
-                        padding: AppStyles.paddingAllSmall,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.calendar_today,
-                              size: 20,
-                              color:
-                                  _selectedDate == null
-                                      ? context.themeColors.disabled
-                                      : context.themeColors.primary,
-                            ),
-                            SizedBox(height: 24, child: VerticalDivider()),
-                            Text(
-                              _selectedDate == null
-                                  ? "Tap to select your birthdate"
-                                  : Formatters.formatDateTime(_selectedDate),
-                              style: context.textStyle.body.copyWith(
-                                color:
-                                    _selectedDate == null
-                                        ? context.themeColors.hintText
-                                        : null,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
                     const SizedBox(height: 16.0),
                     Text("Gender", style: labelTextStyle),
-                    const SizedBox(height: 8.0),
-                    DropdownButton<Gender>(
-                      borderRadius: AppStyles.buttonRadius,
-                      style: context.textStyle.labelStyle,
-                      alignment: Alignment.center,
-                      value: _selectedGender,
-                      dropdownColor: context.themeColors.dialogColor,
-                      elevation: 0,
-                      items:
-                          Gender.values.map((gender) {
-                            return DropdownMenuItem<Gender>(
-                              value: gender,
-                              child: Text(gender.label),
-                            );
-                          }).toList(),
+                    const SizedBox(height: 16.0),
+                    GenderRadioGroupField(
+                      selectedGender: _selectedGender,
                       onChanged: _onTapGender,
-                      disabledHint: Text(_selectedGender.label),
                     ),
                     const SizedBox(height: 16.0),
                     Text("Role", style: labelTextStyle),
-                    const SizedBox(height: 8.0),
-                    DropdownButton<Role>(
-                      borderRadius: AppStyles.buttonRadius,
-                      style: context.textStyle.labelStyle,
-                      alignment: Alignment.center,
-                      value: _selectedRole,
-                      dropdownColor: context.themeColors.dialogColor,
-                      elevation: 0,
-                      items:
-                          Role.values.map((role) {
-                            return DropdownMenuItem<Role>(
-                              value: role,
-                              child: Text(role.label),
-                            );
-                          }).toList(),
+                    const SizedBox(height: 16.0),
+                    RoleRadioGroupField(
+                      selectedRole: _selectedRole,
                       onChanged: _onTapRole,
-                      disabledHint: Text(_selectedRole.label),
                     ),
-                    const SizedBox(height: 8.0),
+                    const SizedBox(height: 16.0),
                     CheckboxListTile(
                       contentPadding: EdgeInsets.zero,
                       value: _isAcceptTNC,
@@ -289,7 +238,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       controlAffinity: ListTileControlAffinity.leading,
                       onChanged: _onTapCheckboxTNC,
                     ),
-                    SizedBox(height: 8.0),
+                    SizedBox(height: 16.0),
                     SubmitButton(label: 'Sign Up', onPressed: _onTapSignUp),
                   ],
                 ),

@@ -64,11 +64,22 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
         emit(UserProfileState.successUpdate(data: value.profile));
       },
       failed: (message) {
-        emit(UserProfileState.failed(message: message));
         if (currentState is UserProfileStateSuccess) {
-          emit(UserProfileState.success(data: currentState.data));
+          emit(
+            UserProfileState.failed(
+              message: message,
+              previousData: currentState.data,
+            ),
+          );
         } else if (currentState is UserProfileStateSuccessUpdate) {
-          emit(UserProfileState.success(data: currentState.data));
+          emit(
+            UserProfileState.failed(
+              message: message,
+              previousData: currentState.data,
+            ),
+          );
+        } else {
+          emit(UserProfileState.failed(message: message));
         }
       },
     );

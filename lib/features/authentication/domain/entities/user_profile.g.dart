@@ -10,6 +10,8 @@ _$UserProfileImpl _$$UserProfileImplFromJson(Map<String, dynamic> json) =>
     _$UserProfileImpl(
       userID: json['userID'] as String,
       username: json['username'] as String,
+      bio: json['bio'] as String?,
+      displayName: json['displayName'] as String?,
       email: json['email'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
       birthdate:
@@ -35,6 +37,8 @@ Map<String, dynamic> _$$UserProfileImplToJson(_$UserProfileImpl instance) =>
     <String, dynamic>{
       'userID': instance.userID,
       'username': instance.username,
+      'bio': instance.bio,
+      'displayName': instance.displayName,
       'email': instance.email,
       'phoneNumber': instance.phoneNumber,
       'birthdate': instance.birthdate?.toIso8601String(),
@@ -49,7 +53,7 @@ Map<String, dynamic> _$$UserProfileImplToJson(_$UserProfileImpl instance) =>
 
 const _$RoleEnumMap = {
   Role.customer: 'customer',
-  Role.jastiper: 'jastiper',
+  Role.seller: 'seller',
   Role.admin: 'admin',
   Role.guest: 'guest',
 };

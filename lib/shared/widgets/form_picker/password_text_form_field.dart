@@ -54,7 +54,7 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
         labelText: widget.labelText,
         hintText: widget.hintText,
         counterText: '',
-        isDense: true,
+
         prefixIcon: const Icon(Icons.lock),
         suffixIcon: _suffixIcon(),
       ),

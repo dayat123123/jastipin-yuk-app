@@ -13,6 +13,8 @@ abstract class UserRepository {
     required String phoneNumber,
     required Gender gender,
     required DateTime birthDate,
+    required String bio,
+    required String displayName,
   });
   Future<Result<UserData>> validateEmailWithGoogleAccount({
     required String userId,

@@ -13,7 +13,7 @@ import 'package:jastipin_yuk/shared/extensions/text_editing_controller_extension
 import 'package:jastipin_yuk/shared/misc/file_paths.dart';
 import 'package:jastipin_yuk/shared/widgets/button/submit_button.dart';
 import 'package:jastipin_yuk/shared/widgets/scaffold/native_scaffold.dart';
-import 'package:jastipin_yuk/shared/widgets/text_form_field/phone_number_text_form_field.dart';
+import 'package:jastipin_yuk/shared/widgets/form_picker/phone_number_text_form_field.dart';
 
 class PhoneNumberRequestOtpPage extends StatefulWidget {
   final String? phoneNumber;

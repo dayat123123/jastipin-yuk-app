@@ -11,6 +11,8 @@ class UserProfileModel with _$UserProfileModel {
   const factory UserProfileModel({
     @JsonKey(name: "userID") required String userId,
     required String username,
+    String? bio,
+    String? displayName,
     String? email,
     String? phoneNumber,
     required String role,
@@ -32,6 +34,8 @@ extension UserProfileModelMapper on UserProfileModel {
     return UserProfile(
       userID: userId,
       username: username,
+      bio: bio,
+      displayName: displayName,
       email: email,
       phoneNumber: phoneNumber,
       role: RoleX.fromString(role),

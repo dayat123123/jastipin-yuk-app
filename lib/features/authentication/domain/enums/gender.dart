@@ -13,17 +13,17 @@ extension GenderX on Gender {
   String get value {
     switch (this) {
       case Gender.male:
-        return 'male';
+        return 'M';
       case Gender.female:
-        return 'female';
+        return 'F';
     }
   }
 
   static Gender fromString(String value) {
     switch (value.toUpperCase()) {
-      case 'MALE':
+      case 'M':
         return Gender.male;
-      case 'FEMALE':
+      case 'F':
         return Gender.female;
       default:
         throw ArgumentError('Unknown gender string: $value');

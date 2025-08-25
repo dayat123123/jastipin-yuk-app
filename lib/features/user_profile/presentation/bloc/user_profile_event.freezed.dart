@@ -19,17 +19,17 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$UserProfileEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loadUserProfile,
+    required TResult Function(bool isRefresh) loadUserProfile,
     required TResult Function(UpdateUserProfileParam param) updateUserProfile,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadUserProfile,
+    TResult? Function(bool isRefresh)? loadUserProfile,
     TResult? Function(UpdateUserProfileParam param)? updateUserProfile,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadUserProfile,
+    TResult Function(bool isRefresh)? loadUserProfile,
     TResult Function(UpdateUserProfileParam param)? updateUserProfile,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
@@ -83,6 +83,8 @@ abstract class _$$UserProfileEventLoadUserProfileImplCopyWith<$Res> {
     _$UserProfileEventLoadUserProfileImpl value,
     $Res Function(_$UserProfileEventLoadUserProfileImpl) then,
   ) = __$$UserProfileEventLoadUserProfileImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool isRefresh});
 }
 
 /// @nodoc
@@ -100,56 +102,87 @@ class __$$UserProfileEventLoadUserProfileImplCopyWithImpl<$Res>
 
   /// Create a copy of UserProfileEvent
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? isRefresh = null}) {
+    return _then(
+      _$UserProfileEventLoadUserProfileImpl(
+        isRefresh:
+            null == isRefresh
+                ? _value.isRefresh
+                : isRefresh // ignore: cast_nullable_to_non_nullable
+                    as bool,
+      ),
+    );
+  }
 }
 
 /// @nodoc
 
 class _$UserProfileEventLoadUserProfileImpl
     implements UserProfileEventLoadUserProfile {
-  const _$UserProfileEventLoadUserProfileImpl();
+  const _$UserProfileEventLoadUserProfileImpl({this.isRefresh = false});
+
+  @override
+  @JsonKey()
+  final bool isRefresh;
 
   @override
   String toString() {
-    return 'UserProfileEvent.loadUserProfile()';
+    return 'UserProfileEvent.loadUserProfile(isRefresh: $isRefresh)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UserProfileEventLoadUserProfileImpl);
+            other is _$UserProfileEventLoadUserProfileImpl &&
+            (identical(other.isRefresh, isRefresh) ||
+                other.isRefresh == isRefresh));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, isRefresh);
+
+  /// Create a copy of UserProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UserProfileEventLoadUserProfileImplCopyWith<
+    _$UserProfileEventLoadUserProfileImpl
+  >
+  get copyWith => __$$UserProfileEventLoadUserProfileImplCopyWithImpl<
+    _$UserProfileEventLoadUserProfileImpl
+  >(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loadUserProfile,
+    required TResult Function(bool isRefresh) loadUserProfile,
     required TResult Function(UpdateUserProfileParam param) updateUserProfile,
   }) {
-    return loadUserProfile();
+    return loadUserProfile(isRefresh);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadUserProfile,
+    TResult? Function(bool isRefresh)? loadUserProfile,
     TResult? Function(UpdateUserProfileParam param)? updateUserProfile,
   }) {
-    return loadUserProfile?.call();
+    return loadUserProfile?.call(isRefresh);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadUserProfile,
+    TResult Function(bool isRefresh)? loadUserProfile,
     TResult Function(UpdateUserProfileParam param)? updateUserProfile,
     required TResult orElse(),
   }) {
     if (loadUserProfile != null) {
-      return loadUserProfile();
+      return loadUserProfile(isRefresh);
     }
     return orElse();
   }
@@ -191,8 +224,18 @@ class _$UserProfileEventLoadUserProfileImpl
 }
 
 abstract class UserProfileEventLoadUserProfile implements UserProfileEvent {
-  const factory UserProfileEventLoadUserProfile() =
+  const factory UserProfileEventLoadUserProfile({final bool isRefresh}) =
       _$UserProfileEventLoadUserProfileImpl;
+
+  bool get isRefresh;
+
+  /// Create a copy of UserProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$UserProfileEventLoadUserProfileImplCopyWith<
+    _$UserProfileEventLoadUserProfileImpl
+  >
+  get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -275,7 +318,7 @@ class _$UserProfileEventUpdateUserProfileImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loadUserProfile,
+    required TResult Function(bool isRefresh) loadUserProfile,
     required TResult Function(UpdateUserProfileParam param) updateUserProfile,
   }) {
     return updateUserProfile(param);
@@ -284,7 +327,7 @@ class _$UserProfileEventUpdateUserProfileImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadUserProfile,
+    TResult? Function(bool isRefresh)? loadUserProfile,
     TResult? Function(UpdateUserProfileParam param)? updateUserProfile,
   }) {
     return updateUserProfile?.call(param);
@@ -293,7 +336,7 @@ class _$UserProfileEventUpdateUserProfileImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadUserProfile,
+    TResult Function(bool isRefresh)? loadUserProfile,
     TResult Function(UpdateUserProfileParam param)? updateUserProfile,
     required TResult orElse(),
   }) {
